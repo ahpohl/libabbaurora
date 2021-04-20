@@ -1,480 +1,481 @@
+#include <string>
 #include "ABBAuroraStrings.h"
 
-String ABBAuroraStrings::TransmissionState(byte id)
+std::string ABBAuroraStrings::TransmissionState(unsigned char id)
 {
     switch (id)
     {
     case 0:
-        return F("Everything is OK.");
+        return "Everything is OK.";
     case 51:
-        return F("Command is not implemented");
+        return "Command is not implemented";
     case 52:
-        return F("Variable does not exist");
+        return "Variable does not exist";
     case 53:
-        return F("Variable value is out of range");
+        return "Variable value is out of range";
     case 54:
-        return F("EEprom not accessible");
+        return "EEprom not accessible";
     case 55:
-        return F("Not Toggled Service Mode");
+        return "Not Toggled Service Mode";
     case 56:
-        return F("Can not send the command to internal micro");
+        return "Can not send the command to internal micro";
     case 57:
-        return F("Command not Executed");
+        return "Command not Executed";
     case 58:
-        return F("The variable is not available, retry");
+        return "The variable is not available, retry";
     default:
-        return F("Unknown");
+        return "Unknown";
     }
 }
 
-String ABBAuroraStrings::GlobalState(byte id)
+std::string ABBAuroraStrings::GlobalState(unsigned char id)
 {
     switch (id)
     {
     case 0:
-        return F("Sending Parameters");
+        return "Sending Parameters";
     case 1:
-        return F("Wait Sun / Grid");
+        return "Wait Sun / Grid";
     case 2:
-        return F("Checking Grid");
+        return "Checking Grid";
     case 3:
-        return F("Measuring Riso");
+        return "Measuring Riso";
     case 4:
-        return F("DcDc Start");
+        return "DcDc Start";
     case 5:
-        return F("Inverter Start");
+        return "Inverter Start";
     case 6:
-        return F("Run");
+        return "Run";
     case 7:
-        return F("Recovery");
+        return "Recovery";
     case 8:
-        return F("Pausev");
+        return "Pausev";
     case 9:
-        return F("Ground Fault");
+        return "Ground Fault";
     case 10:
-        return F("OTH Fault");
+        return "OTH Fault";
     case 11:
-        return F("Address Setting");
+        return "Address Setting";
     case 12:
-        return F("Self Test");
+        return "Self Test";
     case 13:
-        return F("Self Test Fail");
+        return "Self Test Fail";
     case 14:
-        return F("Sensor Test + Meas.Riso");
+        return "Sensor Test + Meas.Riso";
     case 15:
-        return F("Leak Fault");
+        return "Leak Fault";
     case 16:
-        return F("Waiting for manual reset");
+        return "Waiting for manual reset";
     case 17:
-        return F("Internal Error E026");
+        return "Internal Error E026";
     case 18:
-        return F("Internal Error E027");
+        return "Internal Error E027";
     case 19:
-        return F("Internal Error E028");
+        return "Internal Error E028";
     case 20:
-        return F("Internal Error E029");
+        return "Internal Error E029";
     case 21:
-        return F("Internal Error E030");
+        return "Internal Error E030";
     case 22:
-        return F("Sending Wind Table");
+        return "Sending Wind Table";
     case 23:
-        return F("Failed Sending table");
+        return "Failed Sending table";
     case 24:
-        return F("UTH Fault");
+        return "UTH Fault";
     case 25:
-        return F("Remote OFF");
+        return "Remote OFF";
     case 26:
-        return F("Interlock Fail");
+        return "Interlock Fail";
     case 27:
-        return F("Executing Autotest");
+        return "Executing Autotest";
     case 30:
-        return F("Waiting Sun");
+        return "Waiting Sun";
     case 31:
-        return F("Temperature Fault");
+        return "Temperature Fault";
     case 32:
-        return F("Fan Staucked");
+        return "Fan Staucked";
     case 33:
-        return F("Int.Com.Fault");
+        return "Int.Com.Fault";
     case 34:
-        return F("Slave Insertion");
+        return "Slave Insertion";
     case 35:
-        return F("DC Switch Open");
+        return "DC Switch Open";
     case 36:
-        return F("TRAS Switch Open");
+        return "TRAS Switch Open";
     case 37:
-        return F("MASTER Exclusion");
+        return "MASTER Exclusion";
     case 38:
-        return F("Auto Exclusion");
+        return "Auto Exclusion";
     case 98:
-        return F("Erasing Internal EEprom");
+        return "Erasing Internal EEprom";
     case 99:
-        return F("Erasing External EEprom");
+        return "Erasing External EEprom";
     case 100:
-        return F("Counting EEprom");
+        return "Counting EEprom";
     case 101:
-        return F("Freeze");
+        return "Freeze";
     default:
-        return F("Unknown");
+        return "Unknown";
     }
 }
 
-String ABBAuroraStrings::DcDcState(byte id)
+std::string ABBAuroraStrings::DcDcState(unsigned char id)
 {
     switch (id)
     {
     case 0:
-        return F("DcDc OFF");
+        return "DcDc OFF";
     case 1:
-        return F("Ramp Start");
+        return "Ramp Start";
     case 2:
-        return F("MPPT");
+        return "MPPT";
     case 3:
-        return F("Not Used");
+        return "Not Used";
     case 4:
-        return F("Input OC");
+        return "Input OC";
     case 5:
-        return F("Input UV");
+        return "Input UV";
     case 6:
-        return F("Input OV");
+        return "Input OV";
     case 7:
-        return F("Input Low");
+        return "Input Low";
     case 8:
-        return F("No Parameters");
+        return "No Parameters";
     case 9:
-        return F("Bulk OV");
+        return "Bulk OV";
     case 10:
-        return F("Communication Error");
+        return "Communication Error";
     case 11:
-        return F("Ramp Fail");
+        return "Ramp Fail";
     case 12:
-        return F("Internal Error");
+        return "Internal Error";
     case 13:
-        return F("Input mode Error");
+        return "Input mode Error";
     case 14:
-        return F("Ground Fault");
+        return "Ground Fault";
     case 15:
-        return F("Inverter Fail");
+        return "Inverter Fail";
     case 16:
-        return F("DcDc IGBT Sat");
+        return "DcDc IGBT Sat";
     case 17:
-        return F("DcDc ILEAK Fail");
+        return "DcDc ILEAK Fail";
     case 18:
-        return F("DcDc Grid Fail");
+        return "DcDc Grid Fail";
     case 19:
-        return F("DcDc Comm.Error");
+        return "DcDc Comm.Error";
     default:
-        return F("Unknown");
+        return "Unknown";
     }
 }
 
-String ABBAuroraStrings::InverterState(byte id)
+std::string ABBAuroraStrings::InverterState(unsigned char id)
 {
     switch (id)
     {
     case 0:
-        return F("Stand By");
+        return "Stand By";
     case 1:
-        return F("Checking Grid");
+        return "Checking Grid";
     case 2:
-        return F("Run");
+        return "Run";
     case 3:
-        return F("Bulk OV");
+        return "Bulk OV";
     case 4:
-        return F("Out OC");
+        return "Out OC";
     case 5:
-        return F("IGBT Sat");
+        return "IGBT Sat";
     case 6:
-        return F("Bulk UV");
+        return "Bulk UV";
     case 7:
-        return F("Degauss Error");
+        return "Degauss Error";
     case 8:
-        return F("No Parameters");
+        return "No Parameters";
     case 9:
-        return F("Bulk Low");
+        return "Bulk Low";
     case 10:
-        return F("Grid OV");
+        return "Grid OV";
     case 11:
-        return F("Communication Error");
+        return "Communication Error";
     case 12:
-        return F("Degaussing");
+        return "Degaussing";
     case 13:
-        return F("Starting");
+        return "Starting";
     case 14:
-        return F("Bulk Cap Fail");
+        return "Bulk Cap Fail";
     case 15:
-        return F("Leak Fail");
+        return "Leak Fail";
     case 16:
-        return F("DcDc Fail");
+        return "DcDc Fail";
     case 17:
-        return F("Ileak Sensor Fail");
+        return "Ileak Sensor Fail";
     case 18:
-        return F("SelfTest: relay inverter");
+        return "SelfTest: relay inverter";
     case 19:
-        return F("SelfTest : wait for sensor test");
+        return "SelfTest : wait for sensor test";
     case 20:
-        return F("SelfTest : test relay DcDc + sensor");
+        return "SelfTest : test relay DcDc + sensor";
     case 21:
-        return F("SelfTest : relay inverter fail");
+        return "SelfTest : relay inverter fail";
     case 22:
-        return F("SelfTest timeout fail");
+        return "SelfTest timeout fail";
     case 23:
-        return F("SelfTest : relay DcDc fail");
+        return "SelfTest : relay DcDc fail";
     case 24:
-        return F("Self Test 1");
+        return "Self Test 1";
     case 25:
-        return F("Waiting self test start");
+        return "Waiting self test start";
     case 26:
-        return F("Dc Injection");
+        return "Dc Injection";
     case 27:
-        return F("Self Test 2");
+        return "Self Test 2";
     case 28:
-        return F("Self Test 3");
+        return "Self Test 3";
     case 29:
-        return F("Self Test 4");
+        return "Self Test 4";
     case 30:
-        return F("Internal Error");
+        return "Internal Error";
     case 31:
-        return F("Internal Error");
+        return "Internal Error";
     case 40:
-        return F("Forbidden State");
+        return "Forbidden State";
     case 41:
-        return F("Input UC");
+        return "Input UC";
     case 42:
-        return F("Zero Power");
+        return "Zero Power";
     case 43:
-        return F("Grid Not Present");
+        return "Grid Not Present";
     case 44:
-        return F("Waiting Start");
+        return "Waiting Start";
     case 45:
-        return F("MPPT");
+        return "MPPT";
     case 46:
-        return F("Grid Fail");
+        return "Grid Fail";
     case 47:
-        return F("Input OC");
+        return "Input OC";
     default:
-        return F("Unknown");
+        return "Unknown";
     }
 }
 
-String ABBAuroraStrings::AlarmState(byte id)
+std::string ABBAuroraStrings::AlarmState(unsigned char id)
 {
     switch (id)
     {
     case 0:
-        return F("No Alarm");
+        return "No Alarm";
     case 1:
-        return F("Sun Low");
+        return "Sun Low";
     case 2:
-        return F("Input OC");
+        return "Input OC";
     case 3:
-        return F("Input UV");
+        return "Input UV";
     case 4:
-        return F("Input OV");
+        return "Input OV";
     case 5:
-        return F("Sun Low");
+        return "Sun Low";
     case 6:
-        return F("No Parameters");
+        return "No Parameters";
     case 7:
-        return F("Bulk OV");
+        return "Bulk OV";
     case 8:
-        return F("Comm.Error");
+        return "Comm.Error";
     case 9:
-        return F("Output OC");
+        return "Output OC";
     case 10:
-        return F("IGBT Sat");
+        return "IGBT Sat";
     case 11:
-        return F("Bulk UV");
+        return "Bulk UV";
     case 12:
-        return F("Internal error");
+        return "Internal error";
     case 13:
-        return F("Grid Fail");
+        return "Grid Fail";
     case 14:
-        return F("Bulk Low");
+        return "Bulk Low";
     case 15:
-        return F("Ramp Fail");
+        return "Ramp Fail";
     case 16:
-        return F("Dc / Dc Fail");
+        return "Dc / Dc Fail";
     case 17:
-        return F("Wrong Mode");
+        return "Wrong Mode";
     case 18:
-        return F("Ground Fault");
+        return "Ground Fault";
     case 19:
-        return F("Over Temp.");
+        return "Over Temp.";
     case 20:
-        return F("Bulk Cap Fail");
+        return "Bulk Cap Fail";
     case 21:
-        return F("Inverter Fail");
+        return "Inverter Fail";
     case 22:
-        return F("Start Timeout");
+        return "Start Timeout";
     case 23:
-        return F("Ground Fault");
+        return "Ground Fault";
     case 24:
-        return F("Degauss error");
+        return "Degauss error";
     case 25:
-        return F("Ileak sens.fail");
+        return "Ileak sens.fail";
     case 26:
-        return F("DcDc Fail");
+        return "DcDc Fail";
     case 27:
-        return F("Self Test Error 1");
+        return "Self Test Error 1";
     case 28:
-        return F("Self Test Error 2");
+        return "Self Test Error 2";
     case 29:
-        return F("Self Test Error 3");
+        return "Self Test Error 3";
     case 30:
-        return F("Self Test Error 4");
+        return "Self Test Error 4";
     case 31:
-        return F("DC inj error");
+        return "DC inj error";
     case 32:
-        return F("Grid OV");
+        return "Grid OV";
     case 33:
-        return F("Grid UV");
+        return "Grid UV";
     case 34:
-        return F("Grid OF");
+        return "Grid OF";
     case 35:
-        return F("Grid UF");
+        return "Grid UF";
     case 36:
-        return F("Z grid Hi");
+        return "Z grid Hi";
     case 37:
-        return F("Internal error");
+        return "Internal error";
     case 38:
-        return F("Riso Low");
+        return "Riso Low";
     case 39:
-        return F("Vref Error");
+        return "Vref Error";
     case 40:
-        return F("Error Meas V");
+        return "Error Meas V";
     case 41:
-        return F("Error Meas F");
+        return "Error Meas F";
     case 42:
-        return F("Error Meas Z");
+        return "Error Meas Z";
     case 43:
-        return F("Error Meas Ileak");
+        return "Error Meas Ileak";
     case 44:
-        return F("Error Read V");
+        return "Error Read V";
     case 45:
-        return F("Error Read I");
+        return "Error Read I";
     case 46:
-        return F("Table fail");
+        return "Table fail";
     case 47:
-        return F("Fan Fail");
+        return "Fan Fail";
     case 48:
-        return F("UTH");
+        return "UTH";
     case 49:
-        return F("Interlock fail");
+        return "Interlock fail";
     case 50:
-        return F("Remote Off");
+        return "Remote Off";
     case 51:
-        return F("Vout Avg errror");
+        return "Vout Avg errror";
     case 52:
-        return F("Battery low");
+        return "Battery low";
     case 53:
-        return F("Clk fail");
+        return "Clk fail";
     case 54:
-        return F("Input UC");
+        return "Input UC";
     case 55:
-        return F("Zero Power");
+        return "Zero Power";
     case 56:
-        return F("Fan Stucked");
+        return "Fan Stucked";
     case 57:
-        return F("DC Switch Open");
+        return "DC Switch Open";
     case 58:
-        return F("Tras Switch Open");
+        return "Tras Switch Open";
     case 59:
-        return F("AC Switch Open");
+        return "AC Switch Open";
     case 60:
-        return F("Bulk UV");
+        return "Bulk UV";
     case 61:
-        return F("Autoexclusion");
+        return "Autoexclusion";
     case 62:
-        return F("Grid df / dt");
+        return "Grid df / dt";
     case 63:
-        return F("Den switch Open");
+        return "Den switch Open";
     case 64:
-        return F("Jbox fail");
+        return "Jbox fail";
     default:
-        return F("Unknown");
+        return "Unknown";
     }
 }
 
-String ABBAuroraStrings::VersionPart1(byte id)
+std::string ABBAuroraStrings::VersionPart1(char id)
 {
-    switch ((char)id)
+    switch (id)
     {
     case 'i':
-        return F("Aurora 2 kW indoor");
+        return "Aurora 2 kW indoor";
     case 'o':
-        return F("Aurora 2 kW outdoor");
+        return "Aurora 2 kW outdoor";
     case 'I':
-        return F("Aurora 3.6 kW indoor");
+        return "Aurora 3.6 kW indoor";
     case 'O':
-        return F("Aurora 3.0 - 3.6 kW outdoor");
+        return "Aurora 3.0 - 3.6 kW outdoor";
     case '5':
-        return F("Aurora 5.0 kW outdoor");
+        return "Aurora 5.0 kW outdoor";
     case '6':
-        return F("Aurora 6 kW outdoor");
+        return "Aurora 6 kW outdoor";
     case 'P':
-        return F("3 - phase interface (3G74)");
+        return "3 - phase interface (3G74)";
     case 'C':
-        return F("Aurora 50kW module");
+        return "Aurora 50kW module";
     case '4':
-        return F("Aurora 4.2kW new");
+        return "Aurora 4.2kW new";
     case '3':
-        return F("Aurora 3.6kW new");
+        return "Aurora 3.6kW new";
     case '2':
-        return F("Aurora 3.3kW new");
+        return "Aurora 3.3kW new";
     case '1':
-        return F("Aurora 3.0kW new");
+        return "Aurora 3.0kW new";
     case 'D':
-        return F("Aurora 12.0kW");
+        return "Aurora 12.0kW";
     case 'X':
-        return F("Aurora 10.0kW");
+        return "Aurora 10.0kW";
     default:
-        return F("Unknown");
+        return "Unknown";
     }
 }
 
-String ABBAuroraStrings::VersionPart2(byte id)
+std::string ABBAuroraStrings::VersionPart2(char id)
 {
-    switch ((char)id)
+    switch (id)
     {
     case 'A':
-        return F("UL1741");
+        return "UL1741";
     case 'E':
-        return F("VDE0126");
+        return "VDE0126";
     case 'S':
-        return F("DR 1663 / 2000");
+        return "DR 1663 / 2000";
     case 'I':
-        return F("ENEL DK 5950");
+        return "ENEL DK 5950";
     case 'U':
-        return F("UK G83");
+        return "UK G83";
     case 'K':
-        return F("AS 4777");
+        return "AS 4777";
     default:
-        return F("Unknown");
+        return "Unknown";
     }
 }
 
-String ABBAuroraStrings::VersionPart3(byte id)
+std::string ABBAuroraStrings::VersionPart3(char id)
 {
 
-    switch ((char)id)
+    switch (id)
     {
     case 'N':
-        return F("Transformerless Version");
+        return "Transformerless Version";
     case 'T':
-        return F("Transformer Version");
+        return "Transformer Version";
     default:
-        return F("Unknown");
+        return "Unknown";
     }
 }
-String ABBAuroraStrings::VersionPart4(byte id)
+std::string ABBAuroraStrings::VersionPart4(char id)
 {
-    switch ((char)id)
+    switch (id)
     {
     case 'W':
-        return F("Wind version");
+        return "Wind version";
     case 'N':
-        return F("PV version");
+        return "PV version";
     default:
-        return F("Unknown");
+        return "Unknown";
     }
 }
