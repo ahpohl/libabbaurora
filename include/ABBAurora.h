@@ -1,8 +1,6 @@
 #ifndef ABBAurora_h
 #define ABBAurora_h
-#include <Arduino.h>
 #include <ABBAuroraEnums.h>
-#include <Wire.h>
 
 //RS485 control
 #define RS485Transmit HIGH
@@ -12,45 +10,45 @@ class ABBAurora
 {
 private:
     int MaxAttempt = 1;
-    static byte TXPinControl;
+    static unsigned char TXPinControl;
     static HardwareSerial *serial;
 
-    void clearData(byte *data, byte len);
+    void clearData(unsigned char *data, unsigned char len);
 
-    int Crc16(byte *data, int offset, int count);
+    int Crc16(unsigned char *data, int offset, int count);
 
-    bool Send(byte address, byte param0, byte param1, byte param2, byte param3, byte param4, byte param5, byte param6);
+    bool Send(unsigned char address, unsigned char param0, unsigned char param1, unsigned char param2, unsigned char param3, unsigned char param4, unsigned char param5, unsigned char param6);
 
     union {
-        byte asBytes[4];
+        unsigned char asBytes[4];
         float asFloat;
     } foo;
 
     union {
-        byte asBytes[4];
+        unsigned char asBytes[4];
         unsigned long asUlong;
     } ulo;
 
 public:
     bool SendStatus = false;
     bool ReceiveStatus = false;
-    byte Address = 0;
-    byte ReceiveData[8];
+    unsigned char Address = 0;
+    unsigned char ReceiveData[8];
 
-    static void setup(HardwareSerial &serial, byte RXGpioPin, byte TXGpioPin, byte TXControllPin);
+    static void setup(HardwareSerial &serial, unsigned char RXGpioPin, unsigned char TXGpioPin, unsigned char TXControllPin);
 
-    ABBAurora(byte address);
+    ABBAurora(unsigned char address);
 
     void clearReceiveData();
 
     typedef struct
     {
-        byte TransmissionState;
-        byte GlobalState;
-        byte InverterState;
-        byte Channel1State;
-        byte Channel2State;
-        byte AlarmState;
+        unsigned char TransmissionState;
+        unsigned char GlobalState;
+        unsigned char InverterState;
+        unsigned char Channel1State;
+        unsigned char Channel2State;
+        unsigned char AlarmState;
         bool ReadState;
     } DataState;
 
@@ -60,8 +58,8 @@ public:
 
     typedef struct
     {
-        byte TransmissionState;
-        byte GlobalState;
+        unsigned char TransmissionState;
+        unsigned char GlobalState;
         String Par1;
         String Par2;
         String Par3;
@@ -75,8 +73,8 @@ public:
 
     typedef struct
     {
-        byte TransmissionState;
-        byte GlobalState;
+        unsigned char TransmissionState;
+        unsigned char GlobalState;
         float Value;
         bool ReadState;
     } DataDSP;
@@ -87,8 +85,8 @@ public:
 
     typedef struct
     {
-        byte TransmissionState;
-        byte GlobalState;
+        unsigned char TransmissionState;
+        unsigned char GlobalState;
         unsigned long Seconds;
         bool ReadState;
     } DataTimeDate;
@@ -99,12 +97,12 @@ public:
 
     typedef struct
     {
-        byte TransmissionState;
-        byte GlobalState;
-        byte Alarms1;
-        byte Alarms2;
-        byte Alarms3;
-        byte Alarms4;
+        unsigned char TransmissionState;
+        unsigned char GlobalState;
+        unsigned char Alarms1;
+        unsigned char Alarms2;
+        unsigned char Alarms3;
+        unsigned char Alarms4;
         bool ReadState;
     } DataLastFourAlarms;
 
@@ -112,9 +110,9 @@ public:
 
     bool ReadLastFourAlarms();
 
-    bool ReadJunctionBoxState(byte nj);
+    bool ReadJunctionBoxState(unsigned char nj);
 
-    bool ReadJunctionBoxVal(byte nj, byte par);
+    bool ReadJunctionBoxVal(unsigned char nj, unsigned char par);
 
     // Inverters
     typedef struct
@@ -139,8 +137,8 @@ public:
 
     typedef struct
     {
-        byte TransmissionState;
-        byte GlobalState;
+        unsigned char TransmissionState;
+        unsigned char GlobalState;
         String Week;
         String Year;
         bool ReadState;
@@ -152,8 +150,8 @@ public:
 
     typedef struct
     {
-        byte TransmissionState;
-        byte GlobalState;
+        unsigned char TransmissionState;
+        unsigned char GlobalState;
         String Release;
         bool ReadState;
     } DataFirmwareRelease;
@@ -164,8 +162,8 @@ public:
 
     typedef struct
     {
-        byte TransmissionState;
-        byte GlobalState;
+        unsigned char TransmissionState;
+        unsigned char GlobalState;
         unsigned long Energy;
         bool ReadState;
     } DataCumulatedEnergy;
@@ -174,20 +172,20 @@ public:
 
     bool ReadCumulatedEnergy(CUMULATED_ENERGY_TYPE par);
 
-    bool WriteBaudRateSetting(byte baudcode);
+    bool WriteBaudRateSetting(unsigned char baudcode);
 
     // Central
     bool ReadFlagsSwitchCentral();
 
-    bool ReadCumulatedEnergyCentral(byte var, byte ndays_h, byte ndays_l, byte global);
+    bool ReadCumulatedEnergyCentral(unsigned char var, unsigned char ndays_h, unsigned char ndays_l, unsigned char global);
 
-    bool ReadFirmwareReleaseCentral(byte var);
+    bool ReadFirmwareReleaseCentral(unsigned char var);
 
-    bool ReadBaudRateSettingCentral(byte baudcode, byte serialline);
+    bool ReadBaudRateSettingCentral(unsigned char baudcode, unsigned char serialline);
 
-    bool ReadSystemInfoCentral(byte var);
+    bool ReadSystemInfoCentral(unsigned char var);
 
-    bool ReadJunctionBoxMonitoringCentral(byte cf, byte rn, byte njt, byte jal, byte jah);
+    bool ReadJunctionBoxMonitoringCentral(unsigned char cf, unsigned char rn, unsigned char njt, unsigned char jal, unsigned char jah);
 
     bool ReadSystemPNCentral();
 
