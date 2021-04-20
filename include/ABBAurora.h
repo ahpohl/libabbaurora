@@ -3,15 +3,15 @@
 #include <ABBAuroraEnums.h>
 
 //RS485 control
-#define RS485Transmit HIGH
-#define RS485Receive LOW
+//#define RS485Transmit HIGH
+//#define RS485Receive LOW
 
 class ABBAurora
 {
 private:
     int MaxAttempt = 1;
-    static unsigned char TXPinControl;
-    static HardwareSerial *serial;
+    //static unsigned char TXPinControl;
+    //static HardwareSerial *serial;
 
     void clearData(unsigned char *data, unsigned char len);
 

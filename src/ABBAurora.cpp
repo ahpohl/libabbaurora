@@ -1,28 +1,24 @@
 #include "ABBAurora.h"
 #include "ABBAuroraStrings.h"
+#include "ABBAuroraSerial.h"
 
-byte ABBAurora::TXPinControl;
-HardwareSerial *ABBAurora::serial;
+ABBAuroraSerial *ABBAurora::serial;
 
-ABBAurora::ABBAurora(byte address)
+ABBAurora::ABBAurora(unsigned char address)
 {
     Address = address;
     SendStatus = false;
     ReceiveStatus = false;
     clearReceiveData();
 }
-void ABBAurora::setup(HardwareSerial &hardwareSerial, byte RXGpioPin, byte TXGpioPin, byte TXControllPin)
+
+void ABBAurora::setup(ABBAuroraSerial &hwSerial)
 {
-    TXPinControl = TXControllPin;
-
-    pinMode(TXPinControl, OUTPUT);
-    digitalWrite(TXPinControl, LOW);
-
-    serial = &hardwareSerial;
-    serial->begin(19200, SERIAL_8N1, RXGpioPin, TXGpioPin, false, 500);
+    serial = &hwSerial;
+    serial->begin(19200, SERIAL_8N1);
 }
 
-void ABBAurora::clearData(byte *data, byte len)
+void ABBAurora::clearData(unsigned char *data, unsigned char len)
 {
     for (int i = 0; i < len; i++)
     {
@@ -30,15 +26,15 @@ void ABBAurora::clearData(byte *data, byte len)
     }
 }
 
-int ABBAurora::Crc16(byte *data, int offset, int count)
+int ABBAurora::Crc16(unsigned char *data, int offset, int count)
 {
-    byte BccLo = 0xFF;
-    byte BccHi = 0xFF;
+    unsigned char BccLo = 0xFF;
+    unsigned char BccHi = 0xFF;
 
     for (int i = offset; i < (offset + count); i++)
     {
-        byte New = data[offset + i] ^ BccLo;
-        byte Tmp = New << 4;
+        unsigned char New = data[offset + i] ^ BccLo;
+        unsigned char Tmp = New << 4;
         New = Tmp ^ New;
         Tmp = New >> 5;
         BccLo = BccHi;
@@ -48,17 +44,18 @@ int ABBAurora::Crc16(byte *data, int offset, int count)
         Tmp = New >> 4;
         BccLo = BccLo ^ Tmp;
     }
-
-    return (int)word(~BccHi, ~BccLo);
+    
+    // Todo: return word
+    return (int) word(~BccHi, ~BccLo);
 }
 
-bool ABBAurora::Send(byte address, byte param0, byte param1, byte param2, byte param3, byte param4, byte param5, byte param6)
+bool ABBAurora::Send(unsigned char address, unsigned char param0, unsigned char param1, unsigned char param2, unsigned char param3, unsigned char param4, unsigned char param5, unsigned char param6)
 {
 
     SendStatus = false;
     ReceiveStatus = false;
 
-    byte SendData[10];
+    unsigned char SendData[10];
     SendData[0] = address;
     SendData[1] = param0;
     SendData[2] = param1;
@@ -76,19 +73,15 @@ bool ABBAurora::Send(byte address, byte param0, byte param1, byte param2, byte p
 
     for (int i = 0; i < this->MaxAttempt; i++)
     {
-        digitalWrite(TXPinControl, RS485Transmit);
-        delay(50);
-
         if (serial->write(SendData, sizeof(SendData)) != 0)
         {
             serial->flush();
             SendStatus = true;
 
-            digitalWrite(TXPinControl, RS485Receive);
-
             if (serial->readBytes(ReceiveData, sizeof(ReceiveData)) != 0)
             {
-                if ((int)word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
+                // todo: word
+                if ((int) word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
                 {
                     ReceiveStatus = true;
                     break;
@@ -118,7 +111,7 @@ bool ABBAurora::ReadDSPValue(DSP_VALUE_TYPE type, DSP_GLOBAL global)
 {
     if ((((int)type >= 1 && (int)type <= 9) || ((int)type >= 21 && (int)type <= 63)) && ((int)global >= 0 && (int)global <= 1))
     {
-        DSP.ReadState = Send(this->Address, (byte)59, type, global, (byte)0, (byte)0, (byte)0, (byte)0);
+        DSP.ReadState = Send(this->Address, (unsigned char)59, type, global, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
         if (DSP.ReadState == false)
         {
@@ -149,7 +142,7 @@ bool ABBAurora::ReadDSPValue(DSP_VALUE_TYPE type, DSP_GLOBAL global)
 
 bool ABBAurora::ReadTimeDate()
 {
-    TimeDate.ReadState = Send(this->Address, (byte)70, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    TimeDate.ReadState = Send(this->Address, (unsigned char)70, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
     if (TimeDate.ReadState == false)
     {
@@ -165,7 +158,7 @@ bool ABBAurora::ReadTimeDate()
 
 bool ABBAurora::ReadLastFourAlarms()
 {
-    LastFourAlarms.ReadState = Send(this->Address, (byte)86, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    LastFourAlarms.ReadState = Send(this->Address, (unsigned char)86, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
     if (LastFourAlarms.ReadState == false)
     {
@@ -187,21 +180,21 @@ bool ABBAurora::ReadLastFourAlarms()
     return LastFourAlarms.ReadState;
 }
 
-bool ABBAurora::ReadJunctionBoxState(byte nj)
+bool ABBAurora::ReadJunctionBoxState(unsigned char nj)
 {
-    return Send(this->Address, (byte)200, nj, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    return Send(this->Address, (unsigned char)200, nj, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 }
 
-bool ABBAurora::ReadJunctionBoxVal(byte nj, byte par)
+bool ABBAurora::ReadJunctionBoxVal(unsigned char nj, unsigned char par)
 {
-    return Send(this->Address, (byte)201, nj, par, (byte)0, (byte)0, (byte)0, (byte)0);
+    return Send(this->Address, (unsigned char)201, nj, par, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 }
 
 // Inverters
 
 bool ABBAurora::ReadSystemPN()
 {
-    SystemPN.ReadState = Send(this->Address, (byte)52, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    SystemPN.ReadState = Send(this->Address, (unsigned char)52, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
     SystemPN.PN = String(String((char)ReceiveData[0]) + String((char)ReceiveData[1]) + String((char)ReceiveData[2]) + String((char)ReceiveData[3]) + String((char)ReceiveData[4]) + String((char)ReceiveData[5]));
 
@@ -210,7 +203,7 @@ bool ABBAurora::ReadSystemPN()
 
 bool ABBAurora::ReadSystemSerialNumber()
 {
-    SystemSerialNumber.ReadState = Send(this->Address, (byte)63, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    SystemSerialNumber.ReadState = Send(this->Address, (unsigned char)63, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
     SystemSerialNumber.SerialNumber = String(String((char)ReceiveData[0]) + String((char)ReceiveData[1]) + String((char)ReceiveData[2]) + String((char)ReceiveData[3]) + String((char)ReceiveData[4]) + String((char)ReceiveData[5]));
 
@@ -219,7 +212,7 @@ bool ABBAurora::ReadSystemSerialNumber()
 
 bool ABBAurora::ReadManufacturingWeekYear()
 {
-    ManufacturingWeekYear.ReadState = Send(this->Address, (byte)65, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    ManufacturingWeekYear.ReadState = Send(this->Address, (unsigned char)65, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
     if (ManufacturingWeekYear.ReadState == false)
     {
@@ -237,7 +230,7 @@ bool ABBAurora::ReadManufacturingWeekYear()
 
 bool ABBAurora::ReadFirmwareRelease()
 {
-    FirmwareRelease.ReadState = Send(this->Address, (byte)72, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    FirmwareRelease.ReadState = Send(this->Address, (unsigned char)72, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
     if (FirmwareRelease.ReadState == false)
     {
@@ -256,7 +249,7 @@ bool ABBAurora::ReadCumulatedEnergy(CUMULATED_ENERGY_TYPE par)
 {
     if ((int)par >= 0 && (int)par <= 6)
     {
-        CumulatedEnergy.ReadState = Send(this->Address, (byte)78, par, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+        CumulatedEnergy.ReadState = Send(this->Address, (unsigned char)78, par, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
         if (CumulatedEnergy.ReadState == false)
         {
@@ -286,11 +279,11 @@ bool ABBAurora::ReadCumulatedEnergy(CUMULATED_ENERGY_TYPE par)
     return CumulatedEnergy.ReadState;
 }
 
-bool ABBAurora::WriteBaudRateSetting(byte baudcode)
+bool ABBAurora::WriteBaudRateSetting(unsigned char baudcode)
 {
     if ((int)baudcode >= 0 && (int)baudcode <= 3)
     {
-        return Send(this->Address, (byte)85, baudcode, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+        return Send(this->Address, (unsigned char)85, baudcode, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
     }
     else
     {
@@ -302,47 +295,47 @@ bool ABBAurora::WriteBaudRateSetting(byte baudcode)
 // Central
 bool ABBAurora::ReadFlagsSwitchCentral()
 {
-    return Send(this->Address, (byte)67, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    return Send(this->Address, (unsigned char)67, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 }
 
-bool ABBAurora::ReadCumulatedEnergyCentral(byte var, byte ndays_h, byte ndays_l, byte global)
+bool ABBAurora::ReadCumulatedEnergyCentral(unsigned char var, unsigned char ndays_h, unsigned char ndays_l, unsigned char global)
 {
-    return Send(this->Address, (byte)68, var, ndays_h, ndays_l, global, (byte)0, (byte)0);
+    return Send(this->Address, (unsigned char)68, var, ndays_h, ndays_l, global, (unsigned char)0, (unsigned char)0);
 }
 
-bool ABBAurora::ReadFirmwareReleaseCentral(byte var)
+bool ABBAurora::ReadFirmwareReleaseCentral(unsigned char var)
 {
-    return Send(this->Address, (byte)72, var, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    return Send(this->Address, (unsigned char)72, var, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 }
 
-bool ABBAurora::ReadBaudRateSettingCentral(byte baudcode, byte serialline)
+bool ABBAurora::ReadBaudRateSettingCentral(unsigned char baudcode, unsigned char serialline)
 {
-    return Send(this->Address, (byte)85, baudcode, serialline, (byte)0, (byte)0, (byte)0, (byte)0);
+    return Send(this->Address, (unsigned char)85, baudcode, serialline, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 }
 
-bool ABBAurora::ReadSystemInfoCentral(byte var)
+bool ABBAurora::ReadSystemInfoCentral(unsigned char var)
 {
-    return Send(this->Address, (byte)101, var, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    return Send(this->Address, (unsigned char)101, var, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 }
 
-bool ABBAurora::ReadJunctionBoxMonitoringCentral(byte cf, byte rn, byte njt, byte jal, byte jah)
+bool ABBAurora::ReadJunctionBoxMonitoringCentral(unsigned char cf, unsigned char rn, unsigned char njt, unsigned char jal, unsigned char jah)
 {
-    return Send(this->Address, (byte)103, cf, rn, njt, jal, jah, (byte)0);
+    return Send(this->Address, (unsigned char)103, cf, rn, njt, jal, jah, (unsigned char)0);
 }
 
 bool ABBAurora::ReadSystemPNCentral()
 {
-    return Send(this->Address, (byte)105, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    return Send(this->Address, (unsigned char)105, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 }
 
 bool ABBAurora::ReadSystemSerialNumberCentral()
 {
-    return Send(this->Address, (byte)107, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    return Send(this->Address, (unsigned char)107, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 }
 
 bool ABBAurora::ReadState()
 {
-    State.ReadState = Send(this->Address, (byte)50, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    State.ReadState = Send(this->Address, (unsigned char)50, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
     if (State.ReadState == false)
     {
@@ -366,7 +359,7 @@ bool ABBAurora::ReadState()
 
 bool ABBAurora::ReadVersion()
 {
-    Version.ReadState = Send(this->Address, (byte)58, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
+    Version.ReadState = Send(this->Address, (unsigned char)58, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0, (unsigned char)0);
 
     if (Version.ReadState == false)
     {
