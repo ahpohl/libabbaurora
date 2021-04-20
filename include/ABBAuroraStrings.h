@@ -1,20 +1,19 @@
 #ifndef ABBAuroraStrings_h
 #define ABBAuroraStrings_h
-#include <Arduino.h>
 
 class ABBAuroraStrings {
     private:
-        
 
     public:
-       static String TransmissionState(byte id);
-       static String GlobalState(byte id);
-       static String DcDcState(byte id);
-       static String InverterState(byte id);
-       static String AlarmState(byte id);
-       static String VersionPart1(byte id);
-       static String VersionPart2(byte id);
-       static String VersionPart3(byte id);
-       static String VersionPart4(byte id);
+       static std::string TransmissionState(unsigned char id);
+       static std::string GlobalState(unsigned char id);
+       static std::string DcDcState(unsigned char id);
+       static std::string InverterState(unsigned char id);
+       static std::string AlarmState(unsigned char id);
+       static std::string VersionPart1(char id);
+       static std::string VersionPart2(char id);
+       static std::string VersionPart3(char id);
+       static std::string VersionPart4(char id);
 };
+
 #endif
