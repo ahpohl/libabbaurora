@@ -1,21 +1,19 @@
 #ifndef ABBAurora_h
 #define ABBAurora_h
-#include <ABBAuroraEnums.h>
-
-//RS485 control
-//#define RS485Transmit HIGH
-//#define RS485Receive LOW
+#include <string>
+#include "ABBAuroraEnums.h"
+#include "ABBAuroraSerial.h"
 
 class ABBAurora
 {
 private:
     int MaxAttempt = 1;
-    //static unsigned char TXPinControl;
-    //static HardwareSerial *serial;
+    static ABBAuroraSerial *serial;
 
     void clearData(unsigned char *data, unsigned char len);
 
-    int Crc16(unsigned char *data, int offset, int count);
+    uint16_t Crc16(uint8_t *data, int &offset, int &count);
+    uint16_t Word(uint8_t &crc_hi, uint8_t &crc_lo);
 
     bool Send(unsigned char address, unsigned char param0, unsigned char param1, unsigned char param2, unsigned char param3, unsigned char param4, unsigned char param5, unsigned char param6);
 
@@ -35,7 +33,7 @@ public:
     unsigned char Address = 0;
     unsigned char ReceiveData[8];
 
-    static void setup(HardwareSerial &serial, unsigned char RXGpioPin, unsigned char TXGpioPin, unsigned char TXControllPin);
+    static void ABBAurora::setup(std::string &device);
 
     ABBAurora(unsigned char address);
 

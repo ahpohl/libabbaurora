@@ -2,8 +2,6 @@
 #include "ABBAuroraStrings.h"
 #include "ABBAuroraSerial.h"
 
-ABBAuroraSerial *ABBAurora::serial;
-
 ABBAurora::ABBAurora(unsigned char address)
 {
     Address = address;
@@ -12,29 +10,29 @@ ABBAurora::ABBAurora(unsigned char address)
     clearReceiveData();
 }
 
-void ABBAurora::setup(ABBAuroraSerial &hwSerial)
+void ABBAurora::setup(std::string device)
 {
-    serial = &hwSerial;
-    serial->begin(19200, SERIAL_8N1);
+    ABBAuroraSerial *serial;
+    serial->begin(device);
 }
 
-void ABBAurora::clearData(unsigned char *data, unsigned char len)
+void ABBAurora::clearData(uint8_t *data, size_t &len)
 {
-    for (int i = 0; i < len; i++)
+    for (size_t i = 0; i < len; i++)
     {
         data[i] = 0;
     }
 }
 
-int ABBAurora::Crc16(unsigned char *data, int offset, int count)
+uint16_t Crc16(uint8_t *data, int &offset, int &count);
 {
-    unsigned char BccLo = 0xFF;
-    unsigned char BccHi = 0xFF;
+    byte BccLo = 0xFF;
+    byte BccHi = 0xFF;
 
     for (int i = offset; i < (offset + count); i++)
     {
-        unsigned char New = data[offset + i] ^ BccLo;
-        unsigned char Tmp = New << 4;
+        uint8_t New = data[offset + i] ^ BccLo;
+        uint8_t Tmp = New << 4;
         New = Tmp ^ New;
         Tmp = New >> 5;
         BccLo = BccHi;
@@ -44,9 +42,13 @@ int ABBAurora::Crc16(unsigned char *data, int offset, int count)
         Tmp = New >> 4;
         BccLo = BccLo ^ Tmp;
     }
-    
-    // Todo: return word
-    return (int) word(~BccHi, ~BccLo);
+
+    return Word(~BccHi, ~BccLo);
+}
+
+uint16_t ABBAurora::Word(uint8_t &crc_hi, uint8_t &crc_lo)
+{
+  return ((crc_hi & 0xFF) << 8) | crc_lo;
 }
 
 bool ABBAurora::Send(unsigned char address, unsigned char param0, unsigned char param1, unsigned char param2, unsigned char param3, unsigned char param4, unsigned char param5, unsigned char param6)
@@ -80,8 +82,7 @@ bool ABBAurora::Send(unsigned char address, unsigned char param0, unsigned char 
 
             if (serial->readBytes(ReceiveData, sizeof(ReceiveData)) != 0)
             {
-                // todo: word
-                if ((int) word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
+                if (Word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
                 {
                     ReceiveStatus = true;
                     break;
@@ -205,7 +206,7 @@ bool ABBAurora::ReadSystemSerialNumber()
 {
     SystemSerialNumber.ReadState = Send(this->Address, 63, 0, 0, 0, 0, 0, 0);
 
-    SystemSerialNumber.SerialNumber = String(String((char)ReceiveData[0]) + String((char)ReceiveData[1]) + String((char)ReceiveData[2]) + String((char)ReceiveData[3]) + String((char)ReceiveData[4]) + String((char)ReceiveData[5]));
+    SystemSerialNumber.SerialNumber = std::string(std::string((char)ReceiveData[0]) + std::string((char)ReceiveData[1]) + std::string((char)ReceiveData[2]) + std::string((char)ReceiveData[3]) + std::string((char)ReceiveData[4]) + std::string((char)ReceiveData[5]));
 
     return SystemSerialNumber.ReadState;
 }
@@ -222,8 +223,8 @@ bool ABBAurora::ReadManufacturingWeekYear()
 
     ManufacturingWeekYear.TransmissionState = ReceiveData[0];
     ManufacturingWeekYear.GlobalState = ReceiveData[1];
-    ManufacturingWeekYear.Week = String(String((char)ReceiveData[2]) + String((char)ReceiveData[3]));
-    ManufacturingWeekYear.Year = String(String((char)ReceiveData[4]) + String((char)ReceiveData[5]));
+    ManufacturingWeekYear.Week = std::string(std::string((char)ReceiveData[2]) + std::string((char)ReceiveData[3]));
+    ManufacturingWeekYear.Year = std::string(std::string((char)ReceiveData[4]) + std::string((char)ReceiveData[5]));
 
     return ManufacturingWeekYear.ReadState;
 }
@@ -240,7 +241,7 @@ bool ABBAurora::ReadFirmwareRelease()
 
     FirmwareRelease.TransmissionState = ReceiveData[0];
     FirmwareRelease.GlobalState = ReceiveData[1];
-    FirmwareRelease.Release = String(String((char)ReceiveData[2]) + "." + String((char)ReceiveData[3]) + "." + String((char)ReceiveData[4]) + "." + String((char)ReceiveData[5]));
+    FirmwareRelease.Release = std::string(std::string((char)ReceiveData[2]) + "." + std::string((char)ReceiveData[3]) + "." + std::string((char)ReceiveData[4]) + "." + std::string((char)ReceiveData[5]));
 
     return FirmwareRelease.ReadState;
 }
