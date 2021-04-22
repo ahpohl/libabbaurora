@@ -58,10 +58,10 @@ public:
     {
         unsigned char TransmissionState;
         unsigned char GlobalState;
-        String Par1;
-        String Par2;
-        String Par3;
-        String Par4;
+        std::string Par1;
+        std::string Par2;
+        std::string Par3;
+        std::string Par4;
         bool ReadState;
     } DataVersion;
 
@@ -115,7 +115,7 @@ public:
     // Inverters
     typedef struct
     {
-        String PN;
+        std::string PN;
         bool ReadState;
     } DataSystemPN;
 
@@ -125,7 +125,7 @@ public:
 
     typedef struct
     {
-        String SerialNumber;
+        std::string SerialNumber;
         bool ReadState;
     } DataSystemSerialNumber;
 
@@ -137,8 +137,8 @@ public:
     {
         unsigned char TransmissionState;
         unsigned char GlobalState;
-        String Week;
-        String Year;
+        std::string Week;
+        std::string Year;
         bool ReadState;
     } DataManufacturingWeekYear;
 
@@ -150,7 +150,7 @@ public:
     {
         unsigned char TransmissionState;
         unsigned char GlobalState;
-        String Release;
+        std::string Release;
         bool ReadState;
     } DataFirmwareRelease;
 
