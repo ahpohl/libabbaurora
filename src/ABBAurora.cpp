@@ -10,12 +10,13 @@ ABBAurora::ABBAurora(unsigned char address)
     clearReceiveData();
 }
 
-void ABBAurora::setup(std::string device)
+void ABBAurora::Setup(std::string &device)
 {
     ABBAuroraSerial *serial;
     serial->begin(device);
 }
 
+/*
 void ABBAurora::clearData(uint8_t *data, size_t &len)
 {
     for (size_t i = 0; i < len; i++)
@@ -97,6 +98,7 @@ void ABBAurora::clearReceiveData()
 {
     clearData(ReceiveData, 8);
 }
+*/
 
 /**
  * Reads a single value of the digital signal procesor.
@@ -108,6 +110,8 @@ void ABBAurora::clearReceiveData()
  * Temperature °C 
  * 
  **/
+
+/*
 bool ABBAurora::ReadDSPValue(DSP_VALUE_TYPE type, DSP_GLOBAL global)
 {
     if (((type >= 1 && type <= 9) || (type >= 21 && type <= 63)) && (global >= 0 && global <= 1))
@@ -378,3 +382,5 @@ bool ABBAurora::ReadVersion()
 
     return Version.ReadState;
 }
+
+*/

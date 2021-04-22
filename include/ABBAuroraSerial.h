@@ -5,7 +5,6 @@
 class ABBAuroraSerial
 {
 public:
-  ABBAuroraSerial(void);
   ~ABBAuroraSerial(void);
   void begin(std::string &device);
   int readBytes(uint8_t *buffer, size_t &length);

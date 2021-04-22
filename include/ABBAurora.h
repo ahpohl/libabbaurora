@@ -33,7 +33,7 @@ public:
     unsigned char Address = 0;
     unsigned char ReceiveData[8];
 
-    static void ABBAurora::setup(std::string &device);
+    static void Setup(std::string &device);
 
     ABBAurora(unsigned char address);
 

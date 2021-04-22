@@ -7,39 +7,40 @@
 #include <unistd.h>     // write(), read(), close()
 #include <errno.h>      // error integer and strerror() function
 #include <sys/ioctl.h>  // contains ioctl_tty
+#include "ABBAuroraSerial.h"
 
-ABBAuroraSerial::~ABBAuroraSerial
+ABBAuroraSerial::~ABBAuroraSerial(void)
 {
   if (SerialPort > 0) {
-    close(m_serialport);
+    close(SerialPort);
   }
 }
 
 void ABBAuroraSerial::begin(std::string &device)
 {
   if (device.empty()) {
-    throw runtime_error("Serial device argument empty");
+    throw std::runtime_error("Serial device argument empty");
   }
  
-  SerialPort = open(device.c.str(), O_RDWR | O_NOCTTY);
+  SerialPort = open(device.c_str(), O_RDWR | O_NOCTTY);
   if (SerialPort < 0) {
-    throw runtime_error(string("Error opening device ") + device + ": "
-      + strerror(errno) + " (" + to_string(errno) + ")");
+    throw std::runtime_error(std::string("Error opening device ") + device + ": "
+      + strerror(errno) + " (" + std::to_string(errno) + ")");
   }
 
   int ret = ioctl(SerialPort, TIOCEXCL);
   if (ret < 0) {
-    throw runtime_error(string("Error getting device lock on") 
-      + device + ": " + strerror(errno) + " (" + to_string(errno) + ")");
+    throw std::runtime_error(std::string("Error getting device lock on") 
+      + device + ": " + strerror(errno) + " (" + std::to_string(errno) + ")");
   }
 
   struct termios attr;
 
   memset(&attr, 0, sizeof(attr));
-  int ret = tcgetattr(SerialPort, &attr);
+  ret = tcgetattr(SerialPort, &attr);
   if (ret) {
-    throw runtime_error(string("Error getting serial port attributes: ")
-      + strerror(errno) + " (" + to_string(errno) + ")");
+    throw std::runtime_error(std::string("Error getting serial port attributes: ")
+      + strerror(errno) + " (" + std::to_string(errno) + ")");
   }
 
   cfmakeraw(&attr);
@@ -54,22 +55,28 @@ void ABBAuroraSerial::begin(std::string &device)
   // set vmin and vtime for blocking read
   // vmin: returning when max 1 byte is available
   // vtime: wait for up to 0.1 second between characters
-  attr.c_cc[VMIN] = t_vmin;
-  attr.c_cc[VTIME] = t_vtime;
+  attr.c_cc[VMIN] = 1;
+  attr.c_cc[VTIME] = 1;
   
   ret = tcsetattr(SerialPort, TCSANOW, &attr);
   if (ret != 0) {
-    throw runtime_error(string("Error setting serial port attributes: ") 
-      + strerror(errno) + " (" + to_string(errno) + ")");
+    throw std::runtime_error(std::string("Error setting serial port attributes: ") 
+      + strerror(errno) + " (" + std::to_string(errno) + ")");
   }
 }
 
 int ABBAuroraSerial::readBytes(uint8_t *buffer, size_t &length)
 {
+  int bytesReceived = 0;
+
+  return bytesReceived;
 }
 
 int ABBAuroraSerial::write(uint8_t *buffer, size_t &length)
 {
+  int bytesSent = 0;
+
+  return bytesSent;
 }
 
 void ABBAuroraSerial::flush(void)
