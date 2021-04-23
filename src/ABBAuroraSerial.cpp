@@ -16,7 +16,7 @@ ABBAuroraSerial::~ABBAuroraSerial(void)
   }
 }
 
-void ABBAuroraSerial::begin(std::string &device)
+void ABBAuroraSerial::begin(std::string device)
 {
   if (device.empty()) {
     throw std::runtime_error("Serial device argument empty");
@@ -65,14 +65,14 @@ void ABBAuroraSerial::begin(std::string &device)
   }
 }
 
-int ABBAuroraSerial::readBytes(uint8_t *buffer, size_t &length)
+int ABBAuroraSerial::readBytes(uint8_t *buffer, size_t length)
 {
   int bytesReceived = 0;
 
   return bytesReceived;
 }
 
-int ABBAuroraSerial::write(uint8_t *buffer, size_t &length)
+int ABBAuroraSerial::write(uint8_t *buffer, size_t length)
 {
   int bytesSent = 0;
 
