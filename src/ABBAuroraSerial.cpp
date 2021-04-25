@@ -34,51 +34,56 @@ void ABBAuroraSerial::begin(std::string device)
       + device + ": " + strerror(errno) + " (" + std::to_string(errno) + ")");
   }
 
-  struct termios attr;
+  struct termios serial_port_settings;
 
-  memset(&attr, 0, sizeof(attr));
-  ret = tcgetattr(SerialPort, &attr);
+  memset(&serial_port_settings, 0, sizeof(serial_port_settings));
+  ret = tcgetattr(SerialPort, &serial_port_settings);
   if (ret) {
     throw std::runtime_error(std::string("Error getting serial port attributes: ")
       + strerror(errno) + " (" + std::to_string(errno) + ")");
   }
 
-  cfmakeraw(&attr);
+  cfmakeraw(&serial_port_settings);
 
   // configure serial port
   // speed: 19200 baud, data bits: 8, stop bits: 1, parity: no
-  attr.c_cflag &= ~CSIZE;
-  attr.c_cflag |= CS8;
-  cfsetispeed(&attr, B19200);
-  cfsetospeed(&attr, B19200);
+  cfsetispeed(&serial_port_settings, B19200);
+  cfsetospeed(&serial_port_settings, B19200);
 
   // set vmin and vtime for blocking read
-  // vmin: returning when max 1 byte is available
+  // vmin: returning when max 8 bytes are available
   // vtime: wait for up to 0.1 second between characters
-  attr.c_cc[VMIN] = 1;
-  attr.c_cc[VTIME] = 1;
+  serial_port_settings.c_cc[VMIN] = 8;
+  serial_port_settings.c_cc[VTIME] = 1;
   
-  ret = tcsetattr(SerialPort, TCSANOW, &attr);
+  ret = tcsetattr(SerialPort, TCSANOW, &serial_port_settings);
   if (ret != 0) {
     throw std::runtime_error(std::string("Error setting serial port attributes: ") 
       + strerror(errno) + " (" + std::to_string(errno) + ")");
   }
+  tcflush(SerialPort, TCIOFLUSH);
 }
 
 int ABBAuroraSerial::readBytes(uint8_t *buffer, size_t length)
 {
   int bytesReceived = 0;
 
+  bytesReceived = read(SerialPort, buffer, length);
+
   return bytesReceived;
 }
 
-int ABBAuroraSerial::write(uint8_t *buffer, size_t length)
+int ABBAuroraSerial::writeBytes(uint8_t const *buffer, size_t length)
 {
   int bytesSent = 0;
+
+  bytesSent = write(SerialPort, buffer, length);
+  tcdrain(SerialPort);
 
   return bytesSent;
 }
 
 void ABBAuroraSerial::flush(void)
 {
+  tcflush(SerialPort, TCIOFLUSH);
 }

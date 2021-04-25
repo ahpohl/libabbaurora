@@ -8,9 +8,9 @@ class ABBAurora
 {
 private:
   int MaxAttempt = 1;
-  static ABBAuroraSerial *serial;
+  ABBAuroraSerial *serial;
 
-  void clearData(uint8_t *data, size_t len);
+  void clearBuffer(uint8_t *buffer, size_t len);
 
   uint16_t Crc16(uint8_t *data, int offset, int count);
   uint16_t Word(uint8_t msb, uint8_t lsb);
@@ -33,14 +33,12 @@ public:
   bool SendStatus = false;
   bool ReceiveStatus = false;
   unsigned char Address = 0;
-  unsigned char ReceiveData[8];
+  uint8_t ReceiveData[8];
 
   static void Setup(std::string &device);
 
   ABBAurora(unsigned char address);
   ~ABBAurora(void);
-
-  void clearReceiveData();
 
   typedef struct
   {

@@ -1,3 +1,4 @@
+#include <cstring>
 #include "ABBAurora.h"
 #include "ABBAuroraStrings.h"
 #include "ABBAuroraSerial.h"
@@ -7,7 +8,7 @@ ABBAurora::ABBAurora(unsigned char address)
     Address = address;
     SendStatus = false;
     ReceiveStatus = false;
-    clearReceiveData();
+    clearBuffer(ReceiveData, 8);
 }
 
 ABBAurora::~ABBAurora()
@@ -21,12 +22,9 @@ void ABBAurora::Setup(std::string &device)
   serial->begin(device);
 }
 
-void ABBAurora::clearData(uint8_t *data, size_t len)
+void ABBAurora::clearBuffer(uint8_t *buffer, size_t len)
 {
-  for (size_t i = 0; i < len; i++)
-  {
-    data[i] = 0;
-  }
+  memset(buffer, '\0', len);
 }
 
 uint16_t ABBAurora::Word(uint8_t msb, uint8_t lsb)
@@ -85,16 +83,15 @@ bool ABBAurora::Send(uint8_t address, uint8_t cmd, uint8_t b2, uint8_t b3, uint8
   SendData[8] = lowByte(crc);
   SendData[9] = highByte(crc);
 
-  clearReceiveData();
+  clearBuffer(ReceiveData, 8);
 
   for (int i = 0; i < this->MaxAttempt; i++)
   {
-    if (serial->write(SendData, sizeof(SendData)) != 0)
+    if (serial->writeBytes(SendData, sizeof(SendData)) > 0)
     {
-      serial->flush();
+      //serial->flush();
       SendStatus = true;
-
-      if (serial->readBytes(ReceiveData, sizeof(ReceiveData)) != 0)
+      if (serial->readBytes(ReceiveData, sizeof(ReceiveData)) > 0)
       {
         if (Word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
         {
@@ -106,11 +103,6 @@ bool ABBAurora::Send(uint8_t address, uint8_t cmd, uint8_t b2, uint8_t b3, uint8
   }
 
   return ReceiveStatus;
-}
-
-void ABBAurora::clearReceiveData()
-{
-    clearData(ReceiveData, 8);
 }
 
 /**
@@ -138,7 +130,7 @@ bool ABBAurora::ReadDSPValue(DSP_VALUE_TYPE type, DSP_GLOBAL global)
   else
   {
     DSP.ReadState = false;
-    clearReceiveData();
+    clearBuffer(ReceiveData, 8);
     ReceiveData[0] = 255;
     ReceiveData[1] = 255;
   }
@@ -277,7 +269,7 @@ bool ABBAurora::ReadCumulatedEnergy(CUMULATED_ENERGY_TYPE par)
   else
   {
     CumulatedEnergy.ReadState = false;
-    clearReceiveData();
+    clearBuffer(ReceiveData, 8);
     ReceiveData[0] = 255;
     ReceiveData[1] = 255;
   }
@@ -304,7 +296,7 @@ bool ABBAurora::WriteBaudRateSetting(unsigned char baudcode)
   }
   else
   {
-    clearReceiveData();
+    clearBuffer(ReceiveData, 8);
     return false;
   }
 }

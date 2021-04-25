@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip> 
-#include <ABBAurora.h>
+#include "ABBAurora.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,34 +15,24 @@ int main(int argc, char *argv[])
   inverter = new ABBAurora(INVERTER_ADDRESS);
   inverter->Setup(device);
 
-
-  /*
   if (inverter->ReadVersion())
   {
-    Serial.print("Inverter Name: ");
-    Serial.println(inverter->Version.Par1);
+    std::cout << "Inverter Name: " << inverter->Version.Par1 << std::endl;
   }
   else
   {
-    Serial.print("Inverter could not be reached");
-    delay(500);
-    return;
+    throw std::runtime_error(std::string("Inverter could not be reached"));
   }
 
   if (inverter->ReadDSPValue(POWER_IN_1, MODULE_MESSUREMENT))
   {
-    Serial.print("Pin1 : ");
-    Serial.print(inverter->DSP.Value);
-    Serial.println(" W");
+    std::cout << "Pin1 : " << inverter->DSP.Value << " W" << std::endl;
   }
 
   if (inverter->ReadCumulatedEnergy(CURRENT_DAY))
   {
-    Serial.print("Energy: ");
-    Serial.print(inverter->CumulatedEnergy.Energy);
-    Serial.println(" Wh");
+    std::cout << "Energy: " << inverter->CumulatedEnergy.Energy << " Wh" << std::endl;
   }
-  */
 
   delete inverter;
 

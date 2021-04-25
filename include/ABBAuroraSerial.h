@@ -8,7 +8,7 @@ public:
   ~ABBAuroraSerial(void);
   void begin(std::string device);
   int readBytes(uint8_t *buffer, size_t length);
-  int write(uint8_t *buffer, size_t length);
+  int writeBytes(uint8_t const *buffer, size_t length);
   void flush(void);
 
 private:
