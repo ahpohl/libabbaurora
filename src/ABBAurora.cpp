@@ -17,9 +17,9 @@ ABBAurora::ABBAurora(unsigned char address)
 
 ABBAurora::~ABBAurora()
 {
-  delete serial;
-  delete[] SendData;
-  delete[] ReceiveData;
+  if (serial) { delete serial; }
+  if (SendData) { delete[] SendData; }
+  if (ReceiveData) { delete[] ReceiveData; }
 }
 
 void ABBAurora::clearBuffer(uint8_t *buffer, size_t len)
@@ -29,12 +29,12 @@ void ABBAurora::clearBuffer(uint8_t *buffer, size_t len)
 
 void ABBAurora::Setup(std::string &device)
 {
-  ABBAuroraSerial *serial = new ABBAuroraSerial();
-  uint8_t *SendData = new uint8_t [ABBAurora::SEND_BUFFER_SIZE];
-  uint8_t *ReceiveData = new uint8_t [ABBAurora::RECEIVE_BUFFER_SIZE];
-
+  uint8_t *SendData = new uint8_t[ABBAurora::SEND_BUFFER_SIZE] ();
+  uint8_t *ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
   clearBuffer(SendData, ABBAurora::SEND_BUFFER_SIZE);
   clearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
+  
+  ABBAuroraSerial *serial = new ABBAuroraSerial();
   serial->begin(device);
 }
 
