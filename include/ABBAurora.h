@@ -7,7 +7,12 @@
 class ABBAurora
 {
 private:
-  int MaxAttempt = 1;
+  static int const MAX_ATTEMPT;
+  static int const SEND_BUFFER_SIZE;
+  static int const RECEIVE_BUFFER_SIZE;
+  uint8_t *SendData;
+  uint8_t *ReceiveData;
+
   ABBAuroraSerial *serial;
 
   void clearBuffer(uint8_t *buffer, size_t len);
@@ -29,13 +34,14 @@ private:
     unsigned long asUlong;
   } ulo;
 
+  SEND_COMMAND_TYPE SEND_COMMAND;
+
 public:
   bool SendStatus = false;
   bool ReceiveStatus = false;
   unsigned char Address = 0;
-  uint8_t ReceiveData[8];
 
-  static void Setup(std::string &device);
+  void Setup(std::string &device);
 
   ABBAurora(unsigned char address);
   ~ABBAurora(void);
