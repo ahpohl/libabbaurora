@@ -13,7 +13,7 @@
 
 ABBAuroraSerial::~ABBAuroraSerial(void)
 {
-  if (SerialPort > 0) {
+  if (SerialPort) {
     close(SerialPort);
   }
 }
@@ -51,6 +51,12 @@ void ABBAuroraSerial::Begin(std::string device)
   // speed: 19200 baud, data bits: 8, stop bits: 1, parity: no
   cfsetispeed(&serial_port_settings, B19200);
   cfsetospeed(&serial_port_settings, B19200);
+
+  // set vmin and vtime for blocking read
+  // vmin: returning when x byte(s) are available
+  // vtime: wait for up to x * 0.1 second between characters
+  //serial_port_settings.c_cc[VMIN] = 0;
+  //serial_port_settings.c_cc[VTIME] = 10;
 
   ret = tcsetattr(SerialPort, TCSANOW, &serial_port_settings);
   if (ret != 0) {
@@ -94,9 +100,4 @@ int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, int length)
   tcdrain(SerialPort);
 
   return bytesSent;
-}
-
-void ABBAuroraSerial::Flush(void)
-{
-  tcflush(SerialPort, TCIOFLUSH);
 }
