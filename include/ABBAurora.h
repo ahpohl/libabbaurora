@@ -14,8 +14,7 @@ private:
   
   uint8_t *SendData;
   uint8_t *ReceiveData;
-
-  ABBAuroraSerial *serial;
+  ABBAuroraSerial *Serial;
 
   void clearBuffer(uint8_t *buffer, size_t len);
 

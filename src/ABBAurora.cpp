@@ -17,7 +17,7 @@ ABBAurora::ABBAurora(unsigned char addr)
 
 ABBAurora::~ABBAurora()
 {
-  if (serial) { delete serial; }
+  if (Serial) { delete Serial; }
   if (SendData) { delete[] SendData; }
   if (ReceiveData) { delete[] ReceiveData; }
 }
@@ -31,8 +31,8 @@ void ABBAurora::Setup(std::string &device)
 {
   SendData = new uint8_t[ABBAurora::SEND_BUFFER_SIZE] ();
   ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
-  ABBAuroraSerial *serial = new ABBAuroraSerial();
-  serial->begin(device);
+  Serial = new ABBAuroraSerial();
+  Serial->begin(device);
 }
 
 uint16_t ABBAurora::Word(uint8_t msb, uint8_t lsb)
@@ -94,10 +94,10 @@ bool ABBAurora::Send(uint8_t address, uint8_t cmd, uint8_t b2, uint8_t b3, uint8
 
   for (int i = 0; i < ABBAurora::MAX_ATTEMPT; i++)
   {
-    if (serial->writeBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) > 0)
+    if (Serial->writeBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) > 0)
     {
       SendStatus = true;
-      if (serial->readBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) > 0)
+      if (Serial->readBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) > 0)
       {
         if (Word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
         {
