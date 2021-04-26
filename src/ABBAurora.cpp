@@ -4,8 +4,8 @@
 #include "ABBAuroraSerial.h"
 #include "ABBAuroraEnums.h"
 
-int const ABBAurora::SEND_BUFFER_SIZE = 10;
-int const ABBAurora::RECEIVE_BUFFER_SIZE = 8; 
+const int ABBAurora::SEND_BUFFER_SIZE = 10;
+const int ABBAurora::RECEIVE_BUFFER_SIZE = 8; 
 
 ABBAurora::ABBAurora(unsigned char addr)
 {
@@ -21,7 +21,7 @@ ABBAurora::~ABBAurora()
   if (ReceiveData) { delete[] ReceiveData; }
 }
 
-void ABBAurora::clearBuffer(uint8_t *buffer, size_t len)
+void ABBAurora::ClearBuffer(uint8_t *buffer, size_t len)
 {
   memset(buffer, '\0', len);
 }
@@ -31,7 +31,7 @@ void ABBAurora::Setup(std::string &device)
   SendData = new uint8_t[ABBAurora::SEND_BUFFER_SIZE] ();
   ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
   Serial = new ABBAuroraSerial();
-  Serial->begin(device);
+  Serial->Begin(device);
 }
 
 uint16_t ABBAurora::Word(uint8_t msb, uint8_t lsb)
@@ -61,23 +61,23 @@ uint16_t ABBAurora::Crc16(uint8_t *data, int offset, int count)
   return Word(~BccHi, ~BccLo);
 }
 
-uint8_t ABBAurora::lowByte(uint16_t t_word)
+uint8_t ABBAurora::LowByte(uint16_t t_word)
 {
   return static_cast<uint8_t>(t_word);
 }
 
-uint8_t ABBAurora::highByte(uint16_t t_word)
+uint8_t ABBAurora::HighByte(uint16_t t_word)
 {
   return static_cast<uint8_t>((t_word >> 8) & 0xFF);
 }
 
-bool ABBAurora::Send(uint8_t address, uint8_t cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7)
+bool ABBAurora::Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7)
 {
   SendStatus = false;
   ReceiveStatus = false;
 
   SendData[0] = address;
-  SendData[1] = cmd;
+  SendData[1] = static_cast<uint8_t>(cmd);
   SendData[2] = b2;
   SendData[3] = b3;
   SendData[4] = b4;
@@ -86,15 +86,15 @@ bool ABBAurora::Send(uint8_t address, uint8_t cmd, uint8_t b2, uint8_t b3, uint8
   SendData[7] = b7;
 
   uint16_t crc = Crc16(SendData, 0, 8);
-  SendData[8] = lowByte(crc);
-  SendData[9] = highByte(crc);
+  SendData[8] = LowByte(crc);
+  SendData[9] = HighByte(crc);
 
-  clearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
+  ClearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
 
-  if (Serial->writeBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) > 0)
+  if (Serial->WriteBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) > 0)
   {
     SendStatus = true;
-    if (Serial->readBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) > 0)
+    if (Serial->ReadBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) > 0)
     {
       if (Word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
       {
@@ -116,13 +116,13 @@ bool ABBAurora::Send(uint8_t address, uint8_t cmd, uint8_t b2, uint8_t b3, uint8
  * Temperature °C 
  * 
  **/
-bool ABBAurora::ReadDSPValue(DSP_VALUE_TYPE type, DSP_GLOBAL global)
+bool ABBAurora::ReadDspValue(DspValueEnum type, DspGlobalEnum global)
 {
-  if (((type >= 1 && type <= 9) || (type >= 21 && type <= 63)) && (global >= 0 && global <= 1))
+  if (((static_cast<uint8_t>(type) >= 1 && static_cast<uint8_t>(type) <= 9) || (static_cast<uint8_t>(type) >= 21 && static_cast<uint8_t>(type) <= 63)) && static_cast<uint8_t>(global) <= 1)
   {
-    DSP.ReadState = Send(this->Address, MEASURE_REQUEST_DSP, type, global, 0, 0, 0, 0);
+    Dsp.ReadState = Send(Address, SendCommandEnum::MEASURE_REQUEST_DSP, static_cast<uint8_t>(type), static_cast<uint8_t>(global), 0, 0, 0, 0);
 
-    if (DSP.ReadState == false)
+    if (Dsp.ReadState == false)
     {
       ReceiveData[0] = 255;
       ReceiveData[1] = 255;
@@ -130,28 +130,28 @@ bool ABBAurora::ReadDSPValue(DSP_VALUE_TYPE type, DSP_GLOBAL global)
   }
   else
   {
-    DSP.ReadState = false;
-    clearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
+    Dsp.ReadState = false;
+    ClearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
     ReceiveData[0] = 255;
     ReceiveData[1] = 255;
   }
 
-  DSP.TransmissionState = ReceiveData[0];
-  DSP.GlobalState = ReceiveData[1];
+  Dsp.TransmissionState = ReceiveData[0];
+  Dsp.GlobalState = ReceiveData[1];
 
-  flo.asBytes[0] = ReceiveData[5];
-  flo.asBytes[1] = ReceiveData[4];
-  flo.asBytes[2] = ReceiveData[3];
-  flo.asBytes[3] = ReceiveData[2];
+  Flo.asBytes[0] = ReceiveData[5];
+  Flo.asBytes[1] = ReceiveData[4];
+  Flo.asBytes[2] = ReceiveData[3];
+  Flo.asBytes[3] = ReceiveData[2];
 
-  DSP.Value = flo.asFloat;
+  Dsp.Value = Flo.asFloat;
 
-  return DSP.ReadState;
+  return Dsp.ReadState;
 }
 
 bool ABBAurora::ReadTimeDate()
 {
-  TimeDate.ReadState = Send(this->Address, TIME_DATE_READING, 0, 0, 0, 0, 0, 0);
+  TimeDate.ReadState = Send(Address, SendCommandEnum::TIME_DATE_READING, 0, 0, 0, 0, 0, 0);
 
   if (TimeDate.ReadState == false)
   {
@@ -166,9 +166,9 @@ bool ABBAurora::ReadTimeDate()
 }
 
 
-bool ABBAurora::ReadLastFourAlarms()
+bool ABBAurora::ReadLastFourAlarms(void)
 {
-  LastFourAlarms.ReadState = Send(this->Address, LAST_FOUR_ALARMS, 0, 0, 0, 0, 0, 0);
+  LastFourAlarms.ReadState = Send(Address, SendCommandEnum::LAST_FOUR_ALARMS, 0, 0, 0, 0, 0, 0);
 
   if (LastFourAlarms.ReadState == false)
   {
@@ -192,12 +192,12 @@ bool ABBAurora::ReadLastFourAlarms()
 
 bool ABBAurora::ReadJunctionBoxState(unsigned char nj)
 {
-  return Send(this->Address, JB_STATE_REQUEST, nj, 0, 0, 0, 0, 0);
+  return Send(Address, SendCommandEnum::JB_STATE_REQUEST, nj, 0, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadJunctionBoxVal(unsigned char nj, unsigned char par)
 {
-  return Send(this->Address, JB_VAL_REQUEST, nj, par, 0, 0, 0, 0);
+  return Send(Address, SendCommandEnum::JB_VAL_REQUEST, nj, par, 0, 0, 0, 0);
 }
 
 
@@ -205,16 +205,16 @@ bool ABBAurora::ReadJunctionBoxVal(unsigned char nj, unsigned char par)
 
 bool ABBAurora::ReadSystemPN()
 {
-  SystemPN.ReadState = Send(this->Address, PN_READING, 0, 0, 0, 0, 0, 0);
+  SystemPN.ReadState = Send(Address, SendCommandEnum::PN_READING, 0, 0, 0, 0, 0, 0);
 
   SystemPN.PN = std::to_string((char)ReceiveData[0]) + std::to_string((char)ReceiveData[1]) + std::to_string((char)ReceiveData[2]) + std::to_string((char)ReceiveData[3]) + std::to_string((char)ReceiveData[4]) + std::to_string((char)ReceiveData[5]);
 
   return SystemPN.ReadState;
 }
 
-bool ABBAurora::ReadSystemSerialNumber()
+bool ABBAurora::ReadSystemSerialNumber(void)
 {
-  SystemSerialNumber.ReadState = Send(this->Address, SERIAL_NUMBER_READING, 0, 0, 0, 0, 0, 0);
+  SystemSerialNumber.ReadState = Send(Address, SendCommandEnum::SERIAL_NUMBER_READING, 0, 0, 0, 0, 0, 0);
 
   SystemSerialNumber.SerialNumber = std::to_string((char)ReceiveData[0]) + std::to_string((char)ReceiveData[1]) + std::to_string((char)ReceiveData[2]) + std::to_string((char)ReceiveData[3]) + std::to_string((char)ReceiveData[4]) + std::to_string((char)ReceiveData[5]);
 
@@ -223,7 +223,7 @@ bool ABBAurora::ReadSystemSerialNumber()
 
 bool ABBAurora::ReadManufacturingWeekYear()
 {
-  ManufacturingWeekYear.ReadState = Send(this->Address, MANUFACTURING_DATE, 0, 0, 0, 0, 0, 0);
+  ManufacturingWeekYear.ReadState = Send(Address, SendCommandEnum::MANUFACTURING_DATE, 0, 0, 0, 0, 0, 0);
 
   if (ManufacturingWeekYear.ReadState == false)
   {
@@ -239,9 +239,9 @@ bool ABBAurora::ReadManufacturingWeekYear()
   return ManufacturingWeekYear.ReadState;
 }
 
-bool ABBAurora::ReadFirmwareRelease()
+bool ABBAurora::ReadFirmwareRelease(void)
 {
-  FirmwareRelease.ReadState = Send(this->Address, FIRMWARE_RELEASE_READING, 0, 0, 0, 0, 0, 0);
+  FirmwareRelease.ReadState = Send(Address, SendCommandEnum::FIRMWARE_RELEASE_READING, 0, 0, 0, 0, 0, 0);
 
   if (FirmwareRelease.ReadState == false)
   {
@@ -256,11 +256,11 @@ bool ABBAurora::ReadFirmwareRelease()
   return FirmwareRelease.ReadState;
 }
 
-bool ABBAurora::ReadCumulatedEnergy(CUMULATED_ENERGY_TYPE par)
+bool ABBAurora::ReadCumulatedEnergy(CumulatedEnergyEnum par)
 {
-  if ((par >= 0) && (par <= 6))
+  if (static_cast<uint8_t>(par) <= 6)
   {
-    CumulatedEnergy.ReadState = Send(this->Address, CUMULATED_ENERGY_READINGS, par, 0, 0, 0, 0, 0);
+    CumulatedEnergy.ReadState = Send(Address, SendCommandEnum::CUMULATED_ENERGY_READINGS, static_cast<uint8_t>(par), 0, 0, 0, 0, 0);
     if (CumulatedEnergy.ReadState == false)
     {
       ReceiveData[0] = 255;
@@ -270,7 +270,7 @@ bool ABBAurora::ReadCumulatedEnergy(CUMULATED_ENERGY_TYPE par)
   else
   {
     CumulatedEnergy.ReadState = false;
-    clearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
+    ClearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
     ReceiveData[0] = 255;
     ReceiveData[1] = 255;
   }
@@ -279,12 +279,12 @@ bool ABBAurora::ReadCumulatedEnergy(CUMULATED_ENERGY_TYPE par)
   CumulatedEnergy.GlobalState = ReceiveData[1];
   if (CumulatedEnergy.ReadState == true)
   {
-    ulo.asBytes[0] = ReceiveData[5];
-    ulo.asBytes[1] = ReceiveData[4];
-    ulo.asBytes[2] = ReceiveData[3];
-    ulo.asBytes[3] = ReceiveData[2];
+    Ulo.asBytes[0] = ReceiveData[5];
+    Ulo.asBytes[1] = ReceiveData[4];
+    Ulo.asBytes[2] = ReceiveData[3];
+    Ulo.asBytes[3] = ReceiveData[2];
 
-    CumulatedEnergy.Energy = ulo.asUlong;
+    CumulatedEnergy.Energy = Ulo.asUlong;
   }
   return CumulatedEnergy.ReadState;
 }
@@ -293,59 +293,59 @@ bool ABBAurora::WriteBaudRateSetting(unsigned char baudcode)
 {
   if (baudcode <= 3)
   {
-    return Send(this->Address, BAUD_RATE_SETTING, baudcode, 0, 0, 0, 0, 0);
+    return Send(Address, SendCommandEnum::BAUD_RATE_SETTING, baudcode, 0, 0, 0, 0, 0);
   }
   else
   {
-    clearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
+    ClearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
     return false;
   }
 }
 
 // Central
-bool ABBAurora::ReadFlagsSwitchCentral()
+bool ABBAurora::ReadFlagsSwitchCentral(void)
 {
-  return Send(this->Address, FLAGS_SWITCH_READING, 0, 0, 0, 0, 0, 0);
+  return Send(Address, SendCommandEnum::FLAGS_SWITCH_READING, 0, 0, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadCumulatedEnergyCentral(unsigned char var, unsigned char ndays_h, unsigned char ndays_l, unsigned char global)
 {
-  return Send(this->Address, CUMULATED_ENERGY_CENTRAL, var, ndays_h, ndays_l, global, 0, 0);
+  return Send(Address, SendCommandEnum::CUMULATED_ENERGY_CENTRAL, var, ndays_h, ndays_l, global, 0, 0);
 }
 
 bool ABBAurora::ReadFirmwareReleaseCentral(unsigned char var)
 {
-  return Send(this->Address, FIRMWARE_RELEASE_READING, var, 0, 0, 0, 0, 0);
+  return Send(Address, SendCommandEnum::FIRMWARE_RELEASE_READING, var, 0, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadBaudRateSettingCentral(unsigned char baudcode, unsigned char serialline)
 {
-  return Send(this->Address, BAUD_RATE_SETTING, baudcode, serialline, 0, 0, 0, 0);
+  return Send(Address, SendCommandEnum::BAUD_RATE_SETTING, baudcode, serialline, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadSystemInfoCentral(unsigned char var)
 {
-  return Send(this->Address, SYSTEM_INFO_CENTRAL, var, 0, 0, 0, 0, 0);
+  return Send(Address, SendCommandEnum::SYSTEM_INFO_CENTRAL, var, 0, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadJunctionBoxMonitoringCentral(unsigned char cf, unsigned char rn, unsigned char njt, unsigned char jal, unsigned char jah)
 {
-  return Send(this->Address, JB_MONITORING_STATUS, cf, rn, njt, jal, jah, 0);
+  return Send(Address, SendCommandEnum::JB_MONITORING_STATUS, cf, rn, njt, jal, jah, 0);
 }
 
-bool ABBAurora::ReadSystemPNCentral()
+bool ABBAurora::ReadSystemPNCentral(void)
 {
-  return Send(this->Address, PN_READING_CENTRAL, 0, 0, 0, 0, 0, 0);
+  return Send(Address, SendCommandEnum::PN_READING_CENTRAL, 0, 0, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadSystemSerialNumberCentral()
 {
-  return Send(this->Address, SERIAL_NUMBER_CENTRAL, 0, 0, 0, 0, 0, 0);
+  return Send(Address, SendCommandEnum::SERIAL_NUMBER_CENTRAL, 0, 0, 0, 0, 0, 0);
 }
 
-bool ABBAurora::ReadState()
+bool ABBAurora::ReadState(void)
 {
-  State.ReadState = Send(this->Address, STATE_REQUEST, 0, 0, 0, 0, 0, 0);
+  State.ReadState = Send(Address, SendCommandEnum::STATE_REQUEST, 0, 0, 0, 0, 0, 0);
 
   if (State.ReadState == false)
   {
@@ -367,9 +367,9 @@ bool ABBAurora::ReadState()
   return State.ReadState;
 }
 
-bool ABBAurora::ReadVersion()
+bool ABBAurora::ReadVersion(void)
 {
-  Version.ReadState = Send(this->Address, VERSION_READING, 0, 0, 0, 0, 0, 0);
+  Version.ReadState = Send(Address, SendCommandEnum::VERSION_READING, 0, 0, 0, 0, 0, 0);
 
   if (Version.ReadState == false)
   {

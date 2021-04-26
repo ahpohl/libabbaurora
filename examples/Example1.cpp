@@ -24,17 +24,20 @@ int main(int argc, char *argv[])
     throw std::runtime_error(std::string("Inverter could not be reached"));
   }
 
-  if (inverter->ReadDSPValue(POWER_IN_1, MODULE_MESSUREMENT))
+  if (inverter->ReadDspValue(DspValueEnum::POWER_IN_1, DspGlobalEnum::MODULE_MESSUREMENT))
   {
-    std::cout << "Pin1: " << inverter->DSP.Value << " W" << std::endl;
+    std::cout << "Pin1: " << inverter->Dsp.Value << " W" << std::endl;
   }
 
-  if (inverter->ReadCumulatedEnergy(CURRENT_DAY))
+  if (inverter->ReadCumulatedEnergy(CumulatedEnergyEnum::CURRENT_DAY))
   {
     std::cout << "Energy today: " << inverter->CumulatedEnergy.Energy << " Wh" << std::endl;
   }
 
-  delete inverter;
+  if (inverter)
+  {
+    delete inverter;
+  }
 
   return EXIT_SUCCESS;
 }

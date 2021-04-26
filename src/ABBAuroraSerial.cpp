@@ -18,7 +18,7 @@ ABBAuroraSerial::~ABBAuroraSerial(void)
   }
 }
 
-void ABBAuroraSerial::begin(std::string device)
+void ABBAuroraSerial::Begin(std::string device)
 {
   if (device.empty()) {
     throw std::runtime_error("Serial device argument empty");
@@ -60,7 +60,7 @@ void ABBAuroraSerial::begin(std::string device)
   tcflush(SerialPort, TCIOFLUSH);
 }
 
-int ABBAuroraSerial::readBytes(uint8_t *buffer, int max_bytes_to_read)
+int ABBAuroraSerial::ReadBytes(uint8_t *buffer, int max_bytes_to_read)
 {
   int bytesReceived, retval = 0;
   
@@ -83,7 +83,7 @@ int ABBAuroraSerial::readBytes(uint8_t *buffer, int max_bytes_to_read)
   return bytesReceived;
 }
 
-int ABBAuroraSerial::writeBytes(uint8_t const *buffer, int length)
+int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, int length)
 {
   int bytesSent = 0;
 
@@ -96,7 +96,7 @@ int ABBAuroraSerial::writeBytes(uint8_t const *buffer, int length)
   return bytesSent;
 }
 
-void ABBAuroraSerial::flush(void)
+void ABBAuroraSerial::Flush(void)
 {
   tcflush(SerialPort, TCIOFLUSH);
 }

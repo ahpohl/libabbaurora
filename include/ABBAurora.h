@@ -7,32 +7,32 @@
 class ABBAurora
 {
 private:
-  static int const SEND_BUFFER_SIZE;
-  static int const RECEIVE_BUFFER_SIZE;
-  SEND_COMMAND_TYPE SEND_COMMAND;
+  static const int SEND_BUFFER_SIZE;
+  static const int RECEIVE_BUFFER_SIZE;
+  static const SendCommandEnum SEND_COMMAND;
   
   uint8_t *SendData;
   uint8_t *ReceiveData;
   ABBAuroraSerial *Serial;
 
-  void clearBuffer(uint8_t *buffer, size_t len);
+  void ClearBuffer(uint8_t *buffer, size_t len);
 
   uint16_t Crc16(uint8_t *data, int offset, int count);
   uint16_t Word(uint8_t msb, uint8_t lsb);
-  uint8_t lowByte(uint16_t t_word);
-  uint8_t highByte(uint16_t t_word);
+  uint8_t LowByte(uint16_t t_word);
+  uint8_t HighByte(uint16_t t_word);
 
-  bool Send(uint8_t address, uint8_t cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
+  bool Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
 
   union {
     unsigned char asBytes[4];
     float asFloat;
-  } flo;
+  } Flo;
 
   union {
     unsigned char asBytes[4];
     unsigned long asUlong;
-  } ulo;
+  } Ulo;
 
 public:
   ABBAurora(unsigned char addr);
@@ -57,7 +57,7 @@ public:
 
   DataState State;
 
-  bool ReadState();
+  bool ReadState(void);
 
   typedef struct
   {
@@ -72,7 +72,7 @@ public:
 
   DataVersion Version;
 
-  bool ReadVersion();
+  bool ReadVersion(void);
 
   typedef struct
   {
@@ -80,11 +80,11 @@ public:
     unsigned char GlobalState;
     float Value;
     bool ReadState;
-  } DataDSP;
+  } DataDsp;
 
-  DataDSP DSP;
+  DataDsp Dsp;
 
-  bool ReadDSPValue(DSP_VALUE_TYPE type, DSP_GLOBAL global);
+  bool ReadDspValue(DspValueEnum type, DspGlobalEnum global);
 
   typedef struct
   {
@@ -111,7 +111,7 @@ public:
 
   DataLastFourAlarms LastFourAlarms;
 
-  bool ReadLastFourAlarms();
+  bool ReadLastFourAlarms(void);
 
   bool ReadJunctionBoxState(unsigned char nj);
 
@@ -126,7 +126,7 @@ public:
 
   DataSystemPN SystemPN;
 
-  bool ReadSystemPN();
+  bool ReadSystemPN(void);
 
   typedef struct
   {
@@ -136,7 +136,7 @@ public:
 
   DataSystemSerialNumber SystemSerialNumber;
 
-  bool ReadSystemSerialNumber();
+  bool ReadSystemSerialNumber(void);
 
   typedef struct
   {
@@ -149,7 +149,7 @@ public:
 
   DataManufacturingWeekYear ManufacturingWeekYear;
 
-  bool ReadManufacturingWeekYear();
+  bool ReadManufacturingWeekYear(void);
 
   typedef struct
   {
@@ -161,7 +161,7 @@ public:
 
   DataFirmwareRelease FirmwareRelease;
 
-  bool ReadFirmwareRelease();
+  bool ReadFirmwareRelease(void);
 
   typedef struct
   {
@@ -173,12 +173,12 @@ public:
 
   DataCumulatedEnergy CumulatedEnergy;
 
-  bool ReadCumulatedEnergy(CUMULATED_ENERGY_TYPE par);
+  bool ReadCumulatedEnergy(CumulatedEnergyEnum par);
 
   bool WriteBaudRateSetting(unsigned char baudcode);
 
   // Central
-  bool ReadFlagsSwitchCentral();
+  bool ReadFlagsSwitchCentral(void);
 
   bool ReadCumulatedEnergyCentral(unsigned char var, unsigned char ndays_h, unsigned char ndays_l, unsigned char global);
 
@@ -190,9 +190,9 @@ public:
 
   bool ReadJunctionBoxMonitoringCentral(unsigned char cf, unsigned char rn, unsigned char njt, unsigned char jal, unsigned char jah);
 
-  bool ReadSystemPNCentral();
+  bool ReadSystemPNCentral(void);
 
-  bool ReadSystemSerialNumberCentral();
+  bool ReadSystemSerialNumberCentral(void);
 };
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef ABBAuroraEnums_h
 #define ABBAuroraEnums_h
 
-enum DSP_VALUE_TYPE
+enum class DspValueEnum : unsigned char
 {
   GRID_VOLTAGE = 1,
   GRID_CURRENT = 2,
@@ -55,13 +55,13 @@ enum DSP_VALUE_TYPE
   GRID_VOLTAGE_PHASE_T = 63
 };
 
-enum DSP_GLOBAL
+enum class DspGlobalEnum : unsigned char
 {
   MODULE_MESSUREMENT = 0,
   GLOBAL_MESSUREMENT = 1
 };
 
-enum CUMULATED_ENERGY_TYPE
+enum class CumulatedEnergyEnum : unsigned char
 {
   CURRENT_DAY = 0,
   CURRENT_WEEK = 1,
@@ -71,7 +71,7 @@ enum CUMULATED_ENERGY_TYPE
   SINCE_RESET = 6
 };
 
-enum SEND_COMMAND_TYPE
+enum class SendCommandEnum : unsigned char
 {
   STATE_REQUEST = 50,
   PN_READING = 52,
