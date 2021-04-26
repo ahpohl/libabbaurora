@@ -1,4 +1,5 @@
 #include <cstring>
+#include <sstream>
 #include "ABBAurora.h"
 #include "ABBAuroraStrings.h"
 #include "ABBAuroraSerial.h"
@@ -207,7 +208,12 @@ bool ABBAurora::ReadSystemPN()
 {
   SystemPN.ReadState = Send(Address, SendCommandEnum::PN_READING, 0, 0, 0, 0, 0, 0);
 
-  SystemPN.PN = std::to_string((char)ReceiveData[0]) + std::to_string((char)ReceiveData[1]) + std::to_string((char)ReceiveData[2]) + std::to_string((char)ReceiveData[3]) + std::to_string((char)ReceiveData[4]) + std::to_string((char)ReceiveData[5]);
+  std::ostringstream convert;
+  for (int c = 0; c < 6; c++)
+  {
+    convert << ReceiveData[c];
+  }
+  SystemPN.PN = convert.str();
 
   return SystemPN.ReadState;
 }
@@ -216,7 +222,11 @@ bool ABBAurora::ReadSystemSerialNumber(void)
 {
   SystemSerialNumber.ReadState = Send(Address, SendCommandEnum::SERIAL_NUMBER_READING, 0, 0, 0, 0, 0, 0);
 
-  SystemSerialNumber.SerialNumber = std::to_string((char)ReceiveData[0]) + std::to_string((char)ReceiveData[1]) + std::to_string((char)ReceiveData[2]) + std::to_string((char)ReceiveData[3]) + std::to_string((char)ReceiveData[4]) + std::to_string((char)ReceiveData[5]);
+  std::ostringstream convert;
+  for (int c = 0; c < 6; c++) {
+    convert << ReceiveData[c];
+  }
+  SystemSerialNumber.SerialNumber = convert.str();
 
   return SystemSerialNumber.ReadState;
 }
@@ -233,8 +243,8 @@ bool ABBAurora::ReadManufacturingWeekYear()
 
   ManufacturingWeekYear.TransmissionState = ReceiveData[0];
   ManufacturingWeekYear.GlobalState = ReceiveData[1];
-  ManufacturingWeekYear.Week = std::to_string((char)ReceiveData[2]) + std::to_string((char)ReceiveData[3]);
-  ManufacturingWeekYear.Year = std::to_string((char)ReceiveData[4]) + std::to_string((char)ReceiveData[5]);
+  ManufacturingWeekYear.Week = std::to_string(ReceiveData[2]) + std::to_string(ReceiveData[3]);
+  ManufacturingWeekYear.Year = std::to_string(ReceiveData[4]) + std::to_string(ReceiveData[5]);
 
   return ManufacturingWeekYear.ReadState;
 }
@@ -251,7 +261,13 @@ bool ABBAurora::ReadFirmwareRelease(void)
 
   FirmwareRelease.TransmissionState = ReceiveData[0];
   FirmwareRelease.GlobalState = ReceiveData[1];
-  FirmwareRelease.Release = std::to_string((char)ReceiveData[2]) + "." + std::to_string((char)ReceiveData[3]) + "." + std::to_string((char)ReceiveData[4]) + "." + std::to_string((char)ReceiveData[5]);
+
+  std::ostringstream convert;
+  for (int c = 2; c < 6; c++)
+  {
+    convert << ReceiveData[c];
+  }
+  FirmwareRelease.Release = convert.str();
 
   return FirmwareRelease.ReadState;
 }
