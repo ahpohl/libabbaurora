@@ -8,11 +8,11 @@ int const ABBAurora::MAX_ATTEMPT = 1;
 int const ABBAurora::SEND_BUFFER_SIZE = 10;
 int const ABBAurora::RECEIVE_BUFFER_SIZE = 8; 
 
-ABBAurora::ABBAurora(unsigned char address)
+ABBAurora::ABBAurora(unsigned char addr)
 {
-    Address = address;
-    SendStatus = false;
-    ReceiveStatus = false;
+  Address = addr;
+  SendStatus = false;
+  ReceiveStatus = false;
 }
 
 ABBAurora::~ABBAurora()
@@ -29,11 +29,8 @@ void ABBAurora::clearBuffer(uint8_t *buffer, size_t len)
 
 void ABBAurora::Setup(std::string &device)
 {
-  uint8_t *SendData = new uint8_t[ABBAurora::SEND_BUFFER_SIZE] ();
-  uint8_t *ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
-  clearBuffer(SendData, ABBAurora::SEND_BUFFER_SIZE);
-  clearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
-  
+  SendData = new uint8_t[ABBAurora::SEND_BUFFER_SIZE] ();
+  ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
   ABBAuroraSerial *serial = new ABBAuroraSerial();
   serial->begin(device);
 }

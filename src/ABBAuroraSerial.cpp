@@ -2,6 +2,8 @@
 #include <string>
 #include <iomanip>
 #include <cstring>
+#include <chrono>
+#include <thread>
 #include <termios.h>    // contains POSIX terminal control definition
 #include <fcntl.h>      // contains file controls like 0_RDWR
 #include <unistd.h>     // write(), read(), close()
@@ -53,8 +55,8 @@ void ABBAuroraSerial::begin(std::string device)
   // set vmin and vtime for blocking read
   // vmin: returning when max 8 bytes are available
   // vtime: wait for up to 0.1 second between characters
-  serial_port_settings.c_cc[VMIN] = 8;
-  serial_port_settings.c_cc[VTIME] = 1;
+  //serial_port_settings.c_cc[VMIN] = 8;
+  //serial_port_settings.c_cc[VTIME] = 1;
   
   ret = tcsetattr(SerialPort, TCSANOW, &serial_port_settings);
   if (ret != 0) {
@@ -64,20 +66,36 @@ void ABBAuroraSerial::begin(std::string device)
   tcflush(SerialPort, TCIOFLUSH);
 }
 
-int ABBAuroraSerial::readBytes(uint8_t *buffer, size_t length)
+int ABBAuroraSerial::readBytes(uint8_t *buffer, int max_bytes_to_read)
 {
-  int bytesReceived = 0;
+  int bytesReceived, retval = 0;
 
-  bytesReceived = read(SerialPort, buffer, length);
+  while (true) {
+    int bytes_available;
+    retval = ioctl(SerialPort, FIONREAD, &bytes_available);
+    if (retval < 0) {
+      throw std::runtime_error("FIONREAD ioctl failed");
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    if (bytes_available >= max_bytes_to_read)
+      break;
+  }
+  bytesReceived = read(SerialPort, buffer, max_bytes_to_read);
+  if (bytesReceived < 0) {
+    throw std::runtime_error("Read on SERIAL_DEVICE failed");
+  }
 
   return bytesReceived;
 }
 
-int ABBAuroraSerial::writeBytes(uint8_t const *buffer, size_t length)
+int ABBAuroraSerial::writeBytes(uint8_t const *buffer, int length)
 {
   int bytesSent = 0;
 
   bytesSent = write(SerialPort, buffer, length);
+  if (bytesSent < 0) {
+    throw std::runtime_error("Write on SERIAL_DEVICE failed");
+  }
   tcdrain(SerialPort);
 
   return bytesSent;

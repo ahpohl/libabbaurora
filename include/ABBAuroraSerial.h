@@ -7,8 +7,8 @@ class ABBAuroraSerial
 public:
   ~ABBAuroraSerial(void);
   void begin(std::string device);
-  int readBytes(uint8_t *buffer, size_t length);
-  int writeBytes(uint8_t const *buffer, size_t length);
+  int readBytes(uint8_t *buffer, int length);
+  int writeBytes(uint8_t const *buffer, int length);
   void flush(void);
 
 private:

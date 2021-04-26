@@ -10,6 +10,8 @@ private:
   static int const MAX_ATTEMPT;
   static int const SEND_BUFFER_SIZE;
   static int const RECEIVE_BUFFER_SIZE;
+  SEND_COMMAND_TYPE SEND_COMMAND;
+  
   uint8_t *SendData;
   uint8_t *ReceiveData;
 
@@ -34,17 +36,15 @@ private:
     unsigned long asUlong;
   } ulo;
 
-  SEND_COMMAND_TYPE SEND_COMMAND;
-
 public:
-  bool SendStatus = false;
-  bool ReceiveStatus = false;
-  unsigned char Address = 0;
+  ABBAurora(unsigned char addr);
+  ~ABBAurora(void);  
+
+  bool SendStatus;
+  bool ReceiveStatus;
+  unsigned char Address;
 
   void Setup(std::string &device);
-
-  ABBAurora(unsigned char address);
-  ~ABBAurora(void);
 
   typedef struct
   {
