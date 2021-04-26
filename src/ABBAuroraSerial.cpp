@@ -52,12 +52,6 @@ void ABBAuroraSerial::begin(std::string device)
   cfsetispeed(&serial_port_settings, B19200);
   cfsetospeed(&serial_port_settings, B19200);
 
-  // set vmin and vtime for blocking read
-  // vmin: returning when max 8 bytes are available
-  // vtime: wait for up to 0.1 second between characters
-  //serial_port_settings.c_cc[VMIN] = 8;
-  //serial_port_settings.c_cc[VTIME] = 1;
-  
   ret = tcsetattr(SerialPort, TCSANOW, &serial_port_settings);
   if (ret != 0) {
     throw std::runtime_error(std::string("Error setting serial port attributes: ") 
@@ -69,8 +63,6 @@ void ABBAuroraSerial::begin(std::string device)
 int ABBAuroraSerial::readBytes(uint8_t *buffer, int max_bytes_to_read)
 {
   int bytesReceived, retval = 0;
-  int count = 0; 
-  std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now(); 
   
   while (true) {
     int bytes_available;
@@ -81,12 +73,8 @@ int ABBAuroraSerial::readBytes(uint8_t *buffer, int max_bytes_to_read)
     std::this_thread::sleep_for(std::chrono::microseconds(500));
     if (bytes_available >= max_bytes_to_read)
       break;
-    count++;
   }
-  std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-  std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
-  std::cout << "Iterations: " << count << std::endl;
-
+  
   bytesReceived = read(SerialPort, buffer, max_bytes_to_read);
   if (bytesReceived < 0) {
     throw std::runtime_error("Read on SERIAL_DEVICE failed");

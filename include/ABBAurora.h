@@ -7,7 +7,6 @@
 class ABBAurora
 {
 private:
-  static int const MAX_ATTEMPT;
   static int const SEND_BUFFER_SIZE;
   static int const RECEIVE_BUFFER_SIZE;
   SEND_COMMAND_TYPE SEND_COMMAND;
@@ -28,7 +27,7 @@ private:
   union {
     unsigned char asBytes[4];
     float asFloat;
-  } foo;
+  } flo;
 
   union {
     unsigned char asBytes[4];

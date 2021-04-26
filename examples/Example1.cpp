@@ -26,12 +26,12 @@ int main(int argc, char *argv[])
 
   if (inverter->ReadDSPValue(POWER_IN_1, MODULE_MESSUREMENT))
   {
-    std::cout << "Pin1 : " << inverter->DSP.Value << " W" << std::endl;
+    std::cout << "Pin1: " << inverter->DSP.Value << " W" << std::endl;
   }
 
   if (inverter->ReadCumulatedEnergy(CURRENT_DAY))
   {
-    std::cout << "Energy: " << inverter->CumulatedEnergy.Energy << " Wh" << std::endl;
+    std::cout << "Energy today: " << inverter->CumulatedEnergy.Energy << " Wh" << std::endl;
   }
 
   delete inverter;

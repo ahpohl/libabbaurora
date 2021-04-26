@@ -4,7 +4,6 @@
 #include "ABBAuroraSerial.h"
 #include "ABBAuroraEnums.h"
 
-int const ABBAurora::MAX_ATTEMPT = 1;
 int const ABBAurora::SEND_BUFFER_SIZE = 10;
 int const ABBAurora::RECEIVE_BUFFER_SIZE = 8; 
 
@@ -92,18 +91,14 @@ bool ABBAurora::Send(uint8_t address, uint8_t cmd, uint8_t b2, uint8_t b3, uint8
 
   clearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
 
-  for (int i = 0; i < ABBAurora::MAX_ATTEMPT; i++)
+  if (Serial->writeBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) > 0)
   {
-    if (Serial->writeBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) > 0)
+    SendStatus = true;
+    if (Serial->readBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) > 0)
     {
-      SendStatus = true;
-      if (Serial->readBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) > 0)
+      if (Word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
       {
-        if (Word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
-        {
-          ReceiveStatus = true;
-          break;
-        }
+        ReceiveStatus = true;
       }
     }
   }
@@ -144,12 +139,12 @@ bool ABBAurora::ReadDSPValue(DSP_VALUE_TYPE type, DSP_GLOBAL global)
   DSP.TransmissionState = ReceiveData[0];
   DSP.GlobalState = ReceiveData[1];
 
-  foo.asBytes[0] = ReceiveData[5];
-  foo.asBytes[1] = ReceiveData[4];
-  foo.asBytes[2] = ReceiveData[3];
-  foo.asBytes[3] = ReceiveData[2];
+  flo.asBytes[0] = ReceiveData[5];
+  flo.asBytes[1] = ReceiveData[4];
+  flo.asBytes[2] = ReceiveData[3];
+  flo.asBytes[3] = ReceiveData[2];
 
-  DSP.Value = foo.asFloat;
+  DSP.Value = flo.asFloat;
 
   return DSP.ReadState;
 }
