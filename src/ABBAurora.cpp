@@ -162,7 +162,7 @@ bool ABBAurora::ReadTimeDate()
 
   TimeDate.TransmissionState = ReceiveData[0];
   TimeDate.GlobalState = ReceiveData[1];
-  TimeDate.Seconds = ((unsigned long)ReceiveData[2] << 24) + ((unsigned long)ReceiveData[3] << 16) + ((unsigned long)ReceiveData[4] << 8) + (unsigned long)ReceiveData[5];
+  TimeDate.Seconds = (static_cast<uint32_t>(ReceiveData[2]) << 24) + (static_cast<uint32_t>(ReceiveData[3]) << 16) + (static_cast<uint32_t>(ReceiveData[4]) << 8) + static_cast<uint32_t>(ReceiveData[5]);
   return TimeDate.ReadState;
 }
 
