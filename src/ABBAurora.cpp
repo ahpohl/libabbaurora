@@ -22,7 +22,7 @@ ABBAurora::~ABBAurora()
   if (ReceiveData) { delete[] ReceiveData; }
 }
 
-void ABBAurora::ClearBuffer(uint8_t *buffer, size_t len)
+void ABBAurora::ClearBuffer(uint8_t *buffer, size_t len) const
 {
   memset(buffer, '\0', len);
 }
@@ -129,7 +129,6 @@ bool ABBAurora::ReadTimeDate()
   return TimeDate.ReadState;
 }
 
-
 bool ABBAurora::ReadLastFourAlarms(void)
 {
   LastFourAlarms.ReadState = Send(Address, SendCommandEnum::LAST_FOUR_ALARMS, 0, 0, 0, 0, 0, 0);
@@ -167,7 +166,7 @@ bool ABBAurora::ReadJunctionBoxVal(unsigned char nj, unsigned char par)
 
 // Inverters
 
-bool ABBAurora::ReadSystemPN()
+bool ABBAurora::ReadSystemPN(void)
 {
   SystemPN.ReadState = Send(Address, SendCommandEnum::PN_READING, 0, 0, 0, 0, 0, 0);
 

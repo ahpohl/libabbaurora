@@ -6,14 +6,14 @@ class ABBAuroraSerial
 {
 public:
   ~ABBAuroraSerial(void);
-  void Begin(std::string device);
-  int ReadBytes(uint8_t *buffer, int length);
-  int WriteBytes(uint8_t const *buffer, int length);
-  void Flush(void);
-  uint16_t Crc16(uint8_t *data, int offset, int count);
-  uint16_t Word(uint8_t msb, uint8_t lsb);
-  uint8_t LowByte(uint16_t bytes);
-  uint8_t HighByte(uint16_t bytes);
+  void Begin(const std::string &device);
+  int ReadBytes(uint8_t *buffer, const int &length) const;
+  int WriteBytes(uint8_t const *buffer, const int &length) const;
+  void Flush(void) const;
+  uint16_t Word(const uint8_t &msb, const uint8_t &lsb) const;
+  uint16_t Crc16(uint8_t *data, const int &offset, const int &count) const;
+  uint8_t LowByte(const uint16_t &bytes) const;
+  uint8_t HighByte(const uint16_t &bytes) const;
 
 private:
   int SerialPort;

@@ -15,7 +15,7 @@ private:
   uint8_t *ReceiveData;
   ABBAuroraSerial *Serial;
 
-  void ClearBuffer(uint8_t *buffer, size_t len);
+  void ClearBuffer(uint8_t *buffer, size_t len) const;
 
   bool Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
 

@@ -18,7 +18,7 @@ ABBAuroraSerial::~ABBAuroraSerial(void)
   }
 }
 
-void ABBAuroraSerial::Begin(std::string device)
+void ABBAuroraSerial::Begin(const std::string &device)
 {
   if (device.empty()) {
     throw std::runtime_error("Serial device argument empty");
@@ -66,13 +66,12 @@ void ABBAuroraSerial::Begin(std::string device)
   tcflush(SerialPort, TCIOFLUSH);
 }
 
-int ABBAuroraSerial::ReadBytes(uint8_t *buffer, int max_bytes_to_read)
+int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length) const
 {
-  int bytesReceived, retval = 0;
-  int count = 0;
+  int bytes_received, retval, iterations = 0;
   //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now(); 
  
-  while (count < 1000) {
+  while (iterations < 1000) {
     int bytes_available;
     retval = ioctl(SerialPort, FIONREAD, &bytes_available);
     if (retval < 0) {
@@ -80,46 +79,46 @@ int ABBAuroraSerial::ReadBytes(uint8_t *buffer, int max_bytes_to_read)
     }
     // delay: 1 / baud_rate * 10e6 * max_bytes_to_read = 416 µs
     std::this_thread::sleep_for(std::chrono::microseconds(500));
-    if (bytes_available >= max_bytes_to_read)
+    if (bytes_available >= length)
       break;
-    count++;
+    iterations++;
   }
   //std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
   //std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
-  //std::cout << "Iterations: " << count << std::endl;
+  //std::cout << "Iterations: " << iterations << std::endl;
 
-  bytesReceived = read(SerialPort, buffer, max_bytes_to_read);
-  if (bytesReceived < 0) {
+  bytes_received = read(SerialPort, buffer, length);
+  if (bytes_received < 0) {
     throw std::runtime_error("Read on SERIAL_DEVICE failed");
   }
   
-  return bytesReceived;
+  return bytes_received;
 }
 
-int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, int length)
+int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, const int &length) const
 {
-  int bytesSent = 0;
+  int bytes_sent = 0;
 
-  bytesSent = write(SerialPort, buffer, length);
-  if (bytesSent < 0) {
+  bytes_sent = write(SerialPort, buffer, length);
+  if (bytes_sent < 0) {
     throw std::runtime_error("Write on SERIAL_DEVICE failed");
   }
   tcdrain(SerialPort);
 
-  return bytesSent;
+  return bytes_sent;
 }
 
-void ABBAuroraSerial::Flush(void)
+void ABBAuroraSerial::Flush(void) const
 {
   tcflush(SerialPort, TCIOFLUSH);
 }
 
-uint16_t ABBAuroraSerial::Word(uint8_t msb, uint8_t lsb)
+uint16_t ABBAuroraSerial::Word(const uint8_t &msb, const uint8_t &lsb) const
 {
   return ((msb & 0xFF) << 8) | lsb;
 }
 
-uint16_t ABBAuroraSerial::Crc16(uint8_t *data, int offset, int count)
+uint16_t ABBAuroraSerial::Crc16(uint8_t *data, const int &offset, const int &count) const
 {
   uint8_t BccLo = 0xFF;
   uint8_t BccHi = 0xFF;
@@ -141,12 +140,12 @@ uint16_t ABBAuroraSerial::Crc16(uint8_t *data, int offset, int count)
   return Word(~BccHi, ~BccLo);
 }
 
-uint8_t ABBAuroraSerial::LowByte(uint16_t bytes)
+uint8_t ABBAuroraSerial::LowByte(const uint16_t &bytes) const
 {
   return static_cast<uint8_t>(bytes);
 }
 
-uint8_t ABBAuroraSerial::HighByte(uint16_t bytes)
+uint8_t ABBAuroraSerial::HighByte(const uint16_t &bytes) const
 {
   return static_cast<uint8_t>((bytes >> 8) & 0xFF);
 }
