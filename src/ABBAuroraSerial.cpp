@@ -69,18 +69,25 @@ void ABBAuroraSerial::Begin(std::string device)
 int ABBAuroraSerial::ReadBytes(uint8_t *buffer, int max_bytes_to_read)
 {
   int bytesReceived, retval = 0;
-  
-  while (true) {
+  int count = 0;
+  //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now(); 
+ 
+  while (count < 1000) {
     int bytes_available;
     retval = ioctl(SerialPort, FIONREAD, &bytes_available);
     if (retval < 0) {
       throw std::runtime_error("FIONREAD ioctl failed");
     }
+    // delay: 1 / baud_rate * 10e6 * max_bytes_to_read = 416 µs
     std::this_thread::sleep_for(std::chrono::microseconds(500));
     if (bytes_available >= max_bytes_to_read)
       break;
+    count++;
   }
-  
+  //std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+  //std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
+  //std::cout << "Iterations: " << count << std::endl;
+
   bytesReceived = read(SerialPort, buffer, max_bytes_to_read);
   if (bytesReceived < 0) {
     throw std::runtime_error("Read on SERIAL_DEVICE failed");
@@ -100,4 +107,9 @@ int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, int length)
   tcdrain(SerialPort);
 
   return bytesSent;
+}
+
+void ABBAuroraSerial::Flush(void)
+{
+  tcflush(SerialPort, TCIOFLUSH);
 }
