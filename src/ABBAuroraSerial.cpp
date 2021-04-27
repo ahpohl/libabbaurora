@@ -52,11 +52,11 @@ void ABBAuroraSerial::Begin(std::string device)
   cfsetispeed(&serial_port_settings, B19200);
   cfsetospeed(&serial_port_settings, B19200);
 
-  // set vmin and vtime for blocking read
-  // vmin: returning when x byte(s) are available
+  // set vmin and vtime for non-blocking read
+  // vmin: read() returns when x byte(s) are available
   // vtime: wait for up to x * 0.1 second between characters
-  //serial_port_settings.c_cc[VMIN] = 0;
-  //serial_port_settings.c_cc[VTIME] = 10;
+  serial_port_settings.c_cc[VMIN] = 0;
+  serial_port_settings.c_cc[VTIME] = 0;
 
   ret = tcsetattr(SerialPort, TCSANOW, &serial_port_settings);
   if (ret != 0) {
@@ -112,4 +112,41 @@ int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, int length)
 void ABBAuroraSerial::Flush(void)
 {
   tcflush(SerialPort, TCIOFLUSH);
+}
+
+uint16_t ABBAuroraSerial::Word(uint8_t msb, uint8_t lsb)
+{
+  return ((msb & 0xFF) << 8) | lsb;
+}
+
+uint16_t ABBAuroraSerial::Crc16(uint8_t *data, int offset, int count)
+{
+  uint8_t BccLo = 0xFF;
+  uint8_t BccHi = 0xFF;
+
+  for (int i = offset; i < (offset + count); i++)
+  {
+    uint8_t New = data[offset + i] ^ BccLo;
+    uint8_t Tmp = New << 4;
+    New = Tmp ^ New;
+    Tmp = New >> 5;
+    BccLo = BccHi;
+    BccHi = New ^ Tmp;
+    Tmp = New << 3;
+    BccLo = BccLo ^ Tmp;
+    Tmp = New >> 4;
+    BccLo = BccLo ^ Tmp;
+  }
+
+  return Word(~BccHi, ~BccLo);
+}
+
+uint8_t ABBAuroraSerial::LowByte(uint16_t bytes)
+{
+  return static_cast<uint8_t>(bytes);
+}
+
+uint8_t ABBAuroraSerial::HighByte(uint16_t bytes)
+{
+  return static_cast<uint8_t>((bytes >> 8) & 0xFF);
 }

@@ -35,43 +35,6 @@ void ABBAurora::Setup(std::string &device)
   Serial->Begin(device);
 }
 
-uint16_t ABBAurora::Word(uint8_t msb, uint8_t lsb)
-{
-  return ((msb & 0xFF) << 8) | lsb;
-}
-
-uint16_t ABBAurora::Crc16(uint8_t *data, int offset, int count)
-{
-  uint8_t BccLo = 0xFF;
-  uint8_t BccHi = 0xFF;
-
-  for (int i = offset; i < (offset + count); i++)
-  {
-    uint8_t New = data[offset + i] ^ BccLo;
-    uint8_t Tmp = New << 4;
-    New = Tmp ^ New;
-    Tmp = New >> 5;
-    BccLo = BccHi;
-    BccHi = New ^ Tmp;
-    Tmp = New << 3;
-    BccLo = BccLo ^ Tmp;
-    Tmp = New >> 4;
-    BccLo = BccLo ^ Tmp;
-  }
-
-  return Word(~BccHi, ~BccLo);
-}
-
-uint8_t ABBAurora::LowByte(uint16_t t_word)
-{
-  return static_cast<uint8_t>(t_word);
-}
-
-uint8_t ABBAurora::HighByte(uint16_t t_word)
-{
-  return static_cast<uint8_t>((t_word >> 8) & 0xFF);
-}
-
 bool ABBAurora::Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7)
 {
   SendStatus = false;
@@ -86,9 +49,9 @@ bool ABBAurora::Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b
   SendData[6] = b6;
   SendData[7] = b7;
 
-  uint16_t crc = Crc16(SendData, 0, 8);
-  SendData[8] = LowByte(crc);
-  SendData[9] = HighByte(crc);
+  uint16_t crc = Serial->Crc16(SendData, 0, 8);
+  SendData[8] = Serial->LowByte(crc);
+  SendData[9] = Serial->HighByte(crc);
 
   ClearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
 
@@ -97,7 +60,7 @@ bool ABBAurora::Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b
     SendStatus = true;
     if (Serial->ReadBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) > 0)
     {
-      if (Word(ReceiveData[7], ReceiveData[6]) == Crc16(ReceiveData, 0, 6))
+      if (Serial->Word(ReceiveData[7], ReceiveData[6]) == Serial->Crc16(ReceiveData, 0, 6))
       {
         ReceiveStatus = true;
       }

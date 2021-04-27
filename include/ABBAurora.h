@@ -17,11 +17,6 @@ private:
 
   void ClearBuffer(uint8_t *buffer, size_t len);
 
-  uint16_t Crc16(uint8_t *data, int offset, int count);
-  uint16_t Word(uint8_t msb, uint8_t lsb);
-  uint8_t LowByte(uint16_t t_word);
-  uint8_t HighByte(uint16_t t_word);
-
   bool Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
 
   union {
