@@ -18,7 +18,7 @@ ABBAuroraSerial::~ABBAuroraSerial(void)
   }
 }
 
-void ABBAuroraSerial::Begin(const std::string &device)
+void ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
 {
   if (device.empty()) {
     throw std::runtime_error("Serial device argument empty");
@@ -49,8 +49,8 @@ void ABBAuroraSerial::Begin(const std::string &device)
 
   // configure serial port
   // speed: 19200 baud, data bits: 8, stop bits: 1, parity: no
-  cfsetispeed(&serial_port_settings, B19200);
-  cfsetospeed(&serial_port_settings, B19200);
+  cfsetispeed(&serial_port_settings, baudrate);
+  cfsetospeed(&serial_port_settings, baudrate);
 
   // set vmin and vtime for non-blocking read
   // vmin: read() returns when x byte(s) are available

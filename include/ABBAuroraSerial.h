@@ -1,12 +1,13 @@
 #ifndef ABBAuroraSerial_h
 #define ABBAuroraSerial_h
 #include <string>
+#include <termios.h>
 
 class ABBAuroraSerial
 {
 public:
   ~ABBAuroraSerial(void);
-  void Begin(const std::string &device);
+  void Begin(const std::string &device, const speed_t &baudrate);
   int ReadBytes(uint8_t *buffer, const int &length) const;
   int WriteBytes(uint8_t const *buffer, const int &length) const;
   void Flush(void) const;

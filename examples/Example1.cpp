@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     throw std::runtime_error(std::string("Inverter could not be reached"));
   }
 
-  if (inverter->ReadDspValue(DspValueEnum::POWER_IN_1, DspGlobalEnum::MODULE_MESSUREMENT))
+  if (inverter->ReadDspValue(DspValueEnum::POWER_IN_1, DspGlobalEnum::MODULE_MEASUREMENT))
   {
     std::cout << "Pin1: " << inverter->Dsp.Value << " W" << std::endl;
   }

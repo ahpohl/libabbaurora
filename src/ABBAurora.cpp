@@ -11,35 +11,61 @@ const int ABBAurora::RECEIVE_BUFFER_SIZE = 8;
 ABBAurora::ABBAurora(unsigned char addr)
 {
   Address = addr;
-  SendStatus = false;
   ReceiveStatus = false;
+  BaudCode = BaudCodeEnum::BAUD_B19200;
+}
+
+ABBAurora::ABBAurora(unsigned char addr, BaudCodeEnum baud)
+{
+  Address = addr;
+  ReceiveStatus = false;
+  BaudCode = baud;
 }
 
 ABBAurora::~ABBAurora()
 {
   if (Serial) { delete Serial; }
-  if (SendData) { delete[] SendData; }
   if (ReceiveData) { delete[] ReceiveData; }
 }
 
-void ABBAurora::ClearBuffer(uint8_t *buffer, size_t len) const
+speed_t ABBAurora::GetBaudRate(BaudCodeEnum baudcode)
 {
-  memset(buffer, '\0', len);
+  speed_t baudrate;
+  
+  switch (baudcode)
+  {
+    case BaudCodeEnum::BAUD_B19200:
+      baudrate = B19200;
+      break;
+    case BaudCodeEnum::BAUD_B9600:
+      baudrate = B9600;
+      break;
+    case BaudCodeEnum::BAUD_B4800:
+      baudrate = B4800;
+      break;
+    case BaudCodeEnum::BAUD_B2400:
+      baudrate = B2400;
+      break;
+    default:
+      baudrate = B0;
+      break;
+  }
+  return baudrate;
 }
 
 void ABBAurora::Setup(std::string &device)
 {
-  SendData = new uint8_t[ABBAurora::SEND_BUFFER_SIZE] ();
   ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
   Serial = new ABBAuroraSerial();
-  Serial->Begin(device);
+  speed_t baudrate = GetBaudRate(BaudCode);
+  Serial->Begin(device, baudrate);
 }
 
 bool ABBAurora::Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7)
 {
-  SendStatus = false;
   ReceiveStatus = false;
-
+  uint8_t SendData[ABBAurora::SEND_BUFFER_SIZE] = {0};;
+  
   SendData[0] = address;
   SendData[1] = static_cast<uint8_t>(cmd);
   SendData[2] = b2;
@@ -53,11 +79,10 @@ bool ABBAurora::Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b
   SendData[8] = Serial->LowByte(crc);
   SendData[9] = Serial->HighByte(crc);
 
-  ClearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
+  memset(ReceiveData, '\0', ABBAurora::RECEIVE_BUFFER_SIZE);
 
   if (Serial->WriteBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) > 0)
   {
-    SendStatus = true;
     if (Serial->ReadBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) > 0)
     {
       if (Serial->Word(ReceiveData[7], ReceiveData[6]) == Serial->Crc16(ReceiveData, 0, 6))
@@ -95,7 +120,7 @@ bool ABBAurora::ReadDspValue(DspValueEnum type, DspGlobalEnum global)
   else
   {
     Dsp.ReadState = false;
-    ClearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
+    memset(ReceiveData, '\0', ABBAurora::RECEIVE_BUFFER_SIZE);
     ReceiveData[0] = 255;
     ReceiveData[1] = 255;
   }
@@ -135,12 +160,7 @@ bool ABBAurora::ReadLastFourAlarms(void)
 
   if (LastFourAlarms.ReadState == false)
   {
-    ReceiveData[0] = 255;
-    ReceiveData[1] = 255;
-    ReceiveData[2] = 255;
-    ReceiveData[3] = 255;
-    ReceiveData[4] = 255;
-    ReceiveData[5] = 255;
+    memset(ReceiveData, 255, 6);
   }
 
   LastFourAlarms.TransmissionState = ReceiveData[0];
@@ -248,7 +268,7 @@ bool ABBAurora::ReadCumulatedEnergy(CumulatedEnergyEnum par)
   else
   {
     CumulatedEnergy.ReadState = false;
-    ClearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
+    memset(ReceiveData, '\0', ABBAurora::RECEIVE_BUFFER_SIZE);
     ReceiveData[0] = 255;
     ReceiveData[1] = 255;
   }
@@ -267,15 +287,15 @@ bool ABBAurora::ReadCumulatedEnergy(CumulatedEnergyEnum par)
   return CumulatedEnergy.ReadState;
 }
 
-bool ABBAurora::WriteBaudRateSetting(unsigned char baudcode)
+bool ABBAurora::WriteBaudRateSetting(BaudCodeEnum baudcode)
 {
-  if (baudcode <= 3)
+  if (static_cast<unsigned char>(baudcode) <= 3)
   {
-    return Send(Address, SendCommandEnum::BAUD_RATE_SETTING, baudcode, 0, 0, 0, 0, 0);
+    return Send(Address, SendCommandEnum::BAUD_RATE_SETTING, static_cast<unsigned char>(baudcode), 0, 0, 0, 0, 0);
   }
   else
   {
-    ClearBuffer(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE);
+    memset(ReceiveData, '\0', ABBAurora::RECEIVE_BUFFER_SIZE);
     return false;
   }
 }
@@ -296,9 +316,9 @@ bool ABBAurora::ReadFirmwareReleaseCentral(unsigned char var)
   return Send(Address, SendCommandEnum::FIRMWARE_RELEASE_READING, var, 0, 0, 0, 0, 0);
 }
 
-bool ABBAurora::ReadBaudRateSettingCentral(unsigned char baudcode, unsigned char serialline)
+bool ABBAurora::ReadBaudRateSettingCentral(BaudCodeEnum baudcode, unsigned char serialline)
 {
-  return Send(Address, SendCommandEnum::BAUD_RATE_SETTING, baudcode, serialline, 0, 0, 0, 0);
+  return Send(Address, SendCommandEnum::BAUD_RATE_SETTING, static_cast<unsigned char>(baudcode), serialline, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadSystemInfoCentral(unsigned char var)

@@ -11,11 +11,9 @@ private:
   static const int RECEIVE_BUFFER_SIZE;
   static const SendCommandEnum SEND_COMMAND;
   
-  uint8_t *SendData;
   uint8_t *ReceiveData;
   ABBAuroraSerial *Serial;
-
-  void ClearBuffer(uint8_t *buffer, size_t len) const;
+  speed_t GetBaudRate(BaudCodeEnum baudcode);
 
   bool Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
 
@@ -31,9 +29,9 @@ private:
 
 public:
   ABBAurora(unsigned char addr);
+  ABBAurora(unsigned char addr, BaudCodeEnum baud);
   ~ABBAurora(void);  
 
-  bool SendStatus;
   bool ReceiveStatus;
   unsigned char Address;
 
@@ -170,16 +168,18 @@ public:
 
   bool ReadCumulatedEnergy(CumulatedEnergyEnum par);
 
-  bool WriteBaudRateSetting(unsigned char baudcode);
+  bool WriteBaudRateSetting(BaudCodeEnum baudcode);
 
   // Central
+  BaudCodeEnum BaudCode;
+
   bool ReadFlagsSwitchCentral(void);
 
   bool ReadCumulatedEnergyCentral(unsigned char var, unsigned char ndays_h, unsigned char ndays_l, unsigned char global);
 
   bool ReadFirmwareReleaseCentral(unsigned char var);
 
-  bool ReadBaudRateSettingCentral(unsigned char baudcode, unsigned char serialline);
+  bool ReadBaudRateSettingCentral(BaudCodeEnum baudcode, unsigned char serialline);
 
   bool ReadSystemInfoCentral(unsigned char var);
 

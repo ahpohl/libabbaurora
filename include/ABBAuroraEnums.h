@@ -57,8 +57,8 @@ enum class DspValueEnum : unsigned char
 
 enum class DspGlobalEnum : unsigned char
 {
-  MODULE_MESSUREMENT = 0,
-  GLOBAL_MESSUREMENT = 1
+  MODULE_MEASUREMENT = 0,
+  GLOBAL_MEASUREMENT = 1
 };
 
 enum class CumulatedEnergyEnum : unsigned char
@@ -92,6 +92,14 @@ enum class SendCommandEnum : unsigned char
   SERIAL_NUMBER_CENTRAL = 107,
   JB_STATE_REQUEST = 200,
   JB_VAL_REQUEST = 201
+};
+
+enum class BaudCodeEnum : unsigned char
+{
+  BAUD_B19200 = 0,
+  BAUD_B9600,
+  BAUD_B4800,
+  BAUD_B2400
 };
 
 #endif
