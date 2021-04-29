@@ -8,11 +8,10 @@
 
 int main(int argc, char *argv[])
 {
-  int const INVERTER_ADDRESS = 2;
-  std::string device = "/dev/ttyUSB0";
+  const int inverter_address = 2;
+  const std::string device = "/dev/ttyUSB0";
   
-  ABBAurora *inverter = new ABBAurora(INVERTER_ADDRESS);
-  inverter = new ABBAurora(INVERTER_ADDRESS);
+  ABBAurora *inverter = new ABBAurora(inverter_address, BaudCodeEnum::BAUD_B19200);
   inverter->Setup(device);
 
   if (inverter->ReadVersion())
