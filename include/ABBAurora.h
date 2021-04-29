@@ -13,9 +13,9 @@ private:
   
   uint8_t *ReceiveData;
   ABBAuroraSerial *Serial;
-  speed_t GetBaudRate(BaudCodeEnum baudcode);
+  speed_t GetBaudRate(const BaudCodeEnum &baudcode) const;
 
-  bool Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
+  bool Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
 
   union {
     unsigned char asBytes[4];
@@ -28,14 +28,17 @@ private:
   } Ulo;
 
 public:
-  ABBAurora(unsigned char addr);
-  ABBAurora(unsigned char addr, BaudCodeEnum baud);
+  ABBAurora(const unsigned char &addr);
+  ABBAurora(const unsigned char &addr, const BaudCodeEnum &baud);
   ~ABBAurora(void);  
 
   bool ReceiveStatus;
   unsigned char Address;
 
-  void Setup(std::string &device);
+  void SetAddress(const unsigned char &addr);
+  unsigned char GetAddress(void);
+
+  void Setup(const std::string &device);
 
   typedef struct
   {
@@ -77,7 +80,7 @@ public:
 
   DataDsp Dsp;
 
-  bool ReadDspValue(DspValueEnum type, DspGlobalEnum global);
+  bool ReadDspValue(const DspValueEnum &type, const DspGlobalEnum &global);
 
   typedef struct
   {
@@ -89,7 +92,7 @@ public:
 
   DataTimeDate TimeDate;
 
-  bool ReadTimeDate();
+  bool ReadTimeDate(void);
 
   typedef struct
   {
@@ -106,9 +109,9 @@ public:
 
   bool ReadLastFourAlarms(void);
 
-  bool ReadJunctionBoxState(unsigned char nj);
+  bool ReadJunctionBoxState(const unsigned char &nj);
 
-  bool ReadJunctionBoxVal(unsigned char nj, unsigned char par);
+  bool ReadJunctionBoxVal(const unsigned char &nj, const unsigned char &par);
 
   // Inverters
   typedef struct
@@ -166,24 +169,24 @@ public:
 
   DataCumulatedEnergy CumulatedEnergy;
 
-  bool ReadCumulatedEnergy(CumulatedEnergyEnum par);
+  bool ReadCumulatedEnergy(const CumulatedEnergyEnum &par);
 
-  bool WriteBaudRateSetting(BaudCodeEnum baudcode);
+  bool WriteBaudRateSetting(const BaudCodeEnum &baudcode);
 
   // Central
   BaudCodeEnum BaudCode;
 
   bool ReadFlagsSwitchCentral(void);
 
-  bool ReadCumulatedEnergyCentral(unsigned char var, unsigned char ndays_h, unsigned char ndays_l, unsigned char global);
+  bool ReadCumulatedEnergyCentral(const unsigned char &var, const unsigned char &ndays_h, const unsigned char &ndays_l, const unsigned char &global);
 
-  bool ReadFirmwareReleaseCentral(unsigned char var);
+  bool ReadFirmwareReleaseCentral(const unsigned char &var);
 
-  bool ReadBaudRateSettingCentral(BaudCodeEnum baudcode, unsigned char serialline);
+  bool ReadBaudRateSettingCentral(const BaudCodeEnum &baudcode, const unsigned char &serialline);
 
-  bool ReadSystemInfoCentral(unsigned char var);
+  bool ReadSystemInfoCentral(const unsigned char &var);
 
-  bool ReadJunctionBoxMonitoringCentral(unsigned char cf, unsigned char rn, unsigned char njt, unsigned char jal, unsigned char jah);
+  bool ReadJunctionBoxMonitoringCentral(const unsigned char &cf, const unsigned char &rn, const unsigned char &njt, const unsigned char &jal, const unsigned char &jah);
 
   bool ReadSystemPNCentral(void);
 

@@ -8,27 +8,27 @@
 const int ABBAurora::SEND_BUFFER_SIZE = 10;
 const int ABBAurora::RECEIVE_BUFFER_SIZE = 8; 
 
-ABBAurora::ABBAurora(unsigned char addr)
+ABBAurora::ABBAurora(const unsigned char &addr)
 {
   Address = addr;
   ReceiveStatus = false;
   BaudCode = BaudCodeEnum::BAUD_B19200;
 }
 
-ABBAurora::ABBAurora(unsigned char addr, BaudCodeEnum baud)
+ABBAurora::ABBAurora(const unsigned char &addr, const BaudCodeEnum &baud)
 {
   Address = addr;
   ReceiveStatus = false;
   BaudCode = baud;
 }
 
-ABBAurora::~ABBAurora()
+ABBAurora::~ABBAurora(void)
 {
   if (Serial) { delete Serial; }
   if (ReceiveData) { delete[] ReceiveData; }
 }
 
-speed_t ABBAurora::GetBaudRate(BaudCodeEnum baudcode)
+speed_t ABBAurora::GetBaudRate(const BaudCodeEnum &baudcode) const
 {
   speed_t baudrate;
   
@@ -53,7 +53,17 @@ speed_t ABBAurora::GetBaudRate(BaudCodeEnum baudcode)
   return baudrate;
 }
 
-void ABBAurora::Setup(std::string &device)
+void ABBAurora::SetAddress(const unsigned char &addr)
+{
+  Address = addr;
+}
+
+unsigned char ABBAurora::GetAddress(void)
+{
+  return Address;
+}
+
+void ABBAurora::Setup(const std::string &device)
 {
   ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
   Serial = new ABBAuroraSerial();
@@ -61,12 +71,12 @@ void ABBAurora::Setup(std::string &device)
   Serial->Begin(device, baudrate);
 }
 
-bool ABBAurora::Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7)
+bool ABBAurora::Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7)
 {
   ReceiveStatus = false;
   uint8_t SendData[ABBAurora::SEND_BUFFER_SIZE] = {0};;
   
-  SendData[0] = address;
+  SendData[0] = Address;
   SendData[1] = static_cast<uint8_t>(cmd);
   SendData[2] = b2;
   SendData[3] = b3;
@@ -91,7 +101,6 @@ bool ABBAurora::Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b
       }
     }
   }
-
   return ReceiveStatus;
 }
 
@@ -105,11 +114,11 @@ bool ABBAurora::Send(uint8_t address, SendCommandEnum cmd, uint8_t b2, uint8_t b
  * Temperature °C 
  * 
  **/
-bool ABBAurora::ReadDspValue(DspValueEnum type, DspGlobalEnum global)
+bool ABBAurora::ReadDspValue(const DspValueEnum &type, const DspGlobalEnum &global)
 {
   if (((static_cast<uint8_t>(type) >= 1 && static_cast<uint8_t>(type) <= 9) || (static_cast<uint8_t>(type) >= 21 && static_cast<uint8_t>(type) <= 63)) && static_cast<uint8_t>(global) <= 1)
   {
-    Dsp.ReadState = Send(Address, SendCommandEnum::MEASURE_REQUEST_DSP, static_cast<uint8_t>(type), static_cast<uint8_t>(global), 0, 0, 0, 0);
+    Dsp.ReadState = Send(SendCommandEnum::MEASURE_REQUEST_DSP, static_cast<uint8_t>(type), static_cast<uint8_t>(global), 0, 0, 0, 0);
 
     if (Dsp.ReadState == false)
     {
@@ -138,9 +147,9 @@ bool ABBAurora::ReadDspValue(DspValueEnum type, DspGlobalEnum global)
   return Dsp.ReadState;
 }
 
-bool ABBAurora::ReadTimeDate()
+bool ABBAurora::ReadTimeDate(void)
 {
-  TimeDate.ReadState = Send(Address, SendCommandEnum::TIME_DATE_READING, 0, 0, 0, 0, 0, 0);
+  TimeDate.ReadState = Send(SendCommandEnum::TIME_DATE_READING, 0, 0, 0, 0, 0, 0);
 
   if (TimeDate.ReadState == false)
   {
@@ -156,7 +165,7 @@ bool ABBAurora::ReadTimeDate()
 
 bool ABBAurora::ReadLastFourAlarms(void)
 {
-  LastFourAlarms.ReadState = Send(Address, SendCommandEnum::LAST_FOUR_ALARMS, 0, 0, 0, 0, 0, 0);
+  LastFourAlarms.ReadState = Send(SendCommandEnum::LAST_FOUR_ALARMS, 0, 0, 0, 0, 0, 0);
 
   if (LastFourAlarms.ReadState == false)
   {
@@ -173,14 +182,14 @@ bool ABBAurora::ReadLastFourAlarms(void)
   return LastFourAlarms.ReadState;
 }
 
-bool ABBAurora::ReadJunctionBoxState(unsigned char nj)
+bool ABBAurora::ReadJunctionBoxState(const unsigned char &nj)
 {
-  return Send(Address, SendCommandEnum::JB_STATE_REQUEST, nj, 0, 0, 0, 0, 0);
+  return Send(SendCommandEnum::JB_STATE_REQUEST, nj, 0, 0, 0, 0, 0);
 }
 
-bool ABBAurora::ReadJunctionBoxVal(unsigned char nj, unsigned char par)
+bool ABBAurora::ReadJunctionBoxVal(const unsigned char &nj, const unsigned char &par)
 {
-  return Send(Address, SendCommandEnum::JB_VAL_REQUEST, nj, par, 0, 0, 0, 0);
+  return Send(SendCommandEnum::JB_VAL_REQUEST, nj, par, 0, 0, 0, 0);
 }
 
 
@@ -188,7 +197,7 @@ bool ABBAurora::ReadJunctionBoxVal(unsigned char nj, unsigned char par)
 
 bool ABBAurora::ReadSystemPN(void)
 {
-  SystemPN.ReadState = Send(Address, SendCommandEnum::PN_READING, 0, 0, 0, 0, 0, 0);
+  SystemPN.ReadState = Send(SendCommandEnum::PN_READING, 0, 0, 0, 0, 0, 0);
 
   std::ostringstream convert;
   for (int c = 0; c < 6; c++)
@@ -202,7 +211,7 @@ bool ABBAurora::ReadSystemPN(void)
 
 bool ABBAurora::ReadSystemSerialNumber(void)
 {
-  SystemSerialNumber.ReadState = Send(Address, SendCommandEnum::SERIAL_NUMBER_READING, 0, 0, 0, 0, 0, 0);
+  SystemSerialNumber.ReadState = Send(SendCommandEnum::SERIAL_NUMBER_READING, 0, 0, 0, 0, 0, 0);
 
   std::ostringstream convert;
   for (int c = 0; c < 6; c++) {
@@ -213,9 +222,9 @@ bool ABBAurora::ReadSystemSerialNumber(void)
   return SystemSerialNumber.ReadState;
 }
 
-bool ABBAurora::ReadManufacturingWeekYear()
+bool ABBAurora::ReadManufacturingWeekYear(void)
 {
-  ManufacturingWeekYear.ReadState = Send(Address, SendCommandEnum::MANUFACTURING_DATE, 0, 0, 0, 0, 0, 0);
+  ManufacturingWeekYear.ReadState = Send(SendCommandEnum::MANUFACTURING_DATE, 0, 0, 0, 0, 0, 0);
 
   if (ManufacturingWeekYear.ReadState == false)
   {
@@ -233,7 +242,7 @@ bool ABBAurora::ReadManufacturingWeekYear()
 
 bool ABBAurora::ReadFirmwareRelease(void)
 {
-  FirmwareRelease.ReadState = Send(Address, SendCommandEnum::FIRMWARE_RELEASE_READING, 0, 0, 0, 0, 0, 0);
+  FirmwareRelease.ReadState = Send(SendCommandEnum::FIRMWARE_RELEASE_READING, 0, 0, 0, 0, 0, 0);
 
   if (FirmwareRelease.ReadState == false)
   {
@@ -254,11 +263,11 @@ bool ABBAurora::ReadFirmwareRelease(void)
   return FirmwareRelease.ReadState;
 }
 
-bool ABBAurora::ReadCumulatedEnergy(CumulatedEnergyEnum par)
+bool ABBAurora::ReadCumulatedEnergy(const CumulatedEnergyEnum &par)
 {
   if (static_cast<uint8_t>(par) <= 6)
   {
-    CumulatedEnergy.ReadState = Send(Address, SendCommandEnum::CUMULATED_ENERGY_READINGS, static_cast<uint8_t>(par), 0, 0, 0, 0, 0);
+    CumulatedEnergy.ReadState = Send(SendCommandEnum::CUMULATED_ENERGY_READINGS, static_cast<uint8_t>(par), 0, 0, 0, 0, 0);
     if (CumulatedEnergy.ReadState == false)
     {
       ReceiveData[0] = 255;
@@ -287,11 +296,11 @@ bool ABBAurora::ReadCumulatedEnergy(CumulatedEnergyEnum par)
   return CumulatedEnergy.ReadState;
 }
 
-bool ABBAurora::WriteBaudRateSetting(BaudCodeEnum baudcode)
+bool ABBAurora::WriteBaudRateSetting(const BaudCodeEnum &baudcode)
 {
   if (static_cast<unsigned char>(baudcode) <= 3)
   {
-    return Send(Address, SendCommandEnum::BAUD_RATE_SETTING, static_cast<unsigned char>(baudcode), 0, 0, 0, 0, 0);
+    return Send(SendCommandEnum::BAUD_RATE_SETTING, static_cast<unsigned char>(baudcode), 0, 0, 0, 0, 0);
   }
   else
   {
@@ -303,56 +312,51 @@ bool ABBAurora::WriteBaudRateSetting(BaudCodeEnum baudcode)
 // Central
 bool ABBAurora::ReadFlagsSwitchCentral(void)
 {
-  return Send(Address, SendCommandEnum::FLAGS_SWITCH_READING, 0, 0, 0, 0, 0, 0);
+  return Send(SendCommandEnum::FLAGS_SWITCH_READING, 0, 0, 0, 0, 0, 0);
 }
 
-bool ABBAurora::ReadCumulatedEnergyCentral(unsigned char var, unsigned char ndays_h, unsigned char ndays_l, unsigned char global)
+bool ABBAurora::ReadCumulatedEnergyCentral(const unsigned char &var, const unsigned char &ndays_h, const unsigned char &ndays_l, const unsigned char &global)
 {
-  return Send(Address, SendCommandEnum::CUMULATED_ENERGY_CENTRAL, var, ndays_h, ndays_l, global, 0, 0);
+  return Send(SendCommandEnum::CUMULATED_ENERGY_CENTRAL, var, ndays_h, ndays_l, global, 0, 0);
 }
 
-bool ABBAurora::ReadFirmwareReleaseCentral(unsigned char var)
+bool ABBAurora::ReadFirmwareReleaseCentral(const unsigned char &var)
 {
-  return Send(Address, SendCommandEnum::FIRMWARE_RELEASE_READING, var, 0, 0, 0, 0, 0);
+  return Send(SendCommandEnum::FIRMWARE_RELEASE_READING, var, 0, 0, 0, 0, 0);
 }
 
-bool ABBAurora::ReadBaudRateSettingCentral(BaudCodeEnum baudcode, unsigned char serialline)
+bool ABBAurora::ReadBaudRateSettingCentral(const BaudCodeEnum &baudcode, const unsigned char &serialline)
 {
-  return Send(Address, SendCommandEnum::BAUD_RATE_SETTING, static_cast<unsigned char>(baudcode), serialline, 0, 0, 0, 0);
+  return Send(SendCommandEnum::BAUD_RATE_SETTING, static_cast<unsigned char>(baudcode), serialline, 0, 0, 0, 0);
 }
 
-bool ABBAurora::ReadSystemInfoCentral(unsigned char var)
+bool ABBAurora::ReadSystemInfoCentral(const unsigned char &var)
 {
-  return Send(Address, SendCommandEnum::SYSTEM_INFO_CENTRAL, var, 0, 0, 0, 0, 0);
+  return Send(SendCommandEnum::SYSTEM_INFO_CENTRAL, var, 0, 0, 0, 0, 0);
 }
 
-bool ABBAurora::ReadJunctionBoxMonitoringCentral(unsigned char cf, unsigned char rn, unsigned char njt, unsigned char jal, unsigned char jah)
+bool ABBAurora::ReadJunctionBoxMonitoringCentral(const unsigned char &cf, const unsigned char &rn, const unsigned char &njt, const unsigned char &jal, const unsigned char &jah)
 {
-  return Send(Address, SendCommandEnum::JB_MONITORING_STATUS, cf, rn, njt, jal, jah, 0);
+  return Send(SendCommandEnum::JB_MONITORING_STATUS, cf, rn, njt, jal, jah, 0);
 }
 
 bool ABBAurora::ReadSystemPNCentral(void)
 {
-  return Send(Address, SendCommandEnum::PN_READING_CENTRAL, 0, 0, 0, 0, 0, 0);
+  return Send(SendCommandEnum::PN_READING_CENTRAL, 0, 0, 0, 0, 0, 0);
 }
 
-bool ABBAurora::ReadSystemSerialNumberCentral()
+bool ABBAurora::ReadSystemSerialNumberCentral(void)
 {
-  return Send(Address, SendCommandEnum::SERIAL_NUMBER_CENTRAL, 0, 0, 0, 0, 0, 0);
+  return Send(SendCommandEnum::SERIAL_NUMBER_CENTRAL, 0, 0, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadState(void)
 {
-  State.ReadState = Send(Address, SendCommandEnum::STATE_REQUEST, 0, 0, 0, 0, 0, 0);
+  State.ReadState = Send(SendCommandEnum::STATE_REQUEST, 0, 0, 0, 0, 0, 0);
 
   if (State.ReadState == false)
   {
-    ReceiveData[0] = 255;
-    ReceiveData[1] = 255;
-    ReceiveData[2] = 255;
-    ReceiveData[3] = 255;
-    ReceiveData[4] = 255;
-    ReceiveData[5] = 255;
+    memset(ReceiveData, 255, 6);
   }
 
   State.TransmissionState = ReceiveData[0];
@@ -367,7 +371,7 @@ bool ABBAurora::ReadState(void)
 
 bool ABBAurora::ReadVersion(void)
 {
-  Version.ReadState = Send(Address, SendCommandEnum::VERSION_READING, 0, 0, 0, 0, 0, 0);
+  Version.ReadState = Send(SendCommandEnum::VERSION_READING, 0, 0, 0, 0, 0, 0);
 
   if (Version.ReadState == false)
   {
