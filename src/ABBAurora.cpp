@@ -58,22 +58,32 @@ void ABBAurora::SetAddress(const unsigned char &addr)
   Address = addr;
 }
 
-unsigned char ABBAurora::GetAddress(void)
+unsigned char ABBAurora::GetAddress(void) const
 {
   return Address;
 }
 
-void ABBAurora::Setup(const std::string &device)
+std::string ABBAurora::GetErrorMessage(void) const
+{
+  return ErrorMessage + " (@addr: " + std::to_string(Address) + ")";
+}
+
+bool ABBAurora::Setup(const std::string &device)
 {
   ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
   Serial = new ABBAuroraSerial();
   speed_t baudrate = GetBaudRate(BaudCode);
-  Serial->Begin(device, baudrate);
+  if (!Serial->Begin(device, baudrate))
+  {
+    ErrorMessage = Serial->GetErrorMessage();
+    return false;
+  }
+
+  return true;
 }
 
 bool ABBAurora::Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7)
 {
-  ReceiveStatus = false;
   uint8_t SendData[ABBAurora::SEND_BUFFER_SIZE] = {0};;
   
   SendData[0] = Address;
@@ -91,17 +101,22 @@ bool ABBAurora::Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, ui
 
   memset(ReceiveData, '\0', ABBAurora::RECEIVE_BUFFER_SIZE);
 
-  if (Serial->WriteBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) > 0)
+  if (Serial->WriteBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) < 0)
   {
-    if (Serial->ReadBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) > 0)
-    {
-      if (Serial->Word(ReceiveData[7], ReceiveData[6]) == Serial->Crc16(ReceiveData, 0, 6))
-      {
-        ReceiveStatus = true;
-      }
-    }
+    ErrorMessage = Serial->GetErrorMessage();
+    return false;
   }
-  return ReceiveStatus;
+  if (Serial->ReadBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) < 0) 
+  {
+    ErrorMessage = Serial->GetErrorMessage();
+    return false;
+  }
+  if (!(Serial->Word(ReceiveData[7], ReceiveData[6]) == Serial->Crc16(ReceiveData, 0, 6)))
+  {
+    ErrorMessage = "Received serial package with CRC mismatch";
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -116,15 +131,12 @@ bool ABBAurora::Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, ui
  **/
 bool ABBAurora::ReadDspValue(const DspValueEnum &type, const DspGlobalEnum &global)
 {
-  if (((static_cast<uint8_t>(type) >= 1 && static_cast<uint8_t>(type) <= 9) || (static_cast<uint8_t>(type) >= 21 && static_cast<uint8_t>(type) <= 63)) && static_cast<uint8_t>(global) <= 1)
-  {
-    Dsp.ReadState = Send(SendCommandEnum::MEASURE_REQUEST_DSP, static_cast<uint8_t>(type), static_cast<uint8_t>(global), 0, 0, 0, 0);
+  Dsp.ReadState = Send(SendCommandEnum::MEASURE_REQUEST_DSP, static_cast<uint8_t>(type), static_cast<uint8_t>(global), 0, 0, 0, 0);
 
-    if (Dsp.ReadState == false)
-    {
-      ReceiveData[0] = 255;
-      ReceiveData[1] = 255;
-    }
+  if (Dsp.ReadState == false)
+  {
+    ReceiveData[0] = 255;
+    ReceiveData[1] = 255;
   }
   else
   {
@@ -265,14 +277,12 @@ bool ABBAurora::ReadFirmwareRelease(void)
 
 bool ABBAurora::ReadCumulatedEnergy(const CumulatedEnergyEnum &par)
 {
-  if (static_cast<uint8_t>(par) <= 6)
+  CumulatedEnergy.ReadState = Send(SendCommandEnum::CUMULATED_ENERGY_READINGS, static_cast<uint8_t>(par), 0, 0, 0, 0, 0);
+  
+  if (CumulatedEnergy.ReadState == false)
   {
-    CumulatedEnergy.ReadState = Send(SendCommandEnum::CUMULATED_ENERGY_READINGS, static_cast<uint8_t>(par), 0, 0, 0, 0, 0);
-    if (CumulatedEnergy.ReadState == false)
-    {
-      ReceiveData[0] = 255;
-      ReceiveData[1] = 255;
-    }
+    ReceiveData[0] = 255;
+    ReceiveData[1] = 255;
   }
   else
   {

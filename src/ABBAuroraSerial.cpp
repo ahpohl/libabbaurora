@@ -18,22 +18,25 @@ ABBAuroraSerial::~ABBAuroraSerial(void)
   }
 }
 
-void ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
+bool ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
 {
   if (device.empty()) {
-    throw std::runtime_error("Serial device argument empty");
+    ErrorMessage = "Serial device argument empty";
+    return false;
   }
  
   SerialPort = open(device.c_str(), O_RDWR | O_NOCTTY);
   if (SerialPort < 0) {
-    throw std::runtime_error(std::string("Error opening device ") + device + ": "
-      + strerror(errno) + " (" + std::to_string(errno) + ")");
+    ErrorMessage = std::string("Error opening device ") + device + ": "
+      + strerror(errno) + " (" + std::to_string(errno) + ")";
+    return false;
   }
 
   int ret = ioctl(SerialPort, TIOCEXCL);
   if (ret < 0) {
-    throw std::runtime_error(std::string("Error getting device lock on") 
-      + device + ": " + strerror(errno) + " (" + std::to_string(errno) + ")");
+    ErrorMessage = std::string("Error getting device lock on") 
+      + device + ": " + strerror(errno) + " (" + std::to_string(errno) + ")";
+    return false;
   }
 
   struct termios serial_port_settings;
@@ -41,8 +44,9 @@ void ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
   memset(&serial_port_settings, 0, sizeof(serial_port_settings));
   ret = tcgetattr(SerialPort, &serial_port_settings);
   if (ret) {
-    throw std::runtime_error(std::string("Error getting serial port attributes: ")
-      + strerror(errno) + " (" + std::to_string(errno) + ")");
+    ErrorMessage = std::string("Error getting serial port attributes: ")
+      + strerror(errno) + " (" + std::to_string(errno) + ")";
+    return false;
   }
 
   cfmakeraw(&serial_port_settings);
@@ -60,22 +64,27 @@ void ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
 
   ret = tcsetattr(SerialPort, TCSANOW, &serial_port_settings);
   if (ret != 0) {
-    throw std::runtime_error(std::string("Error setting serial port attributes: ") 
-      + strerror(errno) + " (" + std::to_string(errno) + ")");
+    ErrorMessage = std::string("Error setting serial port attributes: ") 
+      + strerror(errno) + " (" + std::to_string(errno) + ")";
+    return false;
   }
   tcflush(SerialPort, TCIOFLUSH);
+
+  return true;
 }
 
-int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length) const
+int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
 {
   int bytes_received, retval, iterations = 0;
+  const int max_iterations = 1000;
   //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now(); 
  
-  while (iterations < 1000) {
+  while (iterations < max_iterations) {
     int bytes_available;
     retval = ioctl(SerialPort, FIONREAD, &bytes_available);
     if (retval < 0) {
-      throw std::runtime_error("FIONREAD ioctl failed");
+      ErrorMessage = "Serial FIONREAD ioctl failed";
+      return -1;
     }
     // delay: 1 / baud_rate * 10e6 * max_bytes_to_read = 416 µs
     std::this_thread::sleep_for(std::chrono::microseconds(500));
@@ -87,21 +96,29 @@ int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length) const
   //std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
   //std::cout << "Iterations: " << iterations << std::endl;
 
+  if (iterations == max_iterations)
+  {
+    ErrorMessage = "Timeout, inverter could not be reached";
+    return -1;
+  }
+
   bytes_received = read(SerialPort, buffer, length);
   if (bytes_received < 0) {
-    throw std::runtime_error("Read on SERIAL_DEVICE failed");
+    ErrorMessage = "Read on serial device failed";
+    return -1;
   }
-  
+
   return bytes_received;
 }
 
-int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, const int &length) const
+int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, const int &length)
 {
   int bytes_sent = 0;
 
   bytes_sent = write(SerialPort, buffer, length);
   if (bytes_sent < 0) {
-    throw std::runtime_error("Write on SERIAL_DEVICE failed");
+    ErrorMessage = "Write on serial device failed";
+    return -1;
   }
   tcdrain(SerialPort);
 
@@ -148,4 +165,9 @@ uint8_t ABBAuroraSerial::LowByte(const uint16_t &bytes) const
 uint8_t ABBAuroraSerial::HighByte(const uint16_t &bytes) const
 {
   return static_cast<uint8_t>((bytes >> 8) & 0xFF);
+}
+
+std::string ABBAuroraSerial::GetErrorMessage(void)
+{
+  return ErrorMessage;
 }

@@ -27,6 +27,8 @@ private:
     unsigned long asUlong;
   } Ulo;
 
+  std::string ErrorMessage;
+
 public:
   ABBAurora(const unsigned char &addr);
   ABBAurora(const unsigned char &addr, const BaudCodeEnum &baud);
@@ -36,9 +38,10 @@ public:
   unsigned char Address;
 
   void SetAddress(const unsigned char &addr);
-  unsigned char GetAddress(void);
+  unsigned char GetAddress(void) const;
 
-  void Setup(const std::string &device);
+  bool Setup(const std::string &device);
+  std::string GetErrorMessage(void) const;
 
   typedef struct
   {

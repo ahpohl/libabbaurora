@@ -12,16 +12,18 @@ int main(int argc, char *argv[])
   const std::string device = "/dev/ttyUSB0";
   
   ABBAurora *inverter = new ABBAurora(inverter_address, BaudCodeEnum::BAUD_B19200);
-  inverter->Setup(device);
+  if (!inverter->Setup(device))
+  {
+    std::cout << inverter->GetErrorMessage() << std::endl;
+    return EXIT_FAILURE;
+  }
 
-  if (inverter->ReadVersion())
+  if (!inverter->ReadVersion())
   {
-    std::cout << "Inverter Name: " << inverter->Version.Par1 << std::endl;
+    std::cout << inverter->GetErrorMessage() << std::endl;
+    return EXIT_FAILURE;
   }
-  else
-  {
-    throw std::runtime_error(std::string("Inverter could not be reached"));
-  }
+  std::cout << "Inverter Name: " << inverter->Version.Par1 << std::endl;
 
   if (inverter->ReadDspValue(DspValueEnum::POWER_IN_1, DspGlobalEnum::MODULE_MEASUREMENT))
   {
