@@ -57,8 +57,7 @@ enum class DspValueEnum : unsigned char
 
 enum class DspGlobalEnum : unsigned char
 {
-  MODULE_MEASUREMENT = 0,
-  GLOBAL_MEASUREMENT = 1
+  MODULE_MEASUREMENT = 0, GLOBAL_MEASUREMENT = 1
 };
 
 enum class CumulatedEnergyEnum : unsigned char
