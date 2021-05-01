@@ -120,16 +120,6 @@ bool ABBAurora::Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, ui
   return true;
 }
 
-/**
- * Reads a single value of the digital signal procesor.
- * Not all values are supported by all models. 
- * Read values are in following Units:
- * Voltage V
- * Current A 
- * Power W 
- * Temperature °C 
- * 
- **/
 bool ABBAurora::ReadDspValue(const DspValueEnum &type, const DspGlobalEnum &global)
 {
   if (!Send(SendCommandEnum::MEASURE_REQUEST_DSP, static_cast<uint8_t>(type), static_cast<uint8_t>(global), 0, 0, 0, 0))
@@ -190,19 +180,6 @@ bool ABBAurora::ReadLastFourAlarms(void)
 
   return true;
 }
-
-bool ABBAurora::ReadJunctionBoxState(const unsigned char &nj)
-{
-  return Send(SendCommandEnum::JB_STATE_REQUEST, nj, 0, 0, 0, 0, 0);
-}
-
-bool ABBAurora::ReadJunctionBoxVal(const unsigned char &nj, const unsigned char &par)
-{
-  return Send(SendCommandEnum::JB_VAL_REQUEST, nj, par, 0, 0, 0, 0);
-}
-
-
-// Inverters
 
 bool ABBAurora::ReadSystemPN(void)
 {
@@ -278,9 +255,9 @@ bool ABBAurora::ReadFirmwareRelease(void)
   return true;
 }
 
-bool ABBAurora::ReadCumulatedEnergy(const CumulatedEnergyEnum &par)
+bool ABBAurora::ReadCumulatedEnergy(const CumulatedEnergyEnum &period)
 {
-  if (!Send(SendCommandEnum::CUMULATED_ENERGY_READINGS, static_cast<uint8_t>(par), 0, 0, 0, 0, 0))
+  if (!Send(SendCommandEnum::CUMULATED_ENERGY_READING, static_cast<uint8_t>(period), 0, 0, 0, 0, 0))
   {
     return false;
   }
@@ -300,50 +277,9 @@ bool ABBAurora::ReadCumulatedEnergy(const CumulatedEnergyEnum &par)
   return true;
 }
 
-bool ABBAurora::WriteBaudRateSetting(const BaudCodeEnum &baudcode)
-{
-  return Send(SendCommandEnum::BAUD_RATE_SETTING, static_cast<unsigned char>(baudcode), 0, 0, 0, 0, 0);
-}
-
-// Central
-bool ABBAurora::ReadFlagsSwitchCentral(void)
-{
-  return Send(SendCommandEnum::FLAGS_SWITCH_READING, 0, 0, 0, 0, 0, 0);
-}
-
-bool ABBAurora::ReadCumulatedEnergyCentral(const unsigned char &var, const unsigned char &ndays_h, const unsigned char &ndays_l, const unsigned char &global)
-{
-  return Send(SendCommandEnum::CUMULATED_ENERGY_CENTRAL, var, ndays_h, ndays_l, global, 0, 0);
-}
-
-bool ABBAurora::ReadFirmwareReleaseCentral(const unsigned char &var)
-{
-  return Send(SendCommandEnum::FIRMWARE_RELEASE_READING, var, 0, 0, 0, 0, 0);
-}
-
-bool ABBAurora::ReadBaudRateSettingCentral(const BaudCodeEnum &baudcode, const unsigned char &serialline)
+bool ABBAurora::WriteBaudRateSetting(const BaudCodeEnum &baudcode, const unsigned char &serialline)
 {
   return Send(SendCommandEnum::BAUD_RATE_SETTING, static_cast<unsigned char>(baudcode), serialline, 0, 0, 0, 0);
-}
-
-bool ABBAurora::ReadSystemInfoCentral(const unsigned char &var)
-{
-  return Send(SendCommandEnum::SYSTEM_INFO_CENTRAL, var, 0, 0, 0, 0, 0);
-}
-
-bool ABBAurora::ReadJunctionBoxMonitoringCentral(const unsigned char &cf, const unsigned char &rn, const unsigned char &njt, const unsigned char &jal, const unsigned char &jah)
-{
-  return Send(SendCommandEnum::JB_MONITORING_STATUS, cf, rn, njt, jal, jah, 0);
-}
-
-bool ABBAurora::ReadSystemPNCentral(void)
-{
-  return Send(SendCommandEnum::PN_READING_CENTRAL, 0, 0, 0, 0, 0, 0);
-}
-
-bool ABBAurora::ReadSystemSerialNumberCentral(void)
-{
-  return Send(SendCommandEnum::SERIAL_NUMBER_CENTRAL, 0, 0, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadState(void)
