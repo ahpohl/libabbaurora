@@ -8,18 +8,19 @@
 const int ABBAurora::SEND_BUFFER_SIZE = 10;
 const int ABBAurora::RECEIVE_BUFFER_SIZE = 8; 
 
-ABBAurora::ABBAurora(const unsigned char &addr)
+ABBAurora::ABBAurora(void) : 
+  Address(2), BaudCode(BaudCodeEnum::BAUD_B19200)
 {
-  Address = addr;
-  ReceiveStatus = false;
-  BaudCode = BaudCodeEnum::BAUD_B19200;
 }
 
-ABBAurora::ABBAurora(const unsigned char &addr, const BaudCodeEnum &baud)
+ABBAurora::ABBAurora(const unsigned char &addr) : 
+  Address(addr), BaudCode(BaudCodeEnum::BAUD_B19200)
 {
-  Address = addr;
-  ReceiveStatus = false;
-  BaudCode = baud;
+}
+
+ABBAurora::ABBAurora(const unsigned char &addr, const BaudCodeEnum &baud) : 
+  Address(addr), BaudCode(baud)
+{
 }
 
 ABBAurora::~ABBAurora(void)

@@ -4,25 +4,43 @@
 #include "ABBAuroraEnums.h"
 #include "ABBAuroraSerial.h"
 
+/** @brief Communication protocol between host and supervisor microprocessor 
+ 
+    The communication between host and processor works via a serial interface RS485 or RS232. Many devices can be chained together
+
+    Configuration parameters in both cases are:
+    - 19200 baud (default value)
+    - 1 stop bit
+    - no parity
+
+    If the device has a RS485 interface, the default serial bus address is 2.
+
+    The communication protocol uses fixed length transmission messages (8 bytes + 2 bytes for checksum). The structure of the answer also has fixed length (6 bytes + 2 bytes for checksum).
+
+    @author Alexander Pohl <alex@ahpohl.com>
+    */
 class ABBAurora
 {
 private:
   static const int SEND_BUFFER_SIZE;
   static const int RECEIVE_BUFFER_SIZE;
   static const SendCommandEnum SEND_COMMAND;
-  
+
+  unsigned char Address;
   uint8_t *ReceiveData;
   ABBAuroraSerial *Serial;
   speed_t GetBaudRate(const BaudCodeEnum &baudcode) const;
 
   bool Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
 
-  union {
+  union Flo
+  {
     unsigned char asBytes[4];
     float asFloat;
   } Flo;
 
-  union {
+  union Ulo
+  {
     unsigned char asBytes[4];
     unsigned long asUlong;
   } Ulo;
@@ -30,20 +48,53 @@ private:
   std::string ErrorMessage;
 
 public:
-  ABBAurora(const unsigned char &addr);
-  ABBAurora(const unsigned char &addr, const BaudCodeEnum &baud);
-  ~ABBAurora(void);  
+/** @name Communication protocol
+      
+    Methods for both Aurora inverters and Aurora central
+    */
+///@{
 
-  bool ReceiveStatus;
-  unsigned char Address;
+/** @brief Default class constructor
+      
+    Initialises the class object with the default bus address and baud rate:
+    */
+  ABBAurora(void);
+/** @brief Overloaded class constructor
+      
+    Initialises the class object with the default baud rate.
+
+    @param addr RS485 device address, range 2-63
+    */
+  ABBAurora(const unsigned char &addr);
+/** @brief Overloaded class constructor
+      
+    Initialises the class object.
+
+    @param addr RS485 device address, range 2-63
+    @param baud Baud rate setting, reference to BaudCodeEnum.
+    */
+  ABBAurora(const unsigned char &addr, const BaudCodeEnum &baud);
+/** @brief Default class destructor
+      
+    Closes the serial port and destroys the class object.
+    */
+  ~ABBAurora(void);
+/** @brief Setup serial device communication
+      
+    Opens the host serial device and sets the communication parameters
+
+    @param device The serial device, i.e. /dev/ttyUSB0
+    */
+  bool Setup(const std::string &device);
+
+  ///@}
 
   void SetAddress(const unsigned char &addr);
   unsigned char GetAddress(void) const;
 
-  bool Setup(const std::string &device);
   std::string GetErrorMessage(void) const;
 
-  typedef struct
+  struct State
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
@@ -51,13 +102,11 @@ public:
     unsigned char Channel1State;
     unsigned char Channel2State;
     unsigned char AlarmState;
-  } DataState;
-
-  DataState State;
+  } State;
 
   bool ReadState(void);
 
-  typedef struct
+  struct Version
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
@@ -65,35 +114,29 @@ public:
     std::string Par2;
     std::string Par3;
     std::string Par4;
-  } DataVersion;
-
-  DataVersion Version;
+  } Version;
 
   bool ReadVersion(void);
 
-  typedef struct
+  struct Dsp
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
     float Value;
-  } DataDsp;
-
-  DataDsp Dsp;
+  } Dsp;
 
   bool ReadDspValue(const DspValueEnum &type, const DspGlobalEnum &global);
 
-  typedef struct
+  struct TimeDate
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
     unsigned long Seconds;
-  } DataTimeDate;
-
-  DataTimeDate TimeDate;
+  } TimeDate;
 
   bool ReadTimeDate(void);
 
-  typedef struct
+  struct LastFourAlarms
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
@@ -101,9 +144,7 @@ public:
     unsigned char Alarms2;
     unsigned char Alarms3;
     unsigned char Alarms4;
-  } DataLastFourAlarms;
-
-  DataLastFourAlarms LastFourAlarms;
+  } LastFourAlarms;
 
   bool ReadLastFourAlarms(void);
 
@@ -118,37 +159,31 @@ public:
   std::string SystemSerialNumber;
   bool ReadSystemSerialNumber(void);
 
-  typedef struct
+  struct ManufacturingWeekYear
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
     std::string Week;
     std::string Year;
-  } DataManufacturingWeekYear;
-
-  DataManufacturingWeekYear ManufacturingWeekYear;
+  } ManufacturingWeekYear;
 
   bool ReadManufacturingWeekYear(void);
 
-  typedef struct
+  struct FirmwareRelease
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
     std::string Release;
-  } DataFirmwareRelease;
-
-  DataFirmwareRelease FirmwareRelease;
+  } FirmwareRelease;
 
   bool ReadFirmwareRelease(void);
 
-  typedef struct
+  struct CumulatedEnergy
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
     unsigned long Energy;
-  } DataCumulatedEnergy;
-
-  DataCumulatedEnergy CumulatedEnergy;
+  } CumulatedEnergy;
 
   bool ReadCumulatedEnergy(const CumulatedEnergyEnum &par);
 
@@ -172,6 +207,7 @@ public:
   bool ReadSystemPNCentral(void);
 
   bool ReadSystemSerialNumberCentral(void);
+
 };
 
 #endif
