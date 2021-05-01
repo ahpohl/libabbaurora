@@ -51,7 +51,6 @@ public:
     unsigned char Channel1State;
     unsigned char Channel2State;
     unsigned char AlarmState;
-    bool ReadState;
   } DataState;
 
   DataState State;
@@ -66,7 +65,6 @@ public:
     std::string Par2;
     std::string Par3;
     std::string Par4;
-    bool ReadState;
   } DataVersion;
 
   DataVersion Version;
@@ -78,7 +76,6 @@ public:
     unsigned char TransmissionState;
     unsigned char GlobalState;
     float Value;
-    bool ReadState;
   } DataDsp;
 
   DataDsp Dsp;
@@ -90,7 +87,6 @@ public:
     unsigned char TransmissionState;
     unsigned char GlobalState;
     unsigned long Seconds;
-    bool ReadState;
   } DataTimeDate;
 
   DataTimeDate TimeDate;
@@ -105,7 +101,6 @@ public:
     unsigned char Alarms2;
     unsigned char Alarms3;
     unsigned char Alarms4;
-    bool ReadState;
   } DataLastFourAlarms;
 
   DataLastFourAlarms LastFourAlarms;
@@ -117,24 +112,10 @@ public:
   bool ReadJunctionBoxVal(const unsigned char &nj, const unsigned char &par);
 
   // Inverters
-  typedef struct
-  {
-    std::string PN;
-    bool ReadState;
-  } DataSystemPN;
-
-  DataSystemPN SystemPN;
-
+  std::string SystemPN;
   bool ReadSystemPN(void);
 
-  typedef struct
-  {
-    std::string SerialNumber;
-    bool ReadState;
-  } DataSystemSerialNumber;
-
-  DataSystemSerialNumber SystemSerialNumber;
-
+  std::string SystemSerialNumber;
   bool ReadSystemSerialNumber(void);
 
   typedef struct
@@ -143,7 +124,6 @@ public:
     unsigned char GlobalState;
     std::string Week;
     std::string Year;
-    bool ReadState;
   } DataManufacturingWeekYear;
 
   DataManufacturingWeekYear ManufacturingWeekYear;
@@ -155,7 +135,6 @@ public:
     unsigned char TransmissionState;
     unsigned char GlobalState;
     std::string Release;
-    bool ReadState;
   } DataFirmwareRelease;
 
   DataFirmwareRelease FirmwareRelease;
@@ -167,7 +146,6 @@ public:
     unsigned char TransmissionState;
     unsigned char GlobalState;
     unsigned long Energy;
-    bool ReadState;
   } DataCumulatedEnergy;
 
   DataCumulatedEnergy CumulatedEnergy;

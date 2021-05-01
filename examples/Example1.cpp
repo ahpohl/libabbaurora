@@ -14,26 +14,30 @@ int main(int argc, char *argv[])
   ABBAurora *inverter = new ABBAurora(inverter_address, BaudCodeEnum::BAUD_B19200);
   if (!inverter->Setup(device))
   {
-    std::cout << inverter->GetErrorMessage() << std::endl;
+    std::cout << "Inverter setup failed: " << inverter->GetErrorMessage() << std::endl;
     return EXIT_FAILURE;
   }
 
   if (!inverter->ReadVersion())
   {
-    std::cout << inverter->GetErrorMessage() << std::endl;
+    std::cout << "Read version failed: " << inverter->GetErrorMessage() << std::endl;
     return EXIT_FAILURE;
   }
   std::cout << "Inverter Name: " << inverter->Version.Par1 << std::endl;
 
-  if (inverter->ReadDspValue(DspValueEnum::POWER_IN_1, DspGlobalEnum::MODULE_MEASUREMENT))
+  if (!inverter->ReadDspValue(DspValueEnum::POWER_IN_1, DspGlobalEnum::MODULE_MEASUREMENT))
   {
-    std::cout << "Pin1: " << inverter->Dsp.Value << " W" << std::endl;
+    std::cout << "Read DSP value failed: " << inverter->GetErrorMessage() << std::endl;
+    return EXIT_FAILURE;
   }
+  std::cout << "Pin1: " << inverter->Dsp.Value << " W" << std::endl;
 
-  if (inverter->ReadCumulatedEnergy(CumulatedEnergyEnum::CURRENT_DAY))
+  if (!inverter->ReadCumulatedEnergy(CumulatedEnergyEnum::CURRENT_DAY))
   {
-    std::cout << "Energy today: " << inverter->CumulatedEnergy.Energy << " Wh" << std::endl;
+    std::cout << "Read cumulated energy failed: " << inverter->GetErrorMessage() << std::endl;
+    return EXIT_FAILURE;
   }
+  std::cout << "Energy today: " << inverter->CumulatedEnergy.Energy << " Wh" << std::endl;
 
   if (inverter)
   {
