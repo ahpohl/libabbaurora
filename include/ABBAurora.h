@@ -29,8 +29,6 @@ private:
   unsigned char Address;
   uint8_t *ReceiveData;
   ABBAuroraSerial *Serial;
-  BaudCodeEnum BaudCode;
-  speed_t GetBaudRate(const BaudCodeEnum &baudcode) const;
 
   bool Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
 
@@ -55,24 +53,16 @@ public:
 
 /** @brief Default class constructor
       
-    Initialises the class object with the default bus address and baud rate:
+    Initialises the class object with the default bus address
     */
   ABBAurora(void);
 /** @brief Overloaded class constructor
       
-    Initialises the class object with the default baud rate.
+    Initialises the class object with a custom bus address
 
     @param addr RS485 device address, range 2-63
     */
   ABBAurora(const unsigned char &addr);
-/** @brief Overloaded class constructor
-      
-    Initialises the class object.
-
-    @param addr RS485 device address, range 2-63
-    @param baud Baud rate setting, reference to BaudCodeEnum.
-    */
-  ABBAurora(const unsigned char &addr, const BaudCodeEnum &baud);
 /** @brief Default class destructor
       
     Closes the serial port and destroys the class object.
@@ -80,11 +70,18 @@ public:
   ~ABBAurora(void);
 /** @brief Setup serial device communication
       
-    Opens the host serial device and sets the communication parameters
+    Opens the host serial device and sets the communication parameters.
 
-    @param device The serial device, i.e. /dev/ttyUSB0
+    Supported baud rates:
+    - 19200 baud (default)
+    - 9600 baud
+    - 4800 baud
+    - 2400 baud
+
+    @param device Serial device, i.e. /dev/ttyUSB0
+    @param baudrate Optional baud rate
     */
-  bool Setup(const std::string &device);
+  bool Setup(const std::string &device, const speed_t baudrate = B19200);
 /** @brief Set serial device address
 
     Sets a new RS485 serial device address     
@@ -143,14 +140,6 @@ public:
     The command returns the codes of the last four alarms in form of a FIFO queue from the first to the last one. When this command is used the queue is emptied. Alarm codes are described in [ref to State request]
     */
   bool ReadLastFourAlarms(void);
-/** @brief Baud rate setting on serial lines
-
-    Sets the baud rate of the serial line(s). The serial-line field is reserved to Aurora Central modules.
-
-    @param baudcode Baud rate setting described in [ref BaudCodeEnum]
-    @param serialline Number of the serial line, range 1 (external lines), 2, ..., 255
-    */
-  bool WriteBaudRateSetting(const BaudCodeEnum &baudcode, const unsigned char &serialline);
 
   /// Data structure for state request command
   struct State

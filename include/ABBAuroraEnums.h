@@ -86,12 +86,4 @@ enum class SendCommandEnum : unsigned char
   LAST_FOUR_ALARMS = 86
 };
 
-enum class BaudCodeEnum : unsigned char
-{
-  BAUD_B19200 = 0,
-  BAUD_B9600,
-  BAUD_B4800,
-  BAUD_B2400
-};
-
 #endif

@@ -8,18 +8,11 @@
 const int ABBAurora::SEND_BUFFER_SIZE = 10;
 const int ABBAurora::RECEIVE_BUFFER_SIZE = 8; 
 
-ABBAurora::ABBAurora(void) : 
-  Address(2), BaudCode(BaudCodeEnum::BAUD_B19200)
+ABBAurora::ABBAurora(void) : Address(2)
 {
 }
 
-ABBAurora::ABBAurora(const unsigned char &addr) : 
-  Address(addr), BaudCode(BaudCodeEnum::BAUD_B19200)
-{
-}
-
-ABBAurora::ABBAurora(const unsigned char &addr, const BaudCodeEnum &baud) : 
-  Address(addr), BaudCode(baud)
+ABBAurora::ABBAurora(const unsigned char &addr) : Address(addr)
 {
 }
 
@@ -27,31 +20,6 @@ ABBAurora::~ABBAurora(void)
 {
   if (Serial) { delete Serial; }
   if (ReceiveData) { delete[] ReceiveData; }
-}
-
-speed_t ABBAurora::GetBaudRate(const BaudCodeEnum &baudcode) const
-{
-  speed_t baudrate;
-  
-  switch (baudcode)
-  {
-    case BaudCodeEnum::BAUD_B19200:
-      baudrate = B19200;
-      break;
-    case BaudCodeEnum::BAUD_B9600:
-      baudrate = B9600;
-      break;
-    case BaudCodeEnum::BAUD_B4800:
-      baudrate = B4800;
-      break;
-    case BaudCodeEnum::BAUD_B2400:
-      baudrate = B2400;
-      break;
-    default:
-      baudrate = B0;
-      break;
-  }
-  return baudrate;
 }
 
 void ABBAurora::SetAddress(const unsigned char &addr)
@@ -69,11 +37,10 @@ std::string ABBAurora::GetErrorMessage(void) const
   return ErrorMessage;
 }
 
-bool ABBAurora::Setup(const std::string &device)
+bool ABBAurora::Setup(const std::string &device, const speed_t baudrate)
 {
   ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
   Serial = new ABBAuroraSerial();
-  speed_t baudrate = GetBaudRate(BaudCode);
   if (!Serial->Begin(device, baudrate))
   {
     ErrorMessage = Serial->GetErrorMessage();
@@ -275,11 +242,6 @@ bool ABBAurora::ReadCumulatedEnergy(const CumulatedEnergyEnum &period)
   CumulatedEnergy.Energy = Ulo.asUlong;
 
   return true;
-}
-
-bool ABBAurora::WriteBaudRateSetting(const BaudCodeEnum &baudcode, const unsigned char &serialline)
-{
-  return Send(SendCommandEnum::BAUD_RATE_SETTING, static_cast<unsigned char>(baudcode), serialline, 0, 0, 0, 0);
 }
 
 bool ABBAurora::ReadState(void)

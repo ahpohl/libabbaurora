@@ -8,10 +8,9 @@
 
 int main(int argc, char *argv[])
 {
-  const int inverter_address = 2;
   const std::string device = "/dev/ttyUSB0";
   
-  ABBAurora *inverter = new ABBAurora(inverter_address, BaudCodeEnum::BAUD_B19200);
+  ABBAurora *inverter = new ABBAurora();
   if (!inverter->Setup(device))
   {
     std::cout << "Inverter setup failed: " << inverter->GetErrorMessage() << std::endl;
