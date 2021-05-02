@@ -3,13 +3,15 @@
     Shows how meta data such as the firmware version or manufacturing date is obtained from the Aurora device
     */
 #include <iostream>
+#include <memory>
 #include "ABBAurora.h"
 
 int main(int argc, char *argv[])
 {
   const std::string device = "/dev/ttyUSB0";
   
-  ABBAurora *inverter = new ABBAurora();
+  std::unique_ptr<ABBAurora> inverter(new ABBAurora());
+
   if (!inverter->Setup(device))
   {
     std::cout << "Inverter setup failed: " << inverter->GetErrorMessage() << std::endl;
@@ -22,11 +24,6 @@ int main(int argc, char *argv[])
     return EXIT_FAILURE;
   }
   std::cout << "Date: " << inverter->TimeDate.TimeDate << std::endl;
-
-  if (inverter)
-  {
-    delete inverter;
-  }
 
   return EXIT_SUCCESS;
 }

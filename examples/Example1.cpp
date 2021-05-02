@@ -3,13 +3,15 @@
     Simple example that shows the basic usage of the ABBAurora class.
     */
 #include <iostream>
+#include <memory>
 #include "ABBAurora.h"
 
 int main(int argc, char *argv[])
 {
   const std::string device = "/dev/ttyUSB0";
+
+  std::unique_ptr<ABBAurora> inverter(new ABBAurora());
   
-  ABBAurora *inverter = new ABBAurora();
   if (!inverter->Setup(device))
   {
     std::cout << "Inverter setup failed: " << inverter->GetErrorMessage() << std::endl;
@@ -36,11 +38,6 @@ int main(int argc, char *argv[])
     return EXIT_FAILURE;
   }
   std::cout << "Energy today: " << inverter->CumulatedEnergy.Energy << " Wh" << std::endl;
-
-  if (inverter)
-  {
-    delete inverter;
-  }
 
   return EXIT_SUCCESS;
 }

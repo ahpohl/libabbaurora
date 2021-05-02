@@ -16,8 +16,8 @@ ABBAurora::ABBAurora(const unsigned char &addr) : Address(addr)
 
 ABBAurora::~ABBAurora(void)
 {
-  if (Serial) { delete Serial; }
   if (ReceiveData) { delete[] ReceiveData; }
+  if (Serial) { delete Serial; }
 }
 
 bool ABBAurora::Setup(const std::string &device, const speed_t baudrate)
