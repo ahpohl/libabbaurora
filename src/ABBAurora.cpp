@@ -1,4 +1,5 @@
 #include <cstring>
+#include <ctime>
 #include <sstream>
 #include "ABBAurora.h"
 #include "ABBAuroraStrings.h"
@@ -100,12 +101,9 @@ bool ABBAurora::ReadDspValue(const DspValueEnum &type, const DspGlobalEnum &glob
     return false;
   }
   Dsp.GlobalState = ReceiveData[1];
-  Flo.asBytes[0] = ReceiveData[5];
-  Flo.asBytes[1] = ReceiveData[4];
-  Flo.asBytes[2] = ReceiveData[3];
-  Flo.asBytes[3] = ReceiveData[2];
-  Dsp.Value = Flo.asFloat;
-
+  uint8_t b[] = {ReceiveData[5], ReceiveData[4], ReceiveData[3], ReceiveData[2]};
+  memcpy(&Dsp.Value, &b, sizeof(b));
+  
   return true;
 }
 
@@ -122,8 +120,12 @@ bool ABBAurora::ReadTimeDate(void)
     return false;
   }
   TimeDate.GlobalState = ReceiveData[1];
-  TimeDate.Seconds = (static_cast<uint32_t>(ReceiveData[2]) << 24) + (static_cast<uint32_t>(ReceiveData[3]) << 16) + (static_cast<uint32_t>(ReceiveData[4]) << 8) + static_cast<uint32_t>(ReceiveData[5]);
   
+  uint8_t b[] = {ReceiveData[5], ReceiveData[4], ReceiveData[3], ReceiveData[2]};
+  memcpy(&TimeDate.Seconds, &b, sizeof(b));
+  TimeDate.Epoch = TimeDate.Seconds + 946684800;
+  TimeDate.TimeDate = ctime(&TimeDate.Epoch);
+
   return true;
 }
 
@@ -235,12 +237,9 @@ bool ABBAurora::ReadCumulatedEnergy(const CumulatedEnergyEnum &period)
     return false;
   }
   CumulatedEnergy.GlobalState = ReceiveData[1];
-  Ulo.asBytes[0] = ReceiveData[5];
-  Ulo.asBytes[1] = ReceiveData[4];
-  Ulo.asBytes[2] = ReceiveData[3];
-  Ulo.asBytes[3] = ReceiveData[2];
-  CumulatedEnergy.Energy = Ulo.asUlong;
-
+  uint8_t b[] = {ReceiveData[5], ReceiveData[4], ReceiveData[3], ReceiveData[2]};
+  memcpy(&CumulatedEnergy.Energy, &b, sizeof(b));
+  
   return true;
 }
 

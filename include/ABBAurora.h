@@ -32,18 +32,6 @@ private:
 
   bool Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
 
-  union Flo
-  {
-    unsigned char asBytes[4];
-    float asFloat;
-  } Flo;
-
-  union Ulo
-  {
-    unsigned char asBytes[4];
-    unsigned long asUlong;
-  } Ulo;
-
   std::string ErrorMessage;
 
 public:
@@ -111,11 +99,31 @@ public:
     Ask the state of the system modules
     */
   bool ReadState(void);
+/// Data structure for state request command
+  struct State
+  {
+    unsigned char TransmissionState;
+    unsigned char GlobalState;
+    unsigned char InverterState;
+    unsigned char Channel1State;
+    unsigned char Channel2State;
+    unsigned char AlarmState;
+  } State;
 /** @brief Version reading
 
     Reads the version (Indoor/Outdoor, Europe/America, available only for FW version 1.0.9 and following)
     */
   bool ReadVersion(void);
+/// Data structure for version reading command
+  struct Version
+  {
+    unsigned char TransmissionState;
+    unsigned char GlobalState;
+    std::string Par1;
+    std::string Par2;
+    std::string Par3;
+    std::string Par4;
+  } Version;
 /** @brief Measure request to the DSP
 
     Sends a request to measure voltage, current, power etc.
@@ -130,52 +138,33 @@ public:
     @param global Measurement global or local, described in [Ref DspGlobalEnum]
     */ 
   bool ReadDspValue(const DspValueEnum &type, const DspGlobalEnum &global);
-/** @brief Time/Date reading
-
-    Reads the time and date from the inverter, with one second accuracy
-    */
-  bool ReadTimeDate(void); 
-/** @brief Last four alarms
-
-    The command returns the codes of the last four alarms in form of a FIFO queue from the first to the last one. When this command is used the queue is emptied. Alarm codes are described in [ref to State request]
-    */
-  bool ReadLastFourAlarms(void);
-
-  /// Data structure for state request command
-  struct State
-  {
-    unsigned char TransmissionState;
-    unsigned char GlobalState;
-    unsigned char InverterState;
-    unsigned char Channel1State;
-    unsigned char Channel2State;
-    unsigned char AlarmState;
-  } State;
-  /// Data structure for version reading command
-  struct Version
-  {
-    unsigned char TransmissionState;
-    unsigned char GlobalState;
-    std::string Par1;
-    std::string Par2;
-    std::string Par3;
-    std::string Par4;
-  } Version;
-  /// Data structure for measure request to dsp command
+/// Data structure for measure request to dsp command
   struct Dsp
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
     float Value;
   } Dsp;
-  /// Data structure for time/date reading command
+/** @brief Time/Date reading
+
+    Reads the time and date from the inverter, with one second accuracy
+    */
+  bool ReadTimeDate(void);
+/// Data structure for time/date reading command
   struct TimeDate
   {
     unsigned char TransmissionState;
     unsigned char GlobalState;
     unsigned long Seconds;
+    time_t Epoch;
+    std::string TimeDate;
   } TimeDate;
-  /// Data structure for last four alarms command
+/** @brief Last four alarms
+
+    The command returns the codes of the last four alarms in form of a FIFO queue from the first to the last one. When this command is used the queue is emptied. Alarm codes are described in [ref to State request]
+    */
+  bool ReadLastFourAlarms(void);
+/// Data structure for last four alarms command
   struct LastFourAlarms
   {
     unsigned char TransmissionState;
@@ -199,33 +188,20 @@ public:
     Reads the system part number (Aurora inverters). No information on transmission and global state is returned.
     */
   bool ReadSystemPN(void);
+/// String for the read system P/N command
+  std::string SystemPN;
 /** @brief Serial number reading
 
     Reads the system serial number (Aurora inverters). No information on transmission and global state is returned.
     */
   bool ReadSystemSerialNumber(void);
+/// String for the read serial number command
+  std::string SystemSerialNumber;
 /** @brief Manufacturing date reading
 
     Reads the Manufacturing week and year (Aurora inverters)
     */
   bool ReadManufacturingWeekYear(void);
-/** @brief Firmware release reading
-
-    Reads the firmware release. For Aurora grid-tied inverters you will read always the MCU firmware version (the field var is not interpreted)
-    */
-  bool ReadFirmwareRelease(void);
-/** @brief Cumulated energy readings
-
-    Reads the cumumlated energy (Aurora grid-tied inverters only)
-
-    @param period Energy period described in [ref CumulatedEnergyEnum]
-    */
-  bool ReadCumulatedEnergy(const CumulatedEnergyEnum &period);
-
-/// String for the read system P/N command
-  std::string SystemPN;
-/// String for the read serial number command
-  std::string SystemSerialNumber;
 /// Data structure for the read manufacturing date command
   struct ManufacturingWeekYear
   {
@@ -234,6 +210,11 @@ public:
     std::string Week;
     std::string Year;
   } ManufacturingWeekYear;
+/** @brief Firmware release reading
+
+    Reads the firmware release. For Aurora grid-tied inverters you will read always the MCU firmware version (the field var is not interpreted)
+    */
+  bool ReadFirmwareRelease(void);
 /// Data structure for the read firmware release command
   struct FirmwareRelease
   {
@@ -241,6 +222,13 @@ public:
     unsigned char GlobalState;
     std::string Release;
   } FirmwareRelease;
+/** @brief Cumulated energy readings
+
+    Reads the cumumlated energy (Aurora grid-tied inverters only)
+
+    @param period Energy period described in [ref CumulatedEnergyEnum]
+    */
+  bool ReadCumulatedEnergy(const CumulatedEnergyEnum &period);
 /// Data structure for the read cumulated energy command
   struct CumulatedEnergy
   {
@@ -248,7 +236,6 @@ public:
     unsigned char GlobalState;
     unsigned long Energy;
   } CumulatedEnergy;
-///@}
 };
 
 #endif
