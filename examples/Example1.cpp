@@ -1,9 +1,8 @@
-/*
- *  Simple example that shows the basic usage of the ABBAurora class.
- */
+/** @example Example1.cpp
+
+    Simple example that shows the basic usage of the ABBAurora class.
+    */
 #include <iostream>
-#include <string>
-#include <iomanip> 
 #include "ABBAurora.h"
 
 int main(int argc, char *argv[])

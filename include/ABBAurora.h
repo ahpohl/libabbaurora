@@ -1,6 +1,5 @@
 #ifndef ABBAurora_h
 #define ABBAurora_h
-#include <string>
 #include "ABBAuroraEnums.h"
 #include "ABBAuroraSerial.h"
 

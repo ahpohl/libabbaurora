@@ -1,9 +1,8 @@
-/*
- *  Simple example that shows the basic usage of the ABBAurora class.
- */
+/** @example Example2.cpp
+
+    Shows how meta data such as the firmware version or manufacturing date is obtained from the Aurora device
+    */
 #include <iostream>
-#include <string>
-#include <iomanip> 
 #include "ABBAurora.h"
 
 int main(int argc, char *argv[])

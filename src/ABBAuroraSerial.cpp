@@ -1,14 +1,8 @@
-#include <iostream>
-#include <string>
-#include <iomanip>
 #include <cstring>
-#include <chrono>
 #include <thread>
-#include <termios.h>    // contains POSIX terminal control definition
-#include <fcntl.h>      // contains file controls like 0_RDWR
-#include <unistd.h>     // write(), read(), close()
-#include <errno.h>      // error integer and strerror() function
-#include <sys/ioctl.h>  // contains ioctl_tty
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 #include "ABBAuroraSerial.h"
 
 ABBAuroraSerial::~ABBAuroraSerial(void)

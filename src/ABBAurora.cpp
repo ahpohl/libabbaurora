@@ -1,10 +1,7 @@
 #include <cstring>
-#include <ctime>
 #include <sstream>
 #include "ABBAurora.h"
 #include "ABBAuroraStrings.h"
-#include "ABBAuroraSerial.h"
-#include "ABBAuroraEnums.h"
 
 const int ABBAurora::SEND_BUFFER_SIZE = 10;
 const int ABBAurora::RECEIVE_BUFFER_SIZE = 8; 
