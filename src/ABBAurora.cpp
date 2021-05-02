@@ -226,7 +226,7 @@ bool ABBAurora::ReadFirmwareRelease(void)
 
 bool ABBAurora::ReadCumulatedEnergy(const CumulatedEnergyEnum &period)
 {
-  if (!Send(SendCommandEnum::CUMULATED_ENERGY_READING, static_cast<uint8_t>(period), 0, 0, 0, 0, 0))
+  if (!Send(SendCommandEnum::CUMULATED_ENERGY_READINGS, static_cast<uint8_t>(period), 0, 0, 0, 0, 0))
   {
     return false;
   }

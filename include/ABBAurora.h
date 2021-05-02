@@ -15,24 +15,33 @@
 
     If the device has a RS485 interface, the default serial bus address is 2.
 
-    The communication protocol uses fixed length transmission messages (8 bytes + 2 bytes for checksum). The structure of the answer also has fixed length (6 bytes + 2 bytes for checksum).
-
     @author Alexander Pohl <alex@ahpohl.com>
     */
 class ABBAurora
 {
 private:
-  static const int SEND_BUFFER_SIZE;
-  static const int RECEIVE_BUFFER_SIZE;
-  static const SendCommandEnum SEND_COMMAND;
+/** @brief Send command
+      
+    Method for sending a command to the device. The communication protocol uses fixed length transmission messages (8 bytes + 2 bytes for checksum). The structure of the answer also has fixed length (6 bytes + 2 bytes for checksum).
 
-  unsigned char Address;
-  uint8_t *ReceiveData;
-  ABBAuroraSerial *Serial;
-
+    @param cmd The command described in [ref SendCommandEnum]
+    @param b2, b3, b4, b5, b6, b7 Remaining bytes of the transmission message
+    */  
   bool Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7);
-
+/// Serial object which handles the communication with the device
+  ABBAuroraSerial *Serial;
+/// Address of the serial device
+  unsigned char Address;
+/// Array to hold the answer from the device
+  uint8_t *ReceiveData;
+/// String which holds the possible error message
   std::string ErrorMessage;
+/// Send command enum
+  static const SendCommandEnum SEND_COMMAND;
+/// Fixed send buffer size (8 bytes)
+  static const int SEND_BUFFER_SIZE;
+/// Fixed receive buffer size (10 bytes)
+  static const int RECEIVE_BUFFER_SIZE;
 
 public:
 /** @name General methods
@@ -128,14 +137,8 @@ public:
 
     Sends a request to measure voltage, current, power etc.
 
-    The value is expressed in the following measurements units:
-    - Voltages [V]
-    - Currents [A]
-    - Powers [W]
-    - Temperatures [°C]
-
     @param type Requested value, described in [Ref DspValueEnum]
-    @param global Measurement global or local, described in [Ref DspGlobalEnum]
+    @param global Parameter described in [Ref DspGlobalEnum]
     */ 
   bool ReadDspValue(const DspValueEnum &type, const DspGlobalEnum &global);
 /// Data structure for measure request to dsp command
