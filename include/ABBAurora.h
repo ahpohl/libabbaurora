@@ -36,18 +36,12 @@ private:
   uint8_t *ReceiveData;
 /// String which holds the possible error message
   std::string ErrorMessage;
-/// Send command enum
-  static const SendCommandEnum SEND_COMMAND;
 /// Fixed send buffer size (8 bytes)
   static const int SEND_BUFFER_SIZE;
 /// Fixed receive buffer size (10 bytes)
   static const int RECEIVE_BUFFER_SIZE;
 
 public:
-/** @name General methods
-    */
-///@{
-
 /** @brief Default class constructor
       
     Initialises the class object with the default bus address
@@ -96,13 +90,12 @@ public:
     Returns the error message string
     */
   std::string GetErrorMessage(void) const;
-///@}
 
-
-/** @name Description of commands
+  
+/** @name Inverter commands
     */
 ///@{
-
+  
 /** @brief State request
 
     Ask the state of the system modules
@@ -118,6 +111,13 @@ public:
     unsigned char Channel2State;
     unsigned char AlarmState;
   } State;
+/** @brief P/N reading
+
+    Reads the system part number (Aurora inverters). No information on transmission and global state is returned.
+    */
+  bool ReadSystemPN(void);
+/// String for the read system P/N command
+  std::string SystemPN;
 /** @brief Version reading
 
     Reads the version (Indoor/Outdoor, Europe/America, available only for FW version 1.0.9 and following)
@@ -148,51 +148,6 @@ public:
     unsigned char GlobalState;
     float Value;
   } Dsp;
-/** @brief Time/Date reading
-
-    Reads the time and date from the inverter, with one second accuracy
-    */
-  bool ReadTimeDate(void);
-/// Data structure for time/date reading command
-  struct TimeDate
-  {
-    unsigned char TransmissionState;
-    unsigned char GlobalState;
-    unsigned long Seconds;
-    time_t Epoch;
-    std::string TimeDate;
-  } TimeDate;
-/** @brief Last four alarms
-
-    The command returns the codes of the last four alarms in form of a FIFO queue from the first to the last one. When this command is used the queue is emptied. Alarm codes are described in [ref to State request]
-    */
-  bool ReadLastFourAlarms(void);
-/// Data structure for last four alarms command
-  struct LastFourAlarms
-  {
-    unsigned char TransmissionState;
-    unsigned char GlobalState;
-    unsigned char Alarms1;
-    unsigned char Alarms2;
-    unsigned char Alarms3;
-    unsigned char Alarms4;
-  } LastFourAlarms;
-///@}
-
-
-/** @name Inverter commands
-
-    This section described commands which are only applicable to Aurora inverters
-    */
-///@{
-
-/** @brief P/N reading
-
-    Reads the system part number (Aurora inverters). No information on transmission and global state is returned.
-    */
-  bool ReadSystemPN(void);
-/// String for the read system P/N command
-  std::string SystemPN;
 /** @brief Serial number reading
 
     Reads the system serial number (Aurora inverters). No information on transmission and global state is returned.
@@ -213,6 +168,20 @@ public:
     std::string Week;
     std::string Year;
   } ManufacturingWeekYear;
+/** @brief Time/Date reading
+
+    Reads the time and date from the inverter, with one second accuracy
+    */
+  bool ReadTimeDate(void);
+/// Data structure for time/date reading command
+  struct TimeDate
+  {
+    unsigned char TransmissionState;
+    unsigned char GlobalState;
+    unsigned long Seconds;
+    time_t Epoch;
+    std::string TimeDate;
+  } TimeDate;
 /** @brief Firmware release reading
 
     Reads the firmware release. For Aurora grid-tied inverters you will read always the MCU firmware version (the field var is not interpreted)
@@ -239,6 +208,21 @@ public:
     unsigned char GlobalState;
     unsigned long Energy;
   } CumulatedEnergy;
+/** @brief Last four alarms
+
+    The command returns the codes of the last four alarms in form of a FIFO queue from the first to the last one. When this command is used the queue is emptied. Alarm codes are described in [ref to State request]
+    */
+  bool ReadLastFourAlarms(void);
+/// Data structure for last four alarms command
+  struct LastFourAlarms
+  {
+    unsigned char TransmissionState;
+    unsigned char GlobalState;
+    unsigned char Alarms1;
+    unsigned char Alarms2;
+    unsigned char Alarms3;
+    unsigned char Alarms4;
+  } LastFourAlarms;
 };
 
 #endif
