@@ -1,4 +1,5 @@
 #include <cstring>
+#include <iostream>
 #include <thread>
 #include <fcntl.h>
 #include <unistd.h>
@@ -80,8 +81,8 @@ int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
       ErrorMessage = "Serial FIONREAD ioctl failed";
       return -1;
     }
-    // delay: 1 / baud_rate * 10e6 * max_bytes_to_read = 416 µs
-    std::this_thread::sleep_for(std::chrono::microseconds(500));
+    // intercharacter delay: 1 / baud rate * 1e6 = 52 µs
+    std::this_thread::sleep_for(std::chrono::microseconds(50));
     if (bytes_available >= length)
       break;
     iterations++;
