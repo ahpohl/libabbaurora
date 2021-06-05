@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/jrbenito/ABBAurora.svg?branch=master)](https://travis-ci.org/ahpohl/libabbaurora)
-
 # Overview
 
 The [Aurora protocol]((./docs/pdf/AuroraCommunicationProtocol_4_2.pdf)) is used by ABB to control/monitor their power devices (inverters, central inverters, etc) over a RS485 bus. Usually inverters are capable of the Aurora Protocol as well as Modbus RTU protocol. This library requires the inverter to be conneced with RS485/Aurora protocol and implements the basic functions to communicate with the inverter. It does not support other devices such as the Aurora Central or the Junction Box. 
