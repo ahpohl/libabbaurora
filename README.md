@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.com/ahpohl/libabbaurora.svg?branch=master)](https://travis-ci.com/ahpohl/libabbaurora)
 # Overview
 
-The [Aurora protocol]((./docs/pdf/AuroraCommunicationProtocol_4_2.pdf)) is used by ABB to control/monitor their power devices (inverters, central inverters, etc) over a RS485 bus. Usually inverters are capable of the Aurora Protocol as well as Modbus RTU protocol. This library requires the inverter to be conneced with RS485/Aurora protocol and implements the basic functions to communicate with the inverter. It does not support other devices such as the Aurora Central or the Junction Box. 
+The [Aurora protocol]((./docs/pdf/AuroraCommunicationProtocol_4_2.pdf)) is used by ABB to control/monitor their power devices (inverters, central inverters, etc) over a RS485 bus. Usually inverters are capable of the Aurora Protocol as well as Modbus RTU protocol. This library requires the inverter to be conneced with RS485/Aurora protocol and implements the basic functions to communicate with the inverter. It does not support other devices such as the Aurora Central or the Junction Box.
 
 # Documentation
 
@@ -9,11 +9,13 @@ The library API documentation including some basic examples is located here.
 
 # Related projects
 
+The C++ library is based on the ABBAurora Arduino library from Josenivaldo Benito Jr.
+
 * [ABBAurora Arduino library](https://github.com/jrbenito/ABBAurora) by Josenivaldo Benito Jr
-* [Davide's page](http://www.drhack.it/arduino/32-lettura-inverte-power-one-aurora.html).
-* [Another Arduino library](https://github.com/xreef/ABB_Aurora_Solar_Inverter_Library) by Renzo Mischianti
-* [Linux Aurora program](http://www.curtronics.com/Solar/AuroraData.html) from Curtis Blank
-* [aurora monitor](http://auroramonitor.sourceforge.net/)
+* [Davide's page](http://www.drhack.it/arduino/32-lettura-inverte-power-one-aurora.html) with lots of info
+* Another [Arduino library](https://github.com/xreef/ABB_Aurora_Solar_Inverter_Library) by Renzo Mischianti
+* Linux [Aurora](http://www.curtronics.com/Solar/AuroraData.html) command line program from Curtis Blank
+* [Aurora Monitor](http://auroramonitor.sourceforge.net/) on SourceForge
 
 # Changelog
 
