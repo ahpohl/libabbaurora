@@ -1,6 +1,6 @@
-/** @example example_1.cpp
+/** @example Example1.cpp
 
-    Simple example that shows the basic usage of the ABBAurora class.
+    This simple example shows the basic usage of the ABBAurora class.
     */
 #include <iostream>
 #include <memory>

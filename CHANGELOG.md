@@ -1,4 +1,4 @@
 # libabbaurora changelog
 
-## v0.0.1 - 2021-06-xx
+## v0.1.3 - 2021-06-xx
 * initial release
