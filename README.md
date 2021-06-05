@@ -5,15 +5,15 @@ The [Aurora protocol]((./docs/pdf/AuroraCommunicationProtocol_4_2.pdf)) is used 
 
 # Documentation
 
-The library API documentation including some basic examples is located here.
+The library API documentation including some basic examples is located [here](insert link). The library is written in plain C++ and runs on SBCs such as the Raspberry Pi 3/4 or the Odroid C2/C4. Hence it does not need the Arduino Core for compilation as the other Arduino/esp libraries already on GitHub do.
 
 # Related projects
 
 The C++ library is based on the [ABBAurora Arduino library](https://github.com/jrbenito/ABBAurora) from Josenivaldo Benito Jr.
 
-* [Davide's page](http://www.drhack.it/arduino/32-lettura-inverte-power-one-aurora.html) with lots of info
-* Another [Arduino library](https://github.com/xreef/ABB_Aurora_Solar_Inverter_Library) by Renzo Mischianti
+* Another [ABBAurora library](https://github.com/xreef/ABB_Aurora_Solar_Inverter_Library) for Arduino, esp8266 and esp32 by Renzo Mischianti
 * Linux [Aurora](http://www.curtronics.com/Solar/AuroraData.html) command line program from Curtis Blank
+* [Davide's page](http://www.drhack.it/arduino/32-lettura-inverte-power-one-aurora.html) with lots of info
 * [Aurora Monitor](http://auroramonitor.sourceforge.net/) on SourceForge
 
 # Changelog
