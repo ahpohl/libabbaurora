@@ -1,4 +1,4 @@
-/** @example Example2.cpp
+/** @example example_firmware.cpp
 
     This example shows how meta data such as the firmware version or manufacturing date is obtained from the Aurora device.
     */

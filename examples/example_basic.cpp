@@ -1,4 +1,4 @@
-/** @example Example1.cpp
+/** @example example_basic.cpp
 
     This simple example shows the basic usage of the ABBAurora class.
     */
