@@ -216,6 +216,10 @@ bool ABBAurora::ReadTimeDate(void)
   memcpy(&TimeDate.Seconds, &b, sizeof(b));
   TimeDate.Epoch = TimeDate.Seconds + 946684800;
   TimeDate.TimeDate = ctime(&TimeDate.Epoch);
+  if (!TimeDate.TimeDate.empty())
+  {
+    TimeDate.TimeDate.pop_back();
+  }
 
   return true;
 }
@@ -237,6 +241,10 @@ bool ABBAurora::ReadFirmwareRelease(void)
   for (int c = 2; c < 6; c++)
   {
     convert << ReceiveData[c];
+    if (c < 5)
+    {
+      convert << ".";
+    }
   }
   FirmwareRelease.Release = convert.str();
 
