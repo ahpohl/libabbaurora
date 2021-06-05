@@ -1,10 +1,11 @@
+#include <iostream>
+#include <memory>
+#include "ABBAurora.h"
+
 /** @example Example2.cpp
 
     Shows how meta data such as the firmware version or manufacturing date is obtained from the Aurora device
     */
-#include <iostream>
-#include <memory>
-#include "ABBAurora.h"
 
 int main(int argc, char *argv[])
 {
