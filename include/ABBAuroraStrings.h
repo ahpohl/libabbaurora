@@ -1,8 +1,9 @@
 #ifndef ABBAuroraStrings_h
 #define ABBAuroraStrings_h
 
-/** @brief Aurora strings
-    */
+/** @file */ 
+
+/// Aurora strings
 class ABBAuroraStrings {
     private:
 

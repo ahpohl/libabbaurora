@@ -64,16 +64,16 @@ public:
     @param count Number of bytes to include
     */
   uint16_t Crc16(uint8_t *data, const int &offset, const int &count) const;
-/** @brief Low byte
+/** @brief Return low byte
   
     Return the least significant (low) byte of a word
 
     @param bytes Word to convert
     */
   uint8_t LowByte(const uint16_t &bytes) const;
-/** @brief High byte
+/** @brief Return high byte
   
-    Return the most significant (high byte of a word
+    Return the most significant (high) byte of a word
 
     @param bytes Word to convert
     */ 
@@ -86,10 +86,8 @@ public:
   std::string GetErrorMessage(void);
 
 private:
-  /// Serial port number
-  int SerialPort;
-  /// Error message string
-  std::string ErrorMessage;
+  int SerialPort; ///< Serial port number
+  std::string ErrorMessage; ///< Error message string
 };
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef ABBAuroraEnums_h
 #define ABBAuroraEnums_h
 
+/** @file */ 
+
 /** @brief Measure request to the DSP enum
 
     The * in the enum below list the variable to which apply the global requirement.
@@ -125,8 +127,7 @@ enum class DspGlobalEnum : unsigned char
   MODULE_MEASUREMENT = 0, GLOBAL_MEASUREMENT = 1
 };
 
-/** @brief Cumulated energy enum
-    */
+/// Cumulated energy enum
 enum class CumulatedEnergyEnum : unsigned char
 {
   /// Daily energy
@@ -143,8 +144,7 @@ enum class CumulatedEnergyEnum : unsigned char
   SINCE_RESET = 6
 };
 
-/** @brief Command enum
-    */
+/// Send command enum
 enum class SendCommandEnum : unsigned char
 {
   /// State request: ask the state of the system modules
@@ -166,7 +166,9 @@ enum class SendCommandEnum : unsigned char
   /// Cumulated energy readings (Aurora grid-tied inverters only)
   CUMULATED_ENERGY_READINGS = 78,
   /// Last four alarms
-  LAST_FOUR_ALARMS = 86
+  LAST_FOUR_ALARMS = 86,
+  /// Command not implemented
+  NOT_IMPLEMENTED = 255
 };
 
 #endif

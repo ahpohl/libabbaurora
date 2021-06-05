@@ -49,7 +49,7 @@ std::string ABBAuroraStrings::GlobalState(unsigned char id)
   case 7:
     return "Recovery";
   case 8:
-    return "Pausev";
+    return "Pause";
   case 9:
     return "Ground Fault";
   case 10:

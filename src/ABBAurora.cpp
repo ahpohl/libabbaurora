@@ -1,10 +1,13 @@
+#include <iostream>
 #include <cstring>
 #include <sstream>
+#include <ctime>
 #include "ABBAurora.h"
 #include "ABBAuroraStrings.h"
 
-const int ABBAurora::SEND_BUFFER_SIZE = 10;
-const int ABBAurora::RECEIVE_BUFFER_SIZE = 8; 
+const int ABBAurora::SendBufferSize = 10;
+const int ABBAurora::ReceiveBufferSize = 8;
+const time_t ABBAurora::InverterEpoch = 946684800;
 
 ABBAurora::ABBAurora(void) : Address(2)
 {
@@ -22,14 +25,13 @@ ABBAurora::~ABBAurora(void)
 
 bool ABBAurora::Setup(const std::string &device, const speed_t baudrate)
 {
-  ReceiveData = new uint8_t[ABBAurora::RECEIVE_BUFFER_SIZE] ();
+  ReceiveData = new uint8_t[ABBAurora::ReceiveBufferSize] ();
   Serial = new ABBAuroraSerial();
   if (!Serial->Begin(device, baudrate))
   {
     ErrorMessage = Serial->GetErrorMessage();
     return false;
   }
-
   return true;
 }
 
@@ -50,8 +52,8 @@ std::string ABBAurora::GetErrorMessage(void) const
 
 bool ABBAurora::Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7)
 {
-  uint8_t SendData[ABBAurora::SEND_BUFFER_SIZE] = {0};;
-  
+  uint8_t SendData[ABBAurora::SendBufferSize] = {0};
+
   SendData[0] = Address;
   SendData[1] = static_cast<uint8_t>(cmd);
   SendData[2] = b2;
@@ -65,14 +67,14 @@ bool ABBAurora::Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, ui
   SendData[8] = Serial->LowByte(crc);
   SendData[9] = Serial->HighByte(crc);
 
-  memset(ReceiveData, '\0', ABBAurora::RECEIVE_BUFFER_SIZE);
+  memset(ReceiveData, '\0', ABBAurora::ReceiveBufferSize);
 
-  if (Serial->WriteBytes(SendData, ABBAurora::SEND_BUFFER_SIZE) < 0)
+  if (Serial->WriteBytes(SendData, ABBAurora::SendBufferSize) < 0)
   {
     ErrorMessage = std::string("Write bytes failed: ") + Serial->GetErrorMessage();
     return false;
   }
-  if (Serial->ReadBytes(ReceiveData, ABBAurora::RECEIVE_BUFFER_SIZE) < 0) 
+  if (Serial->ReadBytes(ReceiveData, ABBAurora::ReceiveBufferSize) < 0) 
   {
     ErrorMessage = std::string("Read bytes failed: ") + Serial->GetErrorMessage();
     return false;
@@ -82,211 +84,186 @@ bool ABBAurora::Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, ui
     ErrorMessage = "Received serial package with CRC mismatch";
     return false;
   }
+  if ((cmd != SendCommandEnum::PN_READING) && (cmd != SendCommandEnum::SERIAL_NUMBER_READING) && ReceiveData[0])
+  {
+    ErrorMessage = std::string("Transmission error: ") + ABBAuroraStrings::TransmissionState(ReceiveData[0]) + " (" + std::to_string(ReceiveData[0]) + ")";
+    return false;
+  }
   return true;
+}
+
+long int ABBAurora::GetGmtOffset(void)
+{
+  time_t now = time(NULL);
+  struct tm tm;
+  gmtime_r(&now, &tm);
+  tm.tm_isdst = -1;
+  time_t gmt = mktime(&tm);
+
+  return difftime(now, gmt);
 }
 
 // Inverter commands
 
-bool ABBAurora::ReadState(void)
+bool ABBAurora::ReadState(ABBAurora::State &state)
 {
   if (!Send(SendCommandEnum::STATE_REQUEST, 0, 0, 0, 0, 0, 0))
   {
     return false;
   }
-  State.TransmissionState = ReceiveData[0];
-  {
-    ErrorMessage = ABBAuroraStrings::TransmissionState(State.TransmissionState);
-    return false;
-  }
-  State.GlobalState = ReceiveData[1];
-  State.InverterState = ReceiveData[2];
-  State.Channel1State = ReceiveData[3];
-  State.Channel2State = ReceiveData[4];
-  State.AlarmState = ReceiveData[5];
-
+  state.GlobalState = ABBAuroraStrings::GlobalState(ReceiveData[1]);
+  state.InverterState = ABBAuroraStrings::InverterState(ReceiveData[2]);
+  state.Channel1State = ABBAuroraStrings::DcDcState(ReceiveData[3]);
+  state.Channel2State = ABBAuroraStrings::DcDcState(ReceiveData[4]);
+  state.AlarmState = ABBAuroraStrings::AlarmState(ReceiveData[5]);
   return true;
 }
 
-bool ABBAurora::ReadSystemPN(void)
+bool ABBAurora::ReadPartNumber(std::string &pn)
 {
   if (!Send(SendCommandEnum::PN_READING, 0, 0, 0, 0, 0, 0))
   {
     return false;
   }
-  std::ostringstream convert;
+  std::ostringstream oss;
   for (int c = 0; c < 6; c++)
   {
-    convert << ReceiveData[c];
+    oss << ReceiveData[c];
   }
-  SystemPN = convert.str();
-
+  pn = oss.str();
   return true;
 }
 
-bool ABBAurora::ReadVersion(void)
+bool ABBAurora::ReadVersion(ABBAurora::Version &version)
 {
   if (!Send(SendCommandEnum::VERSION_READING, 0, 0, 0, 0, 0, 0))
   {
     return false;
   }
-  Version.TransmissionState = ReceiveData[0];
-  if (Version.TransmissionState)
-  {
-    ErrorMessage = ABBAuroraStrings::TransmissionState(Version.TransmissionState);
-    return false;
-  }
-  Version.GlobalState = ReceiveData[1];
-  Version.Par1 = ABBAuroraStrings::VersionPart1(ReceiveData[2]);
-  Version.Par2 = ABBAuroraStrings::VersionPart2(ReceiveData[3]);
-  Version.Par3 = ABBAuroraStrings::VersionPart3(ReceiveData[4]);
-  Version.Par4 = ABBAuroraStrings::VersionPart4(ReceiveData[5]);
+  version.GlobalState = ABBAuroraStrings::GlobalState(ReceiveData[1]);
+  version.Par1 = ABBAuroraStrings::VersionPart1(ReceiveData[2]);
+  version.Par2 = ABBAuroraStrings::VersionPart2(ReceiveData[3]);
+  version.Par3 = ABBAuroraStrings::VersionPart3(ReceiveData[4]);
+  version.Par4 = ABBAuroraStrings::VersionPart4(ReceiveData[5]);
 
   return true;
 }
 
-bool ABBAurora::ReadDspValue(const DspValueEnum &type, const DspGlobalEnum &global)
+bool ABBAurora::ReadDspValue(float &value, const DspValueEnum &type, const DspGlobalEnum &global)
 {
   if (!Send(SendCommandEnum::MEASURE_REQUEST_DSP, static_cast<uint8_t>(type), static_cast<uint8_t>(global), 0, 0, 0, 0))
   {
     return false;
   }
-  Dsp.TransmissionState = ReceiveData[0];
-  if (Dsp.TransmissionState)
+  if (ReceiveData[1] != 6) // global state "Run"
   {
-    ErrorMessage = ABBAuroraStrings::TransmissionState(Dsp.TransmissionState);
+    ErrorMessage = std::string("Warning DSP value not trusted: Inverter state \"") + ABBAuroraStrings::GlobalState(ReceiveData[1]) + "\" (" + std::to_string(ReceiveData[1]) + ")";
     return false;
   }
-  Dsp.GlobalState = ReceiveData[1];
   uint8_t b[] = {ReceiveData[5], ReceiveData[4], ReceiveData[3], ReceiveData[2]};
-  memcpy(&Dsp.Value, &b, sizeof(b));
-  
+  memcpy(&value, &b, sizeof(b));
   return true;
 }
 
-bool ABBAurora::ReadSystemSerialNumber(void)
+bool ABBAurora::ReadSerialNumber(std::string &sn)
 {
   if (!Send(SendCommandEnum::SERIAL_NUMBER_READING, 0, 0, 0, 0, 0, 0))
   {
     return false;
   }
-  std::ostringstream convert;
+  std::ostringstream oss;
   for (int c = 0; c < 6; c++) {
-    convert << ReceiveData[c];
+    oss << ReceiveData[c];
   }
-  SystemSerialNumber = convert.str();
+  sn = oss.str();
 
   return true;
 }
 
-bool ABBAurora::ReadManufacturingWeekYear(void)
+bool ABBAurora::ReadManufacturingDate(ABBAurora::ManufacturingDate &date)
 {
   if (!Send(SendCommandEnum::MANUFACTURING_DATE, 0, 0, 0, 0, 0, 0))
   {
     return false;
   }
-
-  ManufacturingWeekYear.TransmissionState = ReceiveData[0];
-  if (ManufacturingWeekYear.TransmissionState)
-  {
-    ErrorMessage = ABBAuroraStrings::TransmissionState(ManufacturingWeekYear.TransmissionState);
-    return false;
-  }
-  ManufacturingWeekYear.GlobalState = ReceiveData[1];
-  ManufacturingWeekYear.Week = std::to_string(ReceiveData[2]) + std::to_string(ReceiveData[3]);
-  ManufacturingWeekYear.Year = std::to_string(ReceiveData[4]) + std::to_string(ReceiveData[5]);
+  date.GlobalState = ABBAuroraStrings::GlobalState(ReceiveData[1]);
+  std::ostringstream oss;
+  oss << ReceiveData[2] << ReceiveData[3];
+  date.Week = oss.str();
+  oss.str("");
+  oss << ReceiveData[4] << ReceiveData[5];
+  date.Year = oss.str();
 
   return true;
 }
 
-bool ABBAurora::ReadTimeDate(void)
+bool ABBAurora::ReadTimeDate(ABBAurora::TimeDate &date)
 {
   if (!Send(SendCommandEnum::TIME_DATE_READING, 0, 0, 0, 0, 0, 0))
   {
     return false;
   }  
-  TimeDate.TransmissionState = ReceiveData[0];
-  if (TimeDate.TransmissionState)
-  {
-    ErrorMessage = ABBAuroraStrings::TransmissionState(TimeDate.TransmissionState);
-    return false;
-  }
-  TimeDate.GlobalState = ReceiveData[1];
-  
+  date.GlobalState = ABBAuroraStrings::GlobalState(ReceiveData[1]);
   uint8_t b[] = {ReceiveData[5], ReceiveData[4], ReceiveData[3], ReceiveData[2]};
-  memcpy(&TimeDate.Seconds, &b, sizeof(b));
-  TimeDate.Epoch = TimeDate.Seconds + 946684800;
-  TimeDate.TimeDate = ctime(&TimeDate.Epoch);
-  if (!TimeDate.TimeDate.empty())
-  {
-    TimeDate.TimeDate.pop_back();
-  }
-
+  date.InverterTime = 0;
+  memcpy(&date.InverterTime, &b, sizeof(b));
+  date.EpochTime = date.InverterTime + InverterEpoch - GetGmtOffset();
+  struct tm tm;
+  localtime_r(&date.EpochTime, &tm);
+  char buffer[80];
+  strftime(buffer, 80, "%d-%b-%Y %H:%M:%S", &tm);
+  date.TimeDate.assign(buffer);
   return true;
 }
 
-bool ABBAurora::ReadFirmwareRelease(void)
+bool ABBAurora::ReadFirmwareRelease(ABBAurora::FirmwareRelease &firmware)
 {
   if (!Send(SendCommandEnum::FIRMWARE_RELEASE_READING, 0, 0, 0, 0, 0, 0))
   {
     return false;
   }
-  FirmwareRelease.TransmissionState = ReceiveData[0];
-  if (FirmwareRelease.TransmissionState)
-  {
-    ErrorMessage = ABBAuroraStrings::TransmissionState(FirmwareRelease.TransmissionState);
-    return false;
-  }
-  FirmwareRelease.GlobalState = ReceiveData[1];
-  std::ostringstream convert;
+  firmware.GlobalState = ABBAuroraStrings::GlobalState(ReceiveData[1]);
+  std::ostringstream oss;
   for (int c = 2; c < 6; c++)
   {
-    convert << ReceiveData[c];
+    oss << ReceiveData[c];
     if (c < 5)
     {
-      convert << ".";
+      oss << ".";
     }
   }
-  FirmwareRelease.Release = convert.str();
-
+  firmware.Release = oss.str();
   return true;
 }
 
-bool ABBAurora::ReadCumulatedEnergy(const CumulatedEnergyEnum &period)
+bool ABBAurora::ReadCumulatedEnergy(float &cum_energy, const CumulatedEnergyEnum &period)
 {
   if (!Send(SendCommandEnum::CUMULATED_ENERGY_READINGS, static_cast<uint8_t>(period), 0, 0, 0, 0, 0))
   {
     return false;
   }
-  CumulatedEnergy.TransmissionState = ReceiveData[0];
-  if (CumulatedEnergy.TransmissionState)
+  if (ReceiveData[1] != 6) // global state "Run"
   {
-    ErrorMessage = ABBAuroraStrings::TransmissionState(CumulatedEnergy.TransmissionState);
+    ErrorMessage = std::string("Warning cumulated energy not trusted: Inverter state \"") + ABBAuroraStrings::GlobalState(ReceiveData[1]) + "\" (" + std::to_string(ReceiveData[1]) + ")";
     return false;
   }
-  CumulatedEnergy.GlobalState = ReceiveData[1];
   uint8_t b[] = {ReceiveData[5], ReceiveData[4], ReceiveData[3], ReceiveData[2]};
-  memcpy(&CumulatedEnergy.Energy, &b, sizeof(b));
-  
+  uint32_t energy_watt_hours = 0;
+  memcpy(&energy_watt_hours, &b, sizeof(b));
+  cum_energy = static_cast<float>(energy_watt_hours) / 1000.0;
   return true;
 }
 
-bool ABBAurora::ReadLastFourAlarms(void)
+bool ABBAurora::ReadLastFourAlarms(ABBAurora::LastFourAlarms &alarms)
 {
   if (!Send(SendCommandEnum::LAST_FOUR_ALARMS, 0, 0, 0, 0, 0, 0))
   {
     return false;
   } 
-  LastFourAlarms.TransmissionState = ReceiveData[0];
-  if (LastFourAlarms.TransmissionState)
-  {
-    ErrorMessage = ABBAuroraStrings::TransmissionState(LastFourAlarms.TransmissionState);
-    return false;
-  }
-  LastFourAlarms.GlobalState = ReceiveData[1];
-  LastFourAlarms.Alarms1 = ReceiveData[2];
-  LastFourAlarms.Alarms2 = ReceiveData[3];
-  LastFourAlarms.Alarms3 = ReceiveData[4];
-  LastFourAlarms.Alarms4 = ReceiveData[5];
-
+  alarms.GlobalState = ABBAuroraStrings::GlobalState(ReceiveData[1]);
+  alarms.Alarm1 = ABBAuroraStrings::AlarmState(ReceiveData[2]);
+  alarms.Alarm2 = ABBAuroraStrings::AlarmState(ReceiveData[3]);
+  alarms.Alarm3 = ABBAuroraStrings::AlarmState(ReceiveData[4]);
+  alarms.Alarm4 = ABBAuroraStrings::AlarmState(ReceiveData[5]);
   return true;
 }
