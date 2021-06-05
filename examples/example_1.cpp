@@ -1,11 +1,10 @@
-#include <iostream>
-#include <memory>
-#include "ABBAurora.h"
-
-/** @example Example1.cpp
+/** @example example_1.cpp
 
     Simple example that shows the basic usage of the ABBAurora class.
     */
+#include <iostream>
+#include <memory>
+#include "ABBAurora.h"
 
 int main(int argc, char *argv[])
 {
