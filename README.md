@@ -9,9 +9,8 @@ The library API documentation including some basic examples is located here.
 
 # Related projects
 
-The C++ library is based on the ABBAurora Arduino library from Josenivaldo Benito Jr.
+The C++ library is based on the [ABBAurora Arduino library](https://github.com/jrbenito/ABBAurora) from Josenivaldo Benito Jr.
 
-* [ABBAurora Arduino library](https://github.com/jrbenito/ABBAurora) by Josenivaldo Benito Jr
 * [Davide's page](http://www.drhack.it/arduino/32-lettura-inverte-power-one-aurora.html) with lots of info
 * Another [Arduino library](https://github.com/xreef/ABB_Aurora_Solar_Inverter_Library) by Renzo Mischianti
 * Linux [Aurora](http://www.curtronics.com/Solar/AuroraData.html) command line program from Curtis Blank
