@@ -7,7 +7,7 @@ The library is written in plain C++ and implements the basic functions to commun
 
 # Documentation
 
-The library API documentation including some basic examples is located [here](insert link).
+The library API documentation including some basic examples is located [here](https://ahpohl.github.io/libabbaurora/).
 
 # Related projects
 
