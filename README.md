@@ -4,7 +4,7 @@ The [Aurora protocol]((./docs/pdf/AuroraCommunicationProtocol_4_2.pdf)) is used 
 
 # Documentation
 
-The library API documentation is located here.
+The library API documentation including some basic examples is located here.
 
 # Related projects
 
