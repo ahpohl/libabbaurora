@@ -11,10 +11,11 @@ script:
   - make docs
 
 deploy:
-  provider: pages
+  provider: pages:git
   cleanup: true
   strategy: git
   local_dir: docs/html
   token: $GH_REPO_TOKEN
+  edge: true
   on:
     branch: master
