@@ -1,5 +1,3 @@
-sudo: false 
-
 branches:
   only:
     - master
@@ -14,8 +12,9 @@ script:
 
 deploy:
   provider: pages
-  skip_cleanup: true
+  cleanup: true
+  strategy: git
   local_dir: docs/html
-  github_token: $GH_REPO_TOKEN
+  token: $GH_REPO_TOKEN
   on:
     branch: master
