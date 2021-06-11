@@ -33,6 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="aurora_small.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">LIBABBAURORA
+   &#160;<span id="projectnumber">v0.2.0</span>
    </div>
    <div id="projectbrief">A C++ library for the ABB Aurora protocol used by inverters and other devices</div>
   </td>
@@ -91,7 +92,8 @@ $(document).ready(function(){initNavTree('class_a_b_b_aurora_serial.html','');})
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">ABBAuroraSerial Class Reference</div>  </div>
 </div><!--header-->
@@ -126,14 +128,25 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad014d67be101031f5e6e073451caa195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate checksum.  <a href="#ad014d67be101031f5e6e073451caa195">More...</a><br /></td></tr>
 <tr class="separator:ad014d67be101031f5e6e073451caa195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac024aac1c8a3ced96fc6875d93dffd44"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora_serial.html#ac024aac1c8a3ced96fc6875d93dffd44">LowByte</a> (const uint16_t &amp;bytes) const </td></tr>
-<tr class="memdesc:ac024aac1c8a3ced96fc6875d93dffd44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Low byte.  <a href="#ac024aac1c8a3ced96fc6875d93dffd44">More...</a><br /></td></tr>
+<tr class="memdesc:ac024aac1c8a3ced96fc6875d93dffd44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return low byte.  <a href="#ac024aac1c8a3ced96fc6875d93dffd44">More...</a><br /></td></tr>
 <tr class="separator:ac024aac1c8a3ced96fc6875d93dffd44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf1ce592c21ca56ce0e2ec10df7f0321"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora_serial.html#adf1ce592c21ca56ce0e2ec10df7f0321">HighByte</a> (const uint16_t &amp;bytes) const </td></tr>
-<tr class="memdesc:adf1ce592c21ca56ce0e2ec10df7f0321"><td class="mdescLeft">&#160;</td><td class="mdescRight">High byte.  <a href="#adf1ce592c21ca56ce0e2ec10df7f0321">More...</a><br /></td></tr>
+<tr class="memdesc:adf1ce592c21ca56ce0e2ec10df7f0321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return high byte.  <a href="#adf1ce592c21ca56ce0e2ec10df7f0321">More...</a><br /></td></tr>
 <tr class="separator:adf1ce592c21ca56ce0e2ec10df7f0321"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f1bdff2592c3b8c95753b4144ac2bed"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora_serial.html#a7f1bdff2592c3b8c95753b4144ac2bed">GetErrorMessage</a> (void)</td></tr>
 <tr class="memdesc:a7f1bdff2592c3b8c95753b4144ac2bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get error message.  <a href="#a7f1bdff2592c3b8c95753b4144ac2bed">More...</a><br /></td></tr>
 <tr class="separator:a7f1bdff2592c3b8c95753b4144ac2bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a6163dcf251daecbca0a78f63bea698f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6163dcf251daecbca0a78f63bea698f2"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora_serial.html#a6163dcf251daecbca0a78f63bea698f2">SerialPort</a></td></tr>
+<tr class="memdesc:a6163dcf251daecbca0a78f63bea698f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial port number. <br /></td></tr>
+<tr class="separator:a6163dcf251daecbca0a78f63bea698f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbec26592f4ddb9334a153f6972eaa17"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abbec26592f4ddb9334a153f6972eaa17"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora_serial.html#abbec26592f4ddb9334a153f6972eaa17">ErrorMessage</a></td></tr>
+<tr class="memdesc:abbec26592f4ddb9334a153f6972eaa17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error message string. <br /></td></tr>
+<tr class="separator:abbec26592f4ddb9334a153f6972eaa17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Low level serial methods. </p>
@@ -290,8 +303,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>High byte. </p>
-<p>Return the most significant (high byte of a word</p>
+<p>Return high byte. </p>
+<p>Return the most significant (high) byte of a word</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bytes</td><td>Word to convert </td></tr>
@@ -315,7 +328,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Low byte. </p>
+<p>Return low byte. </p>
 <p>Return the least significant (low) byte of a word</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -434,6 +447,10 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>include/<a class="el" href="_a_b_b_aurora_serial_8h_source.html">ABBAuroraSerial.h</a></li>
+<li>src/ABBAuroraSerial.cpp</li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

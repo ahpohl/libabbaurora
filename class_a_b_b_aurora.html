@@ -33,6 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="aurora_small.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">LIBABBAURORA
+   &#160;<span id="projectnumber">v0.2.0</span>
    </div>
    <div id="projectbrief">A C++ library for the ABB Aurora protocol used by inverters and other devices</div>
   </td>
@@ -92,7 +93,10 @@ $(document).ready(function(){initNavTree('class_a_b_b_aurora.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">ABBAurora Class Reference</div>  </div>
 </div><!--header-->
@@ -105,23 +109,17 @@ $(document).ready(function(){initNavTree('class_a_b_b_aurora.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_cumulated_energy.html">CumulatedEnergy</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for the read cumulated energy command.  <a href="struct_a_b_b_aurora_1_1_cumulated_energy.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_dsp.html">Dsp</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for measure request to dsp command.  <a href="struct_a_b_b_aurora_1_1_dsp.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_firmware_release.html">FirmwareRelease</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for the read firmware release command.  <a href="struct_a_b_b_aurora_1_1_firmware_release.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">LastFourAlarms</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for last four alarms command.  <a href="struct_a_b_b_aurora_1_1_last_four_alarms.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_manufacturing_week_year.html">ManufacturingWeekYear</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for the read manufacturing date command.  <a href="struct_a_b_b_aurora_1_1_manufacturing_week_year.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_manufacturing_date.html">ManufacturingDate</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for the read manufacturing date command.  <a href="struct_a_b_b_aurora_1_1_manufacturing_date.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_state.html">State</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for state request command.  <a href="struct_a_b_b_aurora_1_1_state.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for <a class="el" href="class_a_b_b_aurora.html#aab92a4cbcb00e3482e52fdf7af2df571" title="Read system state. ">ReadState()</a>  <a href="struct_a_b_b_aurora_1_1_state.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_time_date.html">TimeDate</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for time/date reading command.  <a href="struct_a_b_b_aurora_1_1_time_date.html#details">More...</a><br /></td></tr>
@@ -153,71 +151,80 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9cc3783bb2240e084780711b64374fab"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a9cc3783bb2240e084780711b64374fab">GetErrorMessage</a> (void) const </td></tr>
 <tr class="memdesc:a9cc3783bb2240e084780711b64374fab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get error message.  <a href="#a9cc3783bb2240e084780711b64374fab">More...</a><br /></td></tr>
 <tr class="separator:a9cc3783bb2240e084780711b64374fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Inverter commands</div></td></tr>
+<tr class="memitem:aab92a4cbcb00e3482e52fdf7af2df571"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#aab92a4cbcb00e3482e52fdf7af2df571">ReadState</a> (<a class="el" href="struct_a_b_b_aurora_1_1_state.html">State</a> &amp;state)</td></tr>
+<tr class="memdesc:aab92a4cbcb00e3482e52fdf7af2df571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read system state.  <a href="#aab92a4cbcb00e3482e52fdf7af2df571">More...</a><br /></td></tr>
+<tr class="separator:aab92a4cbcb00e3482e52fdf7af2df571"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fc1dfd4455a9ebb63ecdcc48ab7767f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a8fc1dfd4455a9ebb63ecdcc48ab7767f">ReadPartNumber</a> (std::string &amp;pn)</td></tr>
+<tr class="memdesc:a8fc1dfd4455a9ebb63ecdcc48ab7767f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read system P/N.  <a href="#a8fc1dfd4455a9ebb63ecdcc48ab7767f">More...</a><br /></td></tr>
+<tr class="separator:a8fc1dfd4455a9ebb63ecdcc48ab7767f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a124a4864c7f45218c599ff39f364ed48"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a124a4864c7f45218c599ff39f364ed48">ReadVersion</a> (<a class="el" href="struct_a_b_b_aurora_1_1_version.html">Version</a> &amp;version)</td></tr>
+<tr class="memdesc:a124a4864c7f45218c599ff39f364ed48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read version.  <a href="#a124a4864c7f45218c599ff39f364ed48">More...</a><br /></td></tr>
+<tr class="separator:a124a4864c7f45218c599ff39f364ed48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96b9ccf207a62308a5c0bf7046e7f6b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a96b9ccf207a62308a5c0bf7046e7f6b7">ReadDspValue</a> (float &amp;value, const <a class="el" href="_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18">DspValueEnum</a> &amp;type, const <a class="el" href="_a_b_b_aurora_enums_8h.html#a30d01ae52dc56409f4593f9d2936bf84">DspGlobalEnum</a> &amp;global=DspGlobalEnum::MODULE_MEASUREMENT)</td></tr>
+<tr class="memdesc:a96b9ccf207a62308a5c0bf7046e7f6b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure request to the DSP.  <a href="#a96b9ccf207a62308a5c0bf7046e7f6b7">More...</a><br /></td></tr>
+<tr class="separator:a96b9ccf207a62308a5c0bf7046e7f6b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add84ce053e49d95ecd6cafaf5c718c41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#add84ce053e49d95ecd6cafaf5c718c41">ReadSerialNumber</a> (std::string &amp;sn)</td></tr>
+<tr class="memdesc:add84ce053e49d95ecd6cafaf5c718c41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read serial number.  <a href="#add84ce053e49d95ecd6cafaf5c718c41">More...</a><br /></td></tr>
+<tr class="separator:add84ce053e49d95ecd6cafaf5c718c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae37c92404e1721b1776993d3664864c1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#ae37c92404e1721b1776993d3664864c1">ReadManufacturingDate</a> (<a class="el" href="struct_a_b_b_aurora_1_1_manufacturing_date.html">ManufacturingDate</a> &amp;date)</td></tr>
+<tr class="memdesc:ae37c92404e1721b1776993d3664864c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read manufacturing date.  <a href="#ae37c92404e1721b1776993d3664864c1">More...</a><br /></td></tr>
+<tr class="separator:ae37c92404e1721b1776993d3664864c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a005340f03cf79ff9d9031ff52e080a2b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a005340f03cf79ff9d9031ff52e080a2b">ReadTimeDate</a> (<a class="el" href="struct_a_b_b_aurora_1_1_time_date.html">TimeDate</a> &amp;date)</td></tr>
+<tr class="memdesc:a005340f03cf79ff9d9031ff52e080a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read inverter date.  <a href="#a005340f03cf79ff9d9031ff52e080a2b">More...</a><br /></td></tr>
+<tr class="separator:a005340f03cf79ff9d9031ff52e080a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a164cba36c521bf6710eeae17aeb6f45e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a164cba36c521bf6710eeae17aeb6f45e">ReadFirmwareRelease</a> (<a class="el" href="struct_a_b_b_aurora_1_1_firmware_release.html">FirmwareRelease</a> &amp;firmware)</td></tr>
+<tr class="memdesc:a164cba36c521bf6710eeae17aeb6f45e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read firmware release.  <a href="#a164cba36c521bf6710eeae17aeb6f45e">More...</a><br /></td></tr>
+<tr class="separator:a164cba36c521bf6710eeae17aeb6f45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d74835fdd1896427851df91e92afa23"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a1d74835fdd1896427851df91e92afa23">ReadCumulatedEnergy</a> (float &amp;cum_energy, const <a class="el" href="_a_b_b_aurora_enums_8h.html#a022acb2810dd6f1abc7bf5fdfc727008">CumulatedEnergyEnum</a> &amp;period)</td></tr>
+<tr class="memdesc:a1d74835fdd1896427851df91e92afa23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read cumulated energy.  <a href="#a1d74835fdd1896427851df91e92afa23">More...</a><br /></td></tr>
+<tr class="separator:a1d74835fdd1896427851df91e92afa23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa12c3eb9b4af9c1eb2acb3098a807ca7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#aa12c3eb9b4af9c1eb2acb3098a807ca7">ReadLastFourAlarms</a> (<a class="el" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">LastFourAlarms</a> &amp;alarms)</td></tr>
+<tr class="memdesc:aa12c3eb9b4af9c1eb2acb3098a807ca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read last four alarms.  <a href="#aa12c3eb9b4af9c1eb2acb3098a807ca7">More...</a><br /></td></tr>
+<tr class="separator:aa12c3eb9b4af9c1eb2acb3098a807ca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Inverter commands</h2></td></tr>
-<tr class="memitem:adc0ff78540eb02c305e3899b10637165"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc0ff78540eb02c305e3899b10637165"></a>
-struct <a class="el" href="struct_a_b_b_aurora_1_1_state.html">ABBAurora::State</a>&#160;</td><td class="memItemRight" valign="bottom"><b>State</b></td></tr>
-<tr class="separator:adc0ff78540eb02c305e3899b10637165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2edcb1732cc52dedef39f44b3b348d52"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2edcb1732cc52dedef39f44b3b348d52"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a2edcb1732cc52dedef39f44b3b348d52">SystemPN</a></td></tr>
-<tr class="memdesc:a2edcb1732cc52dedef39f44b3b348d52"><td class="mdescLeft">&#160;</td><td class="mdescRight">String for the read system P/N command. <br /></td></tr>
-<tr class="separator:a2edcb1732cc52dedef39f44b3b348d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21ae3f0b2b66048cb22b992ab81e1045"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21ae3f0b2b66048cb22b992ab81e1045"></a>
-struct <a class="el" href="struct_a_b_b_aurora_1_1_version.html">ABBAurora::Version</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Version</b></td></tr>
-<tr class="separator:a21ae3f0b2b66048cb22b992ab81e1045"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3b55c96fc47f4e52f13bcdd54babfc9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3b55c96fc47f4e52f13bcdd54babfc9"></a>
-struct <a class="el" href="struct_a_b_b_aurora_1_1_dsp.html">ABBAurora::Dsp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Dsp</b></td></tr>
-<tr class="separator:ae3b55c96fc47f4e52f13bcdd54babfc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acad84d6fa00c44860376ea74cbdc2019"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acad84d6fa00c44860376ea74cbdc2019"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#acad84d6fa00c44860376ea74cbdc2019">SystemSerialNumber</a></td></tr>
-<tr class="memdesc:acad84d6fa00c44860376ea74cbdc2019"><td class="mdescLeft">&#160;</td><td class="mdescRight">String for the read serial number command. <br /></td></tr>
-<tr class="separator:acad84d6fa00c44860376ea74cbdc2019"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e153c8f8b7b87c7d1a68ba3618305b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e153c8f8b7b87c7d1a68ba3618305b1"></a>
-struct <a class="el" href="struct_a_b_b_aurora_1_1_manufacturing_week_year.html">ABBAurora::ManufacturingWeekYear</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ManufacturingWeekYear</b></td></tr>
-<tr class="separator:a0e153c8f8b7b87c7d1a68ba3618305b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55c5eda018183d67e6375940fa357b5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55c5eda018183d67e6375940fa357b5d"></a>
-struct <a class="el" href="struct_a_b_b_aurora_1_1_time_date.html">ABBAurora::TimeDate</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TimeDate</b></td></tr>
-<tr class="separator:a55c5eda018183d67e6375940fa357b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1612bd7bc68aebc15b9ba41b8143e6d3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1612bd7bc68aebc15b9ba41b8143e6d3"></a>
-struct <a class="el" href="struct_a_b_b_aurora_1_1_firmware_release.html">ABBAurora::FirmwareRelease</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FirmwareRelease</b></td></tr>
-<tr class="separator:a1612bd7bc68aebc15b9ba41b8143e6d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ae1f33c8ab1369b6e52bba1d560807f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ae1f33c8ab1369b6e52bba1d560807f"></a>
-struct <a class="el" href="struct_a_b_b_aurora_1_1_cumulated_energy.html">ABBAurora::CumulatedEnergy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CumulatedEnergy</b></td></tr>
-<tr class="separator:a7ae1f33c8ab1369b6e52bba1d560807f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64da4b5c73379cbf3b674957ca18b3f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64da4b5c73379cbf3b674957ca18b3f1"></a>
-struct <a class="el" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">ABBAurora::LastFourAlarms</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LastFourAlarms</b></td></tr>
-<tr class="separator:a64da4b5c73379cbf3b674957ca18b3f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d626a5f5aaaf01b1ea6ec15fe3c6321"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a5d626a5f5aaaf01b1ea6ec15fe3c6321">ReadState</a> (void)</td></tr>
-<tr class="memdesc:a5d626a5f5aaaf01b1ea6ec15fe3c6321"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_a_b_b_aurora_1_1_state.html" title="Data structure for state request command. ">State</a> request.  <a href="#a5d626a5f5aaaf01b1ea6ec15fe3c6321">More...</a><br /></td></tr>
-<tr class="separator:a5d626a5f5aaaf01b1ea6ec15fe3c6321"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bf7e808ccf5d6bd040568682bb7a404"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a3bf7e808ccf5d6bd040568682bb7a404">ReadSystemPN</a> (void)</td></tr>
-<tr class="memdesc:a3bf7e808ccf5d6bd040568682bb7a404"><td class="mdescLeft">&#160;</td><td class="mdescRight">P/N reading.  <a href="#a3bf7e808ccf5d6bd040568682bb7a404">More...</a><br /></td></tr>
-<tr class="separator:a3bf7e808ccf5d6bd040568682bb7a404"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8b47bb1d839ae4190ca4751bc53eea3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#ab8b47bb1d839ae4190ca4751bc53eea3">ReadVersion</a> (void)</td></tr>
-<tr class="memdesc:ab8b47bb1d839ae4190ca4751bc53eea3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_a_b_b_aurora_1_1_version.html" title="Data structure for version reading command. ">Version</a> reading.  <a href="#ab8b47bb1d839ae4190ca4751bc53eea3">More...</a><br /></td></tr>
-<tr class="separator:ab8b47bb1d839ae4190ca4751bc53eea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae49ebcba548dbd79579db6f7261f11c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#ae49ebcba548dbd79579db6f7261f11c6">ReadDspValue</a> (const DspValueEnum &amp;type, const DspGlobalEnum &amp;global)</td></tr>
-<tr class="memdesc:ae49ebcba548dbd79579db6f7261f11c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure request to the DSP.  <a href="#ae49ebcba548dbd79579db6f7261f11c6">More...</a><br /></td></tr>
-<tr class="separator:ae49ebcba548dbd79579db6f7261f11c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3073e9e62ee1a7f9aa3cf22a82f7faf0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a3073e9e62ee1a7f9aa3cf22a82f7faf0">ReadSystemSerialNumber</a> (void)</td></tr>
-<tr class="memdesc:a3073e9e62ee1a7f9aa3cf22a82f7faf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial number reading.  <a href="#a3073e9e62ee1a7f9aa3cf22a82f7faf0">More...</a><br /></td></tr>
-<tr class="separator:a3073e9e62ee1a7f9aa3cf22a82f7faf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a899927177785613244c4f0d0361f1d24"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a899927177785613244c4f0d0361f1d24">ReadManufacturingWeekYear</a> (void)</td></tr>
-<tr class="memdesc:a899927177785613244c4f0d0361f1d24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manufacturing date reading.  <a href="#a899927177785613244c4f0d0361f1d24">More...</a><br /></td></tr>
-<tr class="separator:a899927177785613244c4f0d0361f1d24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a134731beede888a6232d4bc17263532a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a134731beede888a6232d4bc17263532a">ReadTimeDate</a> (void)</td></tr>
-<tr class="memdesc:a134731beede888a6232d4bc17263532a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time/Date reading.  <a href="#a134731beede888a6232d4bc17263532a">More...</a><br /></td></tr>
-<tr class="separator:a134731beede888a6232d4bc17263532a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af875d7a0e28672a9a91eeee58f61a86b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#af875d7a0e28672a9a91eeee58f61a86b">ReadFirmwareRelease</a> (void)</td></tr>
-<tr class="memdesc:af875d7a0e28672a9a91eeee58f61a86b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Firmware release reading.  <a href="#af875d7a0e28672a9a91eeee58f61a86b">More...</a><br /></td></tr>
-<tr class="separator:af875d7a0e28672a9a91eeee58f61a86b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9f93ef1ef6fd4e85d95192e4ae18467"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#ac9f93ef1ef6fd4e85d95192e4ae18467">ReadCumulatedEnergy</a> (const CumulatedEnergyEnum &amp;period)</td></tr>
-<tr class="memdesc:ac9f93ef1ef6fd4e85d95192e4ae18467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cumulated energy readings.  <a href="#ac9f93ef1ef6fd4e85d95192e4ae18467">More...</a><br /></td></tr>
-<tr class="separator:ac9f93ef1ef6fd4e85d95192e4ae18467"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad16f68366067c246c0daa742ccd923ad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#ad16f68366067c246c0daa742ccd923ad">ReadLastFourAlarms</a> (void)</td></tr>
-<tr class="memdesc:ad16f68366067c246c0daa742ccd923ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Last four alarms.  <a href="#ad16f68366067c246c0daa742ccd923ad">More...</a><br /></td></tr>
-<tr class="separator:ad16f68366067c246c0daa742ccd923ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:accdaf4a36efe5672a05ddddb3d3b24f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#accdaf4a36efe5672a05ddddb3d3b24f1">Send</a> (<a class="el" href="_a_b_b_aurora_enums_8h.html#a9a0b0bf01b3ff120daff64dd09147174">SendCommandEnum</a> cmd, uint8_t b2, uint8_t b3, uint8_t b4, uint8_t b5, uint8_t b6, uint8_t b7)</td></tr>
+<tr class="memdesc:accdaf4a36efe5672a05ddddb3d3b24f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send command.  <a href="#accdaf4a36efe5672a05ddddb3d3b24f1">More...</a><br /></td></tr>
+<tr class="separator:accdaf4a36efe5672a05ddddb3d3b24f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92669328dfa356450377ae6f0f193d80"><td class="memItemLeft" align="right" valign="top">long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a92669328dfa356450377ae6f0f193d80">GetGmtOffset</a> (void)</td></tr>
+<tr class="memdesc:a92669328dfa356450377ae6f0f193d80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get GMT offset.  <a href="#a92669328dfa356450377ae6f0f193d80">More...</a><br /></td></tr>
+<tr class="separator:a92669328dfa356450377ae6f0f193d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ac377e1fd83b37c6c0da7add215665546"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac377e1fd83b37c6c0da7add215665546"></a>
+<a class="el" href="class_a_b_b_aurora_serial.html">ABBAuroraSerial</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#ac377e1fd83b37c6c0da7add215665546">Serial</a></td></tr>
+<tr class="memdesc:ac377e1fd83b37c6c0da7add215665546"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial object which handles the communication with the device. <br /></td></tr>
+<tr class="separator:ac377e1fd83b37c6c0da7add215665546"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad35d82afe78225ab534d4e5fe97b9b49"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad35d82afe78225ab534d4e5fe97b9b49"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#ad35d82afe78225ab534d4e5fe97b9b49">Address</a></td></tr>
+<tr class="memdesc:ad35d82afe78225ab534d4e5fe97b9b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of the serial device. <br /></td></tr>
+<tr class="separator:ad35d82afe78225ab534d4e5fe97b9b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a983a9cdf789bc0b9f7894f3cff6ca9c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a983a9cdf789bc0b9f7894f3cff6ca9c6"></a>
+uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a983a9cdf789bc0b9f7894f3cff6ca9c6">ReceiveData</a></td></tr>
+<tr class="memdesc:a983a9cdf789bc0b9f7894f3cff6ca9c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array to hold the answer from the device. <br /></td></tr>
+<tr class="separator:a983a9cdf789bc0b9f7894f3cff6ca9c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a838d16e344ac92b35053a6b5ff7fc46d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a838d16e344ac92b35053a6b5ff7fc46d"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a838d16e344ac92b35053a6b5ff7fc46d">ErrorMessage</a></td></tr>
+<tr class="memdesc:a838d16e344ac92b35053a6b5ff7fc46d"><td class="mdescLeft">&#160;</td><td class="mdescRight">String which holds the possible error message. <br /></td></tr>
+<tr class="separator:a838d16e344ac92b35053a6b5ff7fc46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a3bba8d6de60fd07459ead16b98ad37a9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3bba8d6de60fd07459ead16b98ad37a9"></a>
+static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a3bba8d6de60fd07459ead16b98ad37a9">SendBufferSize</a> = 10</td></tr>
+<tr class="memdesc:a3bba8d6de60fd07459ead16b98ad37a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed send buffer size (8 bytes) <br /></td></tr>
+<tr class="separator:a3bba8d6de60fd07459ead16b98ad37a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27ef59713fcc19bb8d8b234e19b9418b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27ef59713fcc19bb8d8b234e19b9418b"></a>
+static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a27ef59713fcc19bb8d8b234e19b9418b">ReceiveBufferSize</a> = 8</td></tr>
+<tr class="memdesc:a27ef59713fcc19bb8d8b234e19b9418b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed receive buffer size (10 bytes) <br /></td></tr>
+<tr class="separator:a27ef59713fcc19bb8d8b234e19b9418b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72b0c0814639109639cd2c52ec0db714"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72b0c0814639109639cd2c52ec0db714"></a>
+static const time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a72b0c0814639109639cd2c52ec0db714">InverterEpoch</a> = 946684800</td></tr>
+<tr class="memdesc:a72b0c0814639109639cd2c52ec0db714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seconds since midnight of January 1, 2000. <br /></td></tr>
+<tr class="separator:a72b0c0814639109639cd2c52ec0db714"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Communication protocol between host and supervisor microprocessor. </p>
@@ -229,7 +236,7 @@ struct <a class="el" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">ABBAur
 </ul>
 <p>If the device has a RS485 interface, the default serial bus address is 2.</p>
 <dl class="section author"><dt>Author</dt><dd>Alexander Pohl <a href="#" onclick="location.href='mai'+'lto:'+'ale'+'x@'+'ahp'+'oh'+'l.c'+'om'; return false;">alex@<span style="display: none;">.nosp@m.</span>ahpo<span style="display: none;">.nosp@m.</span>hl.co<span style="display: none;">.nosp@m.</span>m</a> </dd></dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_basic_8cpp-example.html#_a0">example_basic.cpp</a>, and <a class="el" href="example_firmware_8cpp-example.html#_a0">example_firmware.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="example_alarms_8cpp-example.html#_a0">example_alarms.cpp</a>, <a class="el" href="example_cumulated_8cpp-example.html#_a0">example_cumulated.cpp</a>, <a class="el" href="example_daemon_8cpp-example.html#_a0">example_daemon.cpp</a>, <a class="el" href="example_dsp_8cpp-example.html#_a0">example_dsp.cpp</a>, <a class="el" href="example_inverter_8cpp-example.html#_a0">example_inverter.cpp</a>, and <a class="el" href="example_state_8cpp-example.html#_a0">example_state.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ac1a3e264479e0d0a9ac2d46a0f801a4e"></a>
 <div class="memitem">
@@ -310,7 +317,7 @@ struct <a class="el" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">ABBAur
 </div><div class="memdoc">
 
 <p>Get serial device address. </p>
-<p>Gets the current RS485 serial device address </p>
+<dl class="section return"><dt>Returns</dt><dd>Current RS485 serial device address </dd></dl>
 
 </div>
 </div>
@@ -329,50 +336,94 @@ struct <a class="el" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">ABBAur
 </div><div class="memdoc">
 
 <p>Get error message. </p>
-<p>Returns the error message string </p>
+<dl class="section return"><dt>Returns</dt><dd>Error message </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ac9f93ef1ef6fd4e85d95192e4ae18467"></a>
+<a class="anchor" id="a92669328dfa356450377ae6f0f193d80"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">long int ABBAurora::GetGmtOffset </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get GMT offset. </p>
+<p>Method which returns the current offset to GMT [in seconds] </p>
+
+</div>
+</div>
+<a class="anchor" id="a1d74835fdd1896427851df91e92afa23"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool ABBAurora::ReadCumulatedEnergy </td>
           <td>(</td>
-          <td class="paramtype">const CumulatedEnergyEnum &amp;&#160;</td>
-          <td class="paramname"><em>period</em></td><td>)</td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>cum_energy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="_a_b_b_aurora_enums_8h.html#a022acb2810dd6f1abc7bf5fdfc727008">CumulatedEnergyEnum</a> &amp;&#160;</td>
+          <td class="paramname"><em>period</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Cumulated energy readings. </p>
+<p>Read cumulated energy. </p>
 <p>Reads the cumumlated energy (Aurora grid-tied inverters only)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">period</td><td>Energy period described in [ref CumulatedEnergyEnum] </td></tr>
+    <tr><td class="paramname">cum_energy</td><td>Cumulated energy </td></tr>
+    <tr><td class="paramname">period</td><td>Energy period </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="ae49ebcba548dbd79579db6f7261f11c6"></a>
+<a class="anchor" id="a96b9ccf207a62308a5c0bf7046e7f6b7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool ABBAurora::ReadDspValue </td>
           <td>(</td>
-          <td class="paramtype">const DspValueEnum &amp;&#160;</td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18">DspValueEnum</a> &amp;&#160;</td>
           <td class="paramname"><em>type</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const DspGlobalEnum &amp;&#160;</td>
-          <td class="paramname"><em>global</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="_a_b_b_aurora_enums_8h.html#a30d01ae52dc56409f4593f9d2936bf84">DspGlobalEnum</a> &amp;&#160;</td>
+          <td class="paramname"><em>global</em> = <code>DspGlobalEnum::MODULE_MEASUREMENT</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -386,163 +437,286 @@ struct <a class="el" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">ABBAur
 <p>Sends a request to measure voltage, current, power etc.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td>Requested value, described in [Ref DspValueEnum] </td></tr>
-    <tr><td class="paramname">global</td><td>Parameter described in [Ref DspGlobalEnum] </td></tr>
+    <tr><td class="paramname">value</td><td>DSP value </td></tr>
+    <tr><td class="paramname">type</td><td>The value to read </td></tr>
+    <tr><td class="paramname">global</td><td>Optional scope parameter </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="af875d7a0e28672a9a91eeee58f61a86b"></a>
+<a class="anchor" id="a164cba36c521bf6710eeae17aeb6f45e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool ABBAurora::ReadFirmwareRelease </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_a_b_b_aurora_1_1_firmware_release.html">ABBAurora::FirmwareRelease</a> &amp;&#160;</td>
+          <td class="paramname"><em>firmware</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Firmware release reading. </p>
-<p>Reads the firmware release. For Aurora grid-tied inverters you will read always the MCU firmware version (the field var is not interpreted) </p>
+<p>Read firmware release. </p>
+<p>Reads the firmware release. For Aurora grid-tied inverters you will read always the MCU firmware version (the field var is not interpreted)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">firmware</td><td>Firmware release </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="ad16f68366067c246c0daa742ccd923ad"></a>
+<a class="anchor" id="aa12c3eb9b4af9c1eb2acb3098a807ca7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool ABBAurora::ReadLastFourAlarms </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">ABBAurora::LastFourAlarms</a> &amp;&#160;</td>
+          <td class="paramname"><em>alarms</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Last four alarms. </p>
-<p>The command returns the codes of the last four alarms in form of a FIFO queue from the first to the last one. When this command is used the queue is emptied. Alarm codes are described in [ref to <a class="el" href="struct_a_b_b_aurora_1_1_state.html" title="Data structure for state request command. ">State</a> request] </p>
+<p>Read last four alarms. </p>
+<p>The command returns the codes of the last four alarms in form of a FIFO queue from the first to the last one. When this command is used the queue is emptied.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alarms</td><td>Last four alarms </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="a899927177785613244c4f0d0361f1d24"></a>
+<a class="anchor" id="ae37c92404e1721b1776993d3664864c1"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool ABBAurora::ReadManufacturingWeekYear </td>
+          <td class="memname">bool ABBAurora::ReadManufacturingDate </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_a_b_b_aurora_1_1_manufacturing_date.html">ABBAurora::ManufacturingDate</a> &amp;&#160;</td>
+          <td class="paramname"><em>date</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Manufacturing date reading. </p>
-<p>Reads the Manufacturing week and year (Aurora inverters) </p>
+<p>Read manufacturing date. </p>
+<p>Reads the Manufacturing week and year (Aurora inverters)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">date</td><td>Manufacturing date </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="a5d626a5f5aaaf01b1ea6ec15fe3c6321"></a>
+<a class="anchor" id="a8fc1dfd4455a9ebb63ecdcc48ab7767f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABBAurora::ReadPartNumber </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>pn</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read system P/N. </p>
+<p>Reads the part number (only Aurora inverters). No information on transmission and global state is returned.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pn</td><td>Inverter part number </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="add84ce053e49d95ecd6cafaf5c718c41"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABBAurora::ReadSerialNumber </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>sn</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read serial number. </p>
+<p>Reads the system serial number (Aurora inverters). No information on transmission and global state is returned.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sn</td><td>Serial number </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aab92a4cbcb00e3482e52fdf7af2df571"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool ABBAurora::ReadState </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_a_b_b_aurora_1_1_state.html">ABBAurora::State</a> &amp;&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="struct_a_b_b_aurora_1_1_state.html" title="Data structure for state request command. ">State</a> request. </p>
-<p>Ask the state of the system modules </p>
+<p>Read system state. </p>
+<p>Ask the state of the system modules</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td><a class="el" href="struct_a_b_b_aurora_1_1_state.html" title="Data structure for ReadState() ">State</a> of the system </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="a3bf7e808ccf5d6bd040568682bb7a404"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ABBAurora::ReadSystemPN </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>P/N reading. </p>
-<p>Reads the system part number (Aurora inverters). No information on transmission and global state is returned. </p>
-
-</div>
-</div>
-<a class="anchor" id="a3073e9e62ee1a7f9aa3cf22a82f7faf0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ABBAurora::ReadSystemSerialNumber </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Serial number reading. </p>
-<p>Reads the system serial number (Aurora inverters). No information on transmission and global state is returned. </p>
-
-</div>
-</div>
-<a class="anchor" id="a134731beede888a6232d4bc17263532a"></a>
+<a class="anchor" id="a005340f03cf79ff9d9031ff52e080a2b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool ABBAurora::ReadTimeDate </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_a_b_b_aurora_1_1_time_date.html">ABBAurora::TimeDate</a> &amp;&#160;</td>
+          <td class="paramname"><em>date</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Time/Date reading. </p>
-<p>Reads the time and date from the inverter, with one second accuracy </p>
+<p>Read inverter date. </p>
+<p>Reads the time and date from the inverter, with one second accuracy</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">date</td><td>Inverter date </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="ab8b47bb1d839ae4190ca4751bc53eea3"></a>
+<a class="anchor" id="a124a4864c7f45218c599ff39f364ed48"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">bool ABBAurora::ReadVersion </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_a_b_b_aurora_1_1_version.html">ABBAurora::Version</a> &amp;&#160;</td>
+          <td class="paramname"><em>version</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="struct_a_b_b_aurora_1_1_version.html" title="Data structure for version reading command. ">Version</a> reading. </p>
-<p>Reads the version (Indoor/Outdoor, Europe/America, available only for FW version 1.0.9 and following) </p>
+<p>Read version. </p>
+<p>Reads the version (Indoor/Outdoor, Europe/America, available only for FW version 1.0.9 and following)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version</td><td>Inverter version </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="accdaf4a36efe5672a05ddddb3d3b24f1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABBAurora::Send </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_a_b_b_aurora_enums_8h.html#a9a0b0bf01b3ff120daff64dd09147174">SendCommandEnum</a>&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>b2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>b3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>b4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>b5</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>b6</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>b7</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Send command. </p>
+<p>Method for sending a command to the device. The communication protocol uses fixed length transmission messages (8 bytes + 2 bytes for checksum). The structure of the answer also has fixed length (6 bytes + 2 bytes for checksum).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cmd</td><td>The command to send </td></tr>
+    <tr><td class="paramname">b2,b3,b4,b5,b6,b7</td><td>Remaining bytes of the transmission message </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -613,6 +787,10 @@ struct <a class="el" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">ABBAur
 
 </div>
 </div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>include/<a class="el" href="_a_b_b_aurora_8h_source.html">ABBAurora.h</a></li>
+<li>src/ABBAurora.cpp</li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -9,5 +9,7 @@ var class_a_b_b_aurora_serial =
     [ "LowByte", "class_a_b_b_aurora_serial.html#ac024aac1c8a3ced96fc6875d93dffd44", null ],
     [ "ReadBytes", "class_a_b_b_aurora_serial.html#a9321075a8345e5d5c490376b8634105e", null ],
     [ "Word", "class_a_b_b_aurora_serial.html#aebd49ea9b8ac236dc106d662f9729d8e", null ],
-    [ "WriteBytes", "class_a_b_b_aurora_serial.html#a90df8f184f2d861aeb7575713cd5ab0e", null ]
+    [ "WriteBytes", "class_a_b_b_aurora_serial.html#a90df8f184f2d861aeb7575713cd5ab0e", null ],
+    [ "ErrorMessage", "class_a_b_b_aurora_serial.html#abbec26592f4ddb9334a153f6972eaa17", null ],
+    [ "SerialPort", "class_a_b_b_aurora_serial.html#a6163dcf251daecbca0a78f63bea698f2", null ]
 ];

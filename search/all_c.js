@@ -1,15 +1,13 @@
 var searchData=
 [
-  ['readbytes',['ReadBytes',['../class_a_b_b_aurora_serial.html#a9321075a8345e5d5c490376b8634105e',1,'ABBAuroraSerial']]],
-  ['readcumulatedenergy',['ReadCumulatedEnergy',['../class_a_b_b_aurora.html#ac9f93ef1ef6fd4e85d95192e4ae18467',1,'ABBAurora']]],
-  ['readdspvalue',['ReadDspValue',['../class_a_b_b_aurora.html#ae49ebcba548dbd79579db6f7261f11c6',1,'ABBAurora']]],
-  ['readfirmwarerelease',['ReadFirmwareRelease',['../class_a_b_b_aurora.html#af875d7a0e28672a9a91eeee58f61a86b',1,'ABBAurora']]],
-  ['readlastfouralarms',['ReadLastFourAlarms',['../class_a_b_b_aurora.html#ad16f68366067c246c0daa742ccd923ad',1,'ABBAurora']]],
-  ['readmanufacturingweekyear',['ReadManufacturingWeekYear',['../class_a_b_b_aurora.html#a899927177785613244c4f0d0361f1d24',1,'ABBAurora']]],
-  ['readstate',['ReadState',['../class_a_b_b_aurora.html#a5d626a5f5aaaf01b1ea6ec15fe3c6321',1,'ABBAurora']]],
-  ['readsystempn',['ReadSystemPN',['../class_a_b_b_aurora.html#a3bf7e808ccf5d6bd040568682bb7a404',1,'ABBAurora']]],
-  ['readsystemserialnumber',['ReadSystemSerialNumber',['../class_a_b_b_aurora.html#a3073e9e62ee1a7f9aa3cf22a82f7faf0',1,'ABBAurora']]],
-  ['readtimedate',['ReadTimeDate',['../class_a_b_b_aurora.html#a134731beede888a6232d4bc17263532a',1,'ABBAurora']]],
-  ['readversion',['ReadVersion',['../class_a_b_b_aurora.html#ab8b47bb1d839ae4190ca4751bc53eea3',1,'ABBAurora']]],
-  ['release',['Release',['../struct_a_b_b_aurora_1_1_firmware_release.html#a8c2b1d0182ac9e94de9bab00b11eb26d',1,'ABBAurora::FirmwareRelease']]]
+  ['par1',['Par1',['../struct_a_b_b_aurora_1_1_version.html#add937e09b5884c76acaa1ccec004cd65',1,'ABBAurora::Version']]],
+  ['par2',['Par2',['../struct_a_b_b_aurora_1_1_version.html#ae5e391273576b110ce3814be5ca4abcd',1,'ABBAurora::Version']]],
+  ['par3',['Par3',['../struct_a_b_b_aurora_1_1_version.html#a52ed09784cc32fa9833b5910c7c841fa',1,'ABBAurora::Version']]],
+  ['par4',['Par4',['../struct_a_b_b_aurora_1_1_version.html#a5820a65ad5ca49272a52bddf72560d4f',1,'ABBAurora::Version']]],
+  ['pn_5freading',['PN_READING',['../_a_b_b_aurora_enums_8h.html#a9a0b0bf01b3ff120daff64dd09147174a9772d8038e6e987b1eb60929e2cce1b9',1,'ABBAuroraEnums.h']]],
+  ['power_5fin_5f1',['POWER_IN_1',['../_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18a6435f3c0d05069851dbbdf1d6a746ae9',1,'ABBAuroraEnums.h']]],
+  ['power_5fin_5f2',['POWER_IN_2',['../_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18ad598cd195b45eb9bec310b942f7e83db',1,'ABBAuroraEnums.h']]],
+  ['power_5fpeak',['POWER_PEAK',['../_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18a1497b7f072fc8783a460d5307faee3f0',1,'ABBAuroraEnums.h']]],
+  ['power_5fpeak_5ftoday',['POWER_PEAK_TODAY',['../_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18a33623b021110d4d1f7b890328c862183',1,'ABBAuroraEnums.h']]],
+  ['power_5fsaturation_5flimit',['POWER_SATURATION_LIMIT',['../_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18a2ead2d79539c2650230b9374ebdd2911',1,'ABBAuroraEnums.h']]]
 ];

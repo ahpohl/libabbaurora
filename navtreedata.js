@@ -9,13 +9,20 @@ var NAVTREE =
         [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
+    [ "Files", null, [
+      [ "File List", "files.html", "files" ],
+      [ "Globals", "globals.html", [
+        [ "All", "globals.html", null ],
+        [ "Enumerations", "globals_enum.html", null ]
+      ] ]
+    ] ],
     [ "Examples", "examples.html", "examples" ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"annotated.html"
+"_a_b_b_aurora_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

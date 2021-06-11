@@ -1,9 +1,17 @@
 var searchData=
 [
-  ['seconds',['Seconds',['../struct_a_b_b_aurora_1_1_time_date.html#ab3da36ef2b51f9d5d80c88ea1114ec21',1,'ABBAurora::TimeDate']]],
-  ['setaddress',['SetAddress',['../class_a_b_b_aurora.html#a8b21f9b18d344367ff545aa71f44440c',1,'ABBAurora']]],
-  ['setup',['Setup',['../class_a_b_b_aurora.html#acd38fe4b59f8a28a707c5216f0662a50',1,'ABBAurora']]],
-  ['state',['State',['../struct_a_b_b_aurora_1_1_state.html',1,'ABBAurora']]],
-  ['systempn',['SystemPN',['../class_a_b_b_aurora.html#a2edcb1732cc52dedef39f44b3b348d52',1,'ABBAurora']]],
-  ['systemserialnumber',['SystemSerialNumber',['../class_a_b_b_aurora.html#acad84d6fa00c44860376ea74cbdc2019',1,'ABBAurora']]]
+  ['readbytes',['ReadBytes',['../class_a_b_b_aurora_serial.html#a9321075a8345e5d5c490376b8634105e',1,'ABBAuroraSerial']]],
+  ['readcumulatedenergy',['ReadCumulatedEnergy',['../class_a_b_b_aurora.html#a1d74835fdd1896427851df91e92afa23',1,'ABBAurora']]],
+  ['readdspvalue',['ReadDspValue',['../class_a_b_b_aurora.html#a96b9ccf207a62308a5c0bf7046e7f6b7',1,'ABBAurora']]],
+  ['readfirmwarerelease',['ReadFirmwareRelease',['../class_a_b_b_aurora.html#a164cba36c521bf6710eeae17aeb6f45e',1,'ABBAurora']]],
+  ['readlastfouralarms',['ReadLastFourAlarms',['../class_a_b_b_aurora.html#aa12c3eb9b4af9c1eb2acb3098a807ca7',1,'ABBAurora']]],
+  ['readmanufacturingdate',['ReadManufacturingDate',['../class_a_b_b_aurora.html#ae37c92404e1721b1776993d3664864c1',1,'ABBAurora']]],
+  ['readpartnumber',['ReadPartNumber',['../class_a_b_b_aurora.html#a8fc1dfd4455a9ebb63ecdcc48ab7767f',1,'ABBAurora']]],
+  ['readserialnumber',['ReadSerialNumber',['../class_a_b_b_aurora.html#add84ce053e49d95ecd6cafaf5c718c41',1,'ABBAurora']]],
+  ['readstate',['ReadState',['../class_a_b_b_aurora.html#aab92a4cbcb00e3482e52fdf7af2df571',1,'ABBAurora']]],
+  ['readtimedate',['ReadTimeDate',['../class_a_b_b_aurora.html#a005340f03cf79ff9d9031ff52e080a2b',1,'ABBAurora']]],
+  ['readversion',['ReadVersion',['../class_a_b_b_aurora.html#a124a4864c7f45218c599ff39f364ed48',1,'ABBAurora']]],
+  ['receivebuffersize',['ReceiveBufferSize',['../class_a_b_b_aurora.html#a27ef59713fcc19bb8d8b234e19b9418b',1,'ABBAurora']]],
+  ['receivedata',['ReceiveData',['../class_a_b_b_aurora.html#a983a9cdf789bc0b9f7894f3cff6ca9c6',1,'ABBAurora']]],
+  ['release',['Release',['../struct_a_b_b_aurora_1_1_firmware_release.html#a8c2b1d0182ac9e94de9bab00b11eb26d',1,'ABBAurora::FirmwareRelease']]]
 ];

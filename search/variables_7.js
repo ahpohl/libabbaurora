@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['seconds',['Seconds',['../struct_a_b_b_aurora_1_1_time_date.html#ab3da36ef2b51f9d5d80c88ea1114ec21',1,'ABBAurora::TimeDate']]],
-  ['systempn',['SystemPN',['../class_a_b_b_aurora.html#a2edcb1732cc52dedef39f44b3b348d52',1,'ABBAurora']]],
-  ['systemserialnumber',['SystemSerialNumber',['../class_a_b_b_aurora.html#acad84d6fa00c44860376ea74cbdc2019',1,'ABBAurora']]]
+  ['sendbuffersize',['SendBufferSize',['../class_a_b_b_aurora.html#a3bba8d6de60fd07459ead16b98ad37a9',1,'ABBAurora']]],
+  ['serial',['Serial',['../class_a_b_b_aurora.html#ac377e1fd83b37c6c0da7add215665546',1,'ABBAurora']]],
+  ['serialport',['SerialPort',['../class_a_b_b_aurora_serial.html#a6163dcf251daecbca0a78f63bea698f2',1,'ABBAuroraSerial']]]
 ];

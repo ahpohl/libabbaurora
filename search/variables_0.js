@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['alarms1',['Alarms1',['../struct_a_b_b_aurora_1_1_last_four_alarms.html#af87a977e6ce35adddbde837671444d6a',1,'ABBAurora::LastFourAlarms']]],
-  ['alarms2',['Alarms2',['../struct_a_b_b_aurora_1_1_last_four_alarms.html#a87695bc21987d1c56ea7edc9521361b2',1,'ABBAurora::LastFourAlarms']]],
-  ['alarms3',['Alarms3',['../struct_a_b_b_aurora_1_1_last_four_alarms.html#ae469db20f02cf82390ab31e3db07f3ed',1,'ABBAurora::LastFourAlarms']]],
-  ['alarms4',['Alarms4',['../struct_a_b_b_aurora_1_1_last_four_alarms.html#a9611c71c62117a345e62726f2f0f0137',1,'ABBAurora::LastFourAlarms']]],
-  ['alarmstate',['AlarmState',['../struct_a_b_b_aurora_1_1_state.html#ab3501990b58d061b4b5e9d5113afe988',1,'ABBAurora::State']]]
+  ['address',['Address',['../class_a_b_b_aurora.html#ad35d82afe78225ab534d4e5fe97b9b49',1,'ABBAurora']]],
+  ['alarm1',['Alarm1',['../struct_a_b_b_aurora_1_1_last_four_alarms.html#ae3221dab6c2fd52b32a97cfaaa84127a',1,'ABBAurora::LastFourAlarms']]],
+  ['alarm2',['Alarm2',['../struct_a_b_b_aurora_1_1_last_four_alarms.html#ae7f4b949038a918e04c1adcd012008ff',1,'ABBAurora::LastFourAlarms']]],
+  ['alarm3',['Alarm3',['../struct_a_b_b_aurora_1_1_last_four_alarms.html#a1abeee7cb788a47d2cb4e55f1717390f',1,'ABBAurora::LastFourAlarms']]],
+  ['alarm4',['Alarm4',['../struct_a_b_b_aurora_1_1_last_four_alarms.html#a3baa03992806a4caba3b5bc5fba54ad6',1,'ABBAurora::LastFourAlarms']]],
+  ['alarmstate',['AlarmState',['../struct_a_b_b_aurora_1_1_state.html#ae2891324655c31ec0f32afb894c23393',1,'ABBAurora::State']]]
 ];

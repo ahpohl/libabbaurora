@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['week',['Week',['../struct_a_b_b_aurora_1_1_manufacturing_week_year.html#a2042694c72ee69fd095289a391ea947c',1,'ABBAurora::ManufacturingWeekYear']]]
+  ['year',['Year',['../struct_a_b_b_aurora_1_1_manufacturing_date.html#a7306d0fb4375ea605db9ec0e83eb446c',1,'ABBAurora::ManufacturingDate']]]
 ];

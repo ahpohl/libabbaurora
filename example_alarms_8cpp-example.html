@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>LIBABBAURORA: ABBAurora::CumulatedEnergy Struct Reference</title>
+<title>LIBABBAURORA: example_alarms.cpp</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,6 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="aurora_small.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">LIBABBAURORA
+   &#160;<span id="projectnumber">v0.2.0</span>
    </div>
    <div id="projectbrief">A C++ library for the ABB Aurora protocol used by inverters and other devices</div>
   </td>
@@ -72,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('struct_a_b_b_aurora_1_1_cumulated_energy.html','');});
+$(document).ready(function(){initNavTree('example_alarms_8cpp-example.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -90,41 +91,16 @@ $(document).ready(function(){initNavTree('struct_a_b_b_aurora_1_1_cumulated_ener
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">ABBAurora::CumulatedEnergy Struct Reference</div>  </div>
+<div class="title">example_alarms.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Data structure for the read cumulated energy command.  
- <a href="struct_a_b_b_aurora_1_1_cumulated_energy.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="_a_b_b_aurora_8h_source.html">ABBAurora.h</a>&gt;</code></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Data Fields</h2></td></tr>
-<tr class="memitem:ac20b9e7a0d6a9078f59ad9bffdfc6216"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac20b9e7a0d6a9078f59ad9bffdfc6216"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_cumulated_energy.html#ac20b9e7a0d6a9078f59ad9bffdfc6216">TransmissionState</a></td></tr>
-<tr class="memdesc:ac20b9e7a0d6a9078f59ad9bffdfc6216"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmission state. <br /></td></tr>
-<tr class="separator:ac20b9e7a0d6a9078f59ad9bffdfc6216"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7efba642919afa701828b92e7f3d1bb5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7efba642919afa701828b92e7f3d1bb5"></a>
-unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_cumulated_energy.html#a7efba642919afa701828b92e7f3d1bb5">GlobalState</a></td></tr>
-<tr class="memdesc:a7efba642919afa701828b92e7f3d1bb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global state. <br /></td></tr>
-<tr class="separator:a7efba642919afa701828b92e7f3d1bb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa45f5a62a83b7e532777ff7f3b1c3439"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa45f5a62a83b7e532777ff7f3b1c3439"></a>
-unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_a_b_b_aurora_1_1_cumulated_energy.html#aa45f5a62a83b7e532777ff7f3b1c3439">Energy</a></td></tr>
-<tr class="memdesc:aa45f5a62a83b7e532777ff7f3b1c3439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cumulated energy in Wh. <br /></td></tr>
-<tr class="separator:aa45f5a62a83b7e532777ff7f3b1c3439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Data structure for the read cumulated energy command. </p>
-</div></div><!-- contents -->
+<p>This example reads the last four alarms. </p><div class="fragment"><div class="line">Global state: Run</div><div class="line">Alarm 1: No Alarm</div><div class="line">Alarm 2: No Alarm</div><div class="line">Alarm 3: No Alarm</div><div class="line">Alarm 4: No Alarm</div></div><!-- fragment --><p> The output is equivalent to "aurora -a 2 -A /dev/ttyUSB0"</p>
+<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;memory&gt;</span></div><div class="line"><span class="preprocessor">#include &quot;ABBAurora.h&quot;</span></div><div class="line"></div><div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])</div><div class="line">{</div><div class="line">  <span class="keyword">const</span> std::string device = <span class="stringliteral">&quot;/dev/ttyUSB0&quot;</span>;</div><div class="line">  </div><div class="line">  std::unique_ptr&lt;ABBAurora&gt; inverter(<span class="keyword">new</span> <a name="_a0"></a><a class="code" href="class_a_b_b_aurora.html">ABBAurora</a>());</div><div class="line"></div><div class="line">  <span class="keywordflow">if</span> (!inverter-&gt;Setup(device))</div><div class="line">  {</div><div class="line">    std::cout &lt;&lt; inverter-&gt;GetErrorMessage() &lt;&lt; std::endl;</div><div class="line">    <span class="keywordflow">return</span> EXIT_FAILURE;</div><div class="line">  }</div><div class="line"></div><div class="line">  <a name="_a1"></a><a class="code" href="struct_a_b_b_aurora_1_1_last_four_alarms.html">ABBAurora::LastFourAlarms</a> alarms;</div><div class="line">  <span class="keywordflow">if</span> (!inverter-&gt;ReadLastFourAlarms(alarms))</div><div class="line">  {</div><div class="line">    std::cout &lt;&lt; inverter-&gt;GetErrorMessage() &lt;&lt; std::endl;</div><div class="line">    <span class="keywordflow">return</span> EXIT_FAILURE;</div><div class="line">  }</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Global state: &quot;</span> &lt;&lt; alarms.<a name="a2"></a><a class="code" href="struct_a_b_b_aurora_1_1_last_four_alarms.html#a422884e7901011b1168bfe0404750bb6">GlobalState</a> &lt;&lt; std::endl;</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Alarm 1: &quot;</span> &lt;&lt; alarms.<a name="a3"></a><a class="code" href="struct_a_b_b_aurora_1_1_last_four_alarms.html#ae3221dab6c2fd52b32a97cfaaa84127a">Alarm1</a> &lt;&lt; std::endl;</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Alarm 2: &quot;</span> &lt;&lt; alarms.<a name="a4"></a><a class="code" href="struct_a_b_b_aurora_1_1_last_four_alarms.html#ae7f4b949038a918e04c1adcd012008ff">Alarm2</a> &lt;&lt; std::endl;</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Alarm 3: &quot;</span> &lt;&lt; alarms.<a name="a5"></a><a class="code" href="struct_a_b_b_aurora_1_1_last_four_alarms.html#a1abeee7cb788a47d2cb4e55f1717390f">Alarm3</a> &lt;&lt; std::endl;</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Alarm 4: &quot;</span> &lt;&lt; alarms.<a name="a6"></a><a class="code" href="struct_a_b_b_aurora_1_1_last_four_alarms.html#a3baa03992806a4caba3b5bc5fba54ad6">Alarm4</a> &lt;&lt; std::endl;</div><div class="line"></div><div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div><div class="line">}</div></div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="class_a_b_b_aurora.html">ABBAurora</a></li><li class="navelem"><a class="el" href="struct_a_b_b_aurora_1_1_cumulated_energy.html">CumulatedEnergy</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>

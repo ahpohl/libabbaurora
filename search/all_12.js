@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['_7eabbaurora',['~ABBAurora',['../class_a_b_b_aurora.html#ad809b4f1b5243ee801140d510e6747ff',1,'ABBAurora']]],
-  ['_7eabbauroraserial',['~ABBAuroraSerial',['../class_a_b_b_aurora_serial.html#a97c41c51df96aee0eb19641b301230ae',1,'ABBAuroraSerial']]]
+  ['year',['Year',['../struct_a_b_b_aurora_1_1_manufacturing_date.html#a7306d0fb4375ea605db9ec0e83eb446c',1,'ABBAurora::ManufacturingDate']]]
 ];

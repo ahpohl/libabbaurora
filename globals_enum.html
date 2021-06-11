@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>LIBABBAURORA: example_firmware.cpp</title>
+<title>LIBABBAURORA: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,6 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="aurora_small.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">LIBABBAURORA
+   &#160;<span id="projectnumber">v0.2.0</span>
    </div>
    <div id="projectbrief">A C++ library for the ABB Aurora protocol used by inverters and other devices</div>
   </td>
@@ -72,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('example_firmware_8cpp-example.html','');});
+$(document).ready(function(){initNavTree('globals_enum.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -89,13 +90,22 @@ $(document).ready(function(){initNavTree('example_firmware_8cpp-example.html',''
 </iframe>
 </div>
 
-<div class="header">
-  <div class="headertitle">
-<div class="title">example_firmware.cpp</div>  </div>
-</div><!--header-->
 <div class="contents">
-<p>This example shows how meta data such as the firmware version or manufacturing date is obtained from the Aurora device.</p>
-<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div><div class="line"><span class="preprocessor">#include &lt;memory&gt;</span></div><div class="line"><span class="preprocessor">#include &quot;ABBAurora.h&quot;</span></div><div class="line"></div><div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])</div><div class="line">{</div><div class="line">  <span class="keyword">const</span> std::string device = <span class="stringliteral">&quot;/dev/ttyUSB0&quot;</span>;</div><div class="line">  </div><div class="line">  std::unique_ptr&lt;ABBAurora&gt; inverter(<span class="keyword">new</span> <a name="_a0"></a><a class="code" href="class_a_b_b_aurora.html">ABBAurora</a>());</div><div class="line"></div><div class="line">  <span class="keywordflow">if</span> (!inverter-&gt;Setup(device))</div><div class="line">  {</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Inverter setup failed: &quot;</span> &lt;&lt; inverter-&gt;GetErrorMessage() &lt;&lt; std::endl;</div><div class="line">    <span class="keywordflow">return</span> EXIT_FAILURE;</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="keywordflow">if</span> (!inverter-&gt;ReadTimeDate())</div><div class="line">  {</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Read date and time failed: &quot;</span> &lt;&lt; inverter-&gt;GetErrorMessage() &lt;&lt; std::endl;</div><div class="line">    <span class="keywordflow">return</span> EXIT_FAILURE;</div><div class="line">  }</div><div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Date: &quot;</span> &lt;&lt; inverter-&gt;TimeDate.TimeDate &lt;&lt; std::endl;</div><div class="line"></div><div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div><div class="line">}</div></div><!-- fragment --> </div><!-- contents -->
+&#160;<ul>
+<li>CumulatedEnergyEnum
+: <a class="el" href="_a_b_b_aurora_enums_8h.html#a022acb2810dd6f1abc7bf5fdfc727008">ABBAuroraEnums.h</a>
+</li>
+<li>DspGlobalEnum
+: <a class="el" href="_a_b_b_aurora_enums_8h.html#a30d01ae52dc56409f4593f9d2936bf84">ABBAuroraEnums.h</a>
+</li>
+<li>DspValueEnum
+: <a class="el" href="_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18">ABBAuroraEnums.h</a>
+</li>
+<li>SendCommandEnum
+: <a class="el" href="_a_b_b_aurora_enums_8h.html#a9a0b0bf01b3ff120daff64dd09147174">ABBAuroraEnums.h</a>
+</li>
+</ul>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
