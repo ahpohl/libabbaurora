@@ -72,16 +72,19 @@ bool ABBAurora::Send(SendCommandEnum cmd, uint8_t b2, uint8_t b3, uint8_t b4, ui
   if (Serial->WriteBytes(SendData, ABBAurora::SendBufferSize) < 0)
   {
     ErrorMessage = std::string("Write bytes failed: ") + Serial->GetErrorMessage();
+    Serial->Flush();
     return false;
   }
   if (Serial->ReadBytes(ReceiveData, ABBAurora::ReceiveBufferSize) < 0) 
   {
     ErrorMessage = std::string("Read bytes failed: ") + Serial->GetErrorMessage();
+    Serial->Flush();
     return false;
   }
   if (!(Serial->Word(ReceiveData[7], ReceiveData[6]) == Serial->Crc16(ReceiveData, 0, 6)))
   {
     ErrorMessage = "Received serial package with CRC mismatch";
+    Serial->Flush();
     return false;
   }
   if ((cmd != SendCommandEnum::PN_READING) && (cmd != SendCommandEnum::SERIAL_NUMBER_READING) && ReceiveData[0])
