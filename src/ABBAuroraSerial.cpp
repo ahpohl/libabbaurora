@@ -135,7 +135,7 @@ int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, const int &length)
 
   if (Log & static_cast<unsigned char>(LogLevelEnum::SERIAL))
   {
-    std::cout << "Send: ";
+    std::cout << "Send:    ";
     for (int i = 0; i < length; ++i)
     {
       std::cout << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << (((int)buffer[i]) & 0xFF) << " ";

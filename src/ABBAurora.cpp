@@ -1,6 +1,6 @@
 #include <iostream>
-#include <cstring>
 #include <sstream>
+#include <cstring>
 #include <ctime>
 #include "ABBAurora.h"
 #include "ABBAuroraStrings.h"
@@ -124,6 +124,14 @@ bool ABBAurora::ReadState(ABBAurora::State &state)
   state.Channel1State = ABBAuroraStrings::DcDcState(ReceiveData[3]);
   state.Channel2State = ABBAuroraStrings::DcDcState(ReceiveData[4]);
   state.AlarmState = ABBAuroraStrings::AlarmState(ReceiveData[5]);
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  {
+    std::cout << "States: Global: " << state.GlobalState 
+      << ", Inverter: " << state.InverterState 
+      << ", Channel1: " << state.Channel1State
+      << ", Channel2: " << state.Channel2State
+      << ", Alarm: " << state.AlarmState << std::endl;
+  }
   return true;
 }
 
@@ -139,6 +147,10 @@ bool ABBAurora::ReadPartNumber(std::string &pn)
     oss << ReceiveData[c];
   }
   pn = oss.str();
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  {
+    std::cout << "Part number: " << pn << std::endl;
+  }
   return true;
 }
 
@@ -153,7 +165,13 @@ bool ABBAurora::ReadVersion(ABBAurora::Version &version)
   version.Par2 = ABBAuroraStrings::VersionPart2(ReceiveData[3]);
   version.Par3 = ABBAuroraStrings::VersionPart3(ReceiveData[4]);
   version.Par4 = ABBAuroraStrings::VersionPart4(ReceiveData[5]);
-
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  {
+    std::cout << "Version: " << version.Par1
+      << " -- " << version.Par2
+      << " -- " << version.Par3
+      << " -- " << version.Par4 << std::endl;
+  }
   return true;
 }
 
@@ -169,7 +187,11 @@ bool ABBAurora::ReadDspValue(float &value, const DspValueEnum &type, const DspGl
     return false;
   }
   uint8_t b[] = {ReceiveData[5], ReceiveData[4], ReceiveData[3], ReceiveData[2]};
-  memcpy(&value, &b, sizeof(b));
+  memcpy(&value, &b, sizeof(b)); 
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  {
+    std::cout << "Dsp type: " << static_cast<int>(type) << ", dsp value: " << value << std::endl; 
+  }
   return true;
 }
 
@@ -184,7 +206,10 @@ bool ABBAurora::ReadSerialNumber(std::string &sn)
     oss << ReceiveData[c];
   }
   sn = oss.str();
-
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  {
+    std::cout << "Serial number: " << sn << std::endl;
+  }
   return true;
 }
 
@@ -201,7 +226,10 @@ bool ABBAurora::ReadManufacturingDate(ABBAurora::ManufacturingDate &date)
   oss.str("");
   oss << ReceiveData[4] << ReceiveData[5];
   date.Year = oss.str();
-
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  {
+    std::cout << "Manufacturing date: Year " << date.Year << " Week " << date.Week << std::endl;
+  }
   return true;
 }
 
@@ -221,6 +249,10 @@ bool ABBAurora::ReadTimeDate(ABBAurora::TimeDate &date)
   char buffer[80];
   strftime(buffer, 80, "%d-%b-%Y %H:%M:%S", &tm);
   date.TimeDate.assign(buffer);
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  { 
+    std::cout << "Date: " << date.TimeDate << std::endl;
+  }
   return true;
 }
 
@@ -241,6 +273,10 @@ bool ABBAurora::ReadFirmwareRelease(ABBAurora::FirmwareRelease &firmware)
     }
   }
   firmware.Release = oss.str();
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  {
+    std::cout << "Firmware release: " << firmware.Release << std::endl;
+  }
   return true;
 }
 
@@ -259,6 +295,10 @@ bool ABBAurora::ReadCumulatedEnergy(float &cum_energy, const CumulatedEnergyEnum
   uint32_t energy_watt_hours = 0;
   memcpy(&energy_watt_hours, &b, sizeof(b));
   cum_energy = static_cast<float>(energy_watt_hours) / 1000.0;
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  {
+    std::cout << "Period: " << static_cast<int>(period) << ", cumulated energy: " << cum_energy << std::endl;
+  }
   return true;
 }
 
@@ -273,5 +313,12 @@ bool ABBAurora::ReadLastFourAlarms(ABBAurora::LastFourAlarms &alarms)
   alarms.Alarm2 = ABBAuroraStrings::AlarmState(ReceiveData[3]);
   alarms.Alarm3 = ABBAuroraStrings::AlarmState(ReceiveData[4]);
   alarms.Alarm4 = ABBAuroraStrings::AlarmState(ReceiveData[5]);
+  if (Log & static_cast<unsigned char>(LogLevelEnum::AURORA))
+  {
+    std::cout << "Last four alarms:" << alarms.Alarm1
+      << ", " << alarms.Alarm2
+      << ", " << alarms.Alarm3
+      << ", " << alarms.Alarm4 << std::endl;
+  }
   return true;
 }
