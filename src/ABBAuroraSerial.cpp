@@ -1,10 +1,16 @@
 #include <cstring>
 #include <iostream>
+#include <iomanip>
 #include <thread>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include "ABBAuroraSerial.h"
+#include "ABBAuroraEnums.h"
+
+ABBAuroraSerial::ABBAuroraSerial(const unsigned char &log) : Log(log)
+{
+}
 
 ABBAuroraSerial::~ABBAuroraSerial(void)
 {
@@ -103,6 +109,16 @@ int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
     return -1;
   }
 
+  if (Log & static_cast<unsigned char>(LogLevelEnum::SERIAL))
+  {
+    std::cout << "Receive: ";
+    for (int i = 0; i < length; ++i)
+    {
+      std::cout << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << (((int)buffer[i]) & 0xFF) << " ";
+    }
+    std::cout << std::endl;
+  }
+
   return bytes_received;
 }
 
@@ -116,6 +132,16 @@ int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, const int &length)
     return -1;
   }
   tcdrain(SerialPort);
+
+  if (Log & static_cast<unsigned char>(LogLevelEnum::SERIAL))
+  {
+    std::cout << "Send: ";
+    for (int i = 0; i < length; ++i)
+    {
+      std::cout << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << (((int)buffer[i]) & 0xFF) << " ";
+    }
+    std::cout << std::endl;
+  }
 
   return bytes_sent;
 }

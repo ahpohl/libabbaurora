@@ -9,11 +9,11 @@ const int ABBAurora::SendBufferSize = 10;
 const int ABBAurora::ReceiveBufferSize = 8;
 const time_t ABBAurora::InverterEpoch = 946684800;
 
-ABBAurora::ABBAurora(void) : Address(2)
+ABBAurora::ABBAurora(void) : Address(2), Log(0)
 {
 }
 
-ABBAurora::ABBAurora(const unsigned char &addr) : Address(addr)
+ABBAurora::ABBAurora(const unsigned char &addr) : Address(addr), Log(0)
 {
 }
 
@@ -31,7 +31,7 @@ void ABBAurora::SetLogLevel(const unsigned char &log_level)
 bool ABBAurora::Setup(const std::string &device, const speed_t baudrate)
 {
   ReceiveData = new uint8_t[ABBAurora::ReceiveBufferSize] ();
-  Serial = new ABBAuroraSerial();
+  Serial = new ABBAuroraSerial(Log);
   if (!Serial->Begin(device, baudrate))
   {
     ErrorMessage = Serial->GetErrorMessage();
