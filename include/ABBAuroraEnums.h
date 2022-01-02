@@ -177,8 +177,7 @@ enum class LogLevelEnum : unsigned char
   CONFIG = 0x01,
   JSON = 0x02,
   MQTT = 0x04,
-  AURORA = 0x08,
-  SERIAL = 0x10
+  SERIAL = 0x08
 };
 
 #endif
