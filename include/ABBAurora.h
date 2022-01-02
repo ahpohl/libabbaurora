@@ -25,6 +25,7 @@ class ABBAurora
 private:
   ABBAuroraSerial *Serial; ///< Serial object which handles the communication with the device
   unsigned char Address; ///< Address of the serial device
+  unsigned char Log; ///< Log level
   uint8_t *ReceiveData; ///< Array to hold the answer from the device
   std::string ErrorMessage; ///< String which holds the possible error message
   /** @brief Send command
@@ -59,6 +60,13 @@ public:
       Closes the serial port and destroys the class object.
       */
   ~ABBAurora(void);
+  /** @brief Set log level
+  
+      Set log level of the ABBAurora class. 
+
+      @param log_level log level
+      */
+  void SetLogLevel(const unsigned char &log_level);
   /** @brief Setup serial device communication
       
       Opens the host serial device and sets the communication parameters.

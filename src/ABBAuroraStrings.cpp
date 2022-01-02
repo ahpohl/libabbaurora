@@ -24,7 +24,7 @@ std::string ABBAuroraStrings::TransmissionState(unsigned char id)
   case 58:
     return "The variable is not available, retry";
   default:
-    return "Unknown";
+    return std::string("Unknown (") + std::to_string(id) + ")";
   }
 }
 
@@ -115,7 +115,7 @@ std::string ABBAuroraStrings::GlobalState(unsigned char id)
   case 101:
     return "Freeze";
   default:
-    return "Unknown";
+    return std::string("Unknown (") + std::to_string(id) + ")";
   }
 }
 
@@ -164,7 +164,7 @@ std::string ABBAuroraStrings::DcDcState(unsigned char id)
   case 19:
     return "DcDc Comm.Error";
   default:
-    return "Unknown";
+    return std::string("Unknown (") + std::to_string(id) + ")";
   }
 }
 
@@ -253,7 +253,7 @@ std::string ABBAuroraStrings::InverterState(unsigned char id)
   case 47:
     return "Input OC";
   default:
-    return "Unknown";
+    return std::string("Unknown (") + std::to_string(id) + ")";
   }
 }
 
@@ -392,7 +392,7 @@ std::string ABBAuroraStrings::AlarmState(unsigned char id)
   case 64:
     return "Jbox fail";
   default:
-    return "Unknown";
+    return std::string("Unknown (") + std::to_string(id) + ")";
   }
 }
 
@@ -429,7 +429,7 @@ std::string ABBAuroraStrings::VersionPart1(char id)
   case 'X':
     return "Aurora 10.0kW";
   default:
-    return "Unknown";
+    return std::string("Unknown (") + id + ")";
   }
 }
 
@@ -450,7 +450,7 @@ std::string ABBAuroraStrings::VersionPart2(char id)
   case 'K':
     return "AS 4777";
   default:
-    return "Unknown";
+    return std::string("Unknown (") + id + ")";
   }
 }
 
@@ -463,7 +463,7 @@ std::string ABBAuroraStrings::VersionPart3(char id)
   case 'T':
     return "Transformer Version";
   default:
-    return "Unknown";
+    return std::string("Unknown (") + id + ")";
   }
 }
 
@@ -476,6 +476,6 @@ std::string ABBAuroraStrings::VersionPart4(char id)
   case 'N':
     return "PV version";
   default:
-    return "Unknown";
+    return std::string("Unknown (") + id + ")";
   }
 }

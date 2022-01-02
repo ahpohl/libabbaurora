@@ -171,4 +171,13 @@ enum class SendCommandEnum : unsigned char
   NOT_IMPLEMENTED = 255
 };
 
+/// Log level enum
+enum class LogLevelEnum : unsigned char
+{
+  CONFIG = 0x01,
+  JSON = 0x02,
+  MQTT = 0x04,
+  SERIAL = 0x08,
+};
+
 #endif

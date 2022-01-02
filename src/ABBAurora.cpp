@@ -23,6 +23,11 @@ ABBAurora::~ABBAurora(void)
   if (Serial) { delete Serial; }
 }
 
+void ABBAurora::SetLogLevel(const unsigned char &log_level)
+{
+  Log = log_level;
+}
+
 bool ABBAurora::Setup(const std::string &device, const speed_t baudrate)
 {
   ReceiveData = new uint8_t[ABBAurora::ReceiveBufferSize] ();
