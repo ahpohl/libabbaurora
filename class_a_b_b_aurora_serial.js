@@ -1,5 +1,6 @@
 var class_a_b_b_aurora_serial =
 [
+    [ "ABBAuroraSerial", "class_a_b_b_aurora_serial.html#a2fa2b254d04fa66b63922e49418d9550", null ],
     [ "~ABBAuroraSerial", "class_a_b_b_aurora_serial.html#a97c41c51df96aee0eb19641b301230ae", null ],
     [ "Begin", "class_a_b_b_aurora_serial.html#a5501999ca9ef19ad573cc0b943652ddd", null ],
     [ "Crc16", "class_a_b_b_aurora_serial.html#ad014d67be101031f5e6e073451caa195", null ],
@@ -11,5 +12,6 @@ var class_a_b_b_aurora_serial =
     [ "Word", "class_a_b_b_aurora_serial.html#aebd49ea9b8ac236dc106d662f9729d8e", null ],
     [ "WriteBytes", "class_a_b_b_aurora_serial.html#a90df8f184f2d861aeb7575713cd5ab0e", null ],
     [ "ErrorMessage", "class_a_b_b_aurora_serial.html#abbec26592f4ddb9334a153f6972eaa17", null ],
+    [ "Log", "class_a_b_b_aurora_serial.html#a3c860c60c6b33942624cf3392ad94b6f", null ],
     [ "SerialPort", "class_a_b_b_aurora_serial.html#a6163dcf251daecbca0a78f63bea698f2", null ]
 ];

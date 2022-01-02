@@ -33,7 +33,7 @@
   <td id="projectlogo"><img alt="Logo" src="aurora_small.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">LIBABBAURORA
-   &#160;<span id="projectnumber">v0.2.0</span>
+   &#160;<span id="projectnumber">v0.2.1</span>
    </div>
    <div id="projectbrief">A C++ library for the ABB Aurora protocol used by inverters and other devices</div>
   </td>
@@ -139,6 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad809b4f1b5243ee801140d510e6747ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#ad809b4f1b5243ee801140d510e6747ff">~ABBAurora</a> (void)</td></tr>
 <tr class="memdesc:ad809b4f1b5243ee801140d510e6747ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default class destructor.  <a href="#ad809b4f1b5243ee801140d510e6747ff">More...</a><br /></td></tr>
 <tr class="separator:ad809b4f1b5243ee801140d510e6747ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88fae2c6536170dbff4fef1aab9bd948"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a88fae2c6536170dbff4fef1aab9bd948">SetLogLevel</a> (const unsigned char &amp;log_level)</td></tr>
+<tr class="memdesc:a88fae2c6536170dbff4fef1aab9bd948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set log level.  <a href="#a88fae2c6536170dbff4fef1aab9bd948">More...</a><br /></td></tr>
+<tr class="separator:a88fae2c6536170dbff4fef1aab9bd948"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd38fe4b59f8a28a707c5216f0662a50"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#acd38fe4b59f8a28a707c5216f0662a50">Setup</a> (const std::string &amp;device, const speed_t baudrate=B19200)</td></tr>
 <tr class="memdesc:acd38fe4b59f8a28a707c5216f0662a50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup serial device communication.  <a href="#acd38fe4b59f8a28a707c5216f0662a50">More...</a><br /></td></tr>
 <tr class="separator:acd38fe4b59f8a28a707c5216f0662a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +205,10 @@ Private Attributes</h2></td></tr>
 unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#ad35d82afe78225ab534d4e5fe97b9b49">Address</a></td></tr>
 <tr class="memdesc:ad35d82afe78225ab534d4e5fe97b9b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of the serial device. <br /></td></tr>
 <tr class="separator:ad35d82afe78225ab534d4e5fe97b9b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add2ec2a92a2f22e399c92d906d8276e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add2ec2a92a2f22e399c92d906d8276e0"></a>
+unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#add2ec2a92a2f22e399c92d906d8276e0">Log</a></td></tr>
+<tr class="memdesc:add2ec2a92a2f22e399c92d906d8276e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log level. <br /></td></tr>
+<tr class="separator:add2ec2a92a2f22e399c92d906d8276e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a983a9cdf789bc0b9f7894f3cff6ca9c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a983a9cdf789bc0b9f7894f3cff6ca9c6"></a>
 uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_b_b_aurora.html#a983a9cdf789bc0b9f7894f3cff6ca9c6">ReceiveData</a></td></tr>
 <tr class="memdesc:a983a9cdf789bc0b9f7894f3cff6ca9c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array to hold the answer from the device. <br /></td></tr>
@@ -739,6 +746,31 @@ static const time_t&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">addr</td><td>RS485 device address, range 2-63 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a88fae2c6536170dbff4fef1aab9bd948"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABBAurora::SetLogLevel </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned char &amp;&#160;</td>
+          <td class="paramname"><em>log_level</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set log level. </p>
+<p>Set log level of the <a class="el" href="class_a_b_b_aurora.html" title="Communication protocol between host and supervisor microprocessor. ">ABBAurora</a> class.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">log_level</td><td>log level </td></tr>
   </table>
   </dd>
 </dl>

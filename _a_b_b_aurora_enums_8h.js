@@ -64,6 +64,12 @@ var _a_b_b_aurora_enums_8h =
       [ "GRID_VOLTAGE_PHASE_S", "_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18a15e4987326e46520049d00e87396a6e3", null ],
       [ "GRID_VOLTAGE_PHASE_T", "_a_b_b_aurora_enums_8h.html#a82f0d6727bba1226d527bfa4cac86e18ac1a572a9497c71bd47a6a5a8ec83d81d", null ]
     ] ],
+    [ "LogLevelEnum", "_a_b_b_aurora_enums_8h.html#a3aec629af17c2ef6a13933eb962633a7", [
+      [ "CONFIG", "_a_b_b_aurora_enums_8h.html#a3aec629af17c2ef6a13933eb962633a7a73e99d350a4aa6f1a5af04ec29173f73", null ],
+      [ "JSON", "_a_b_b_aurora_enums_8h.html#a3aec629af17c2ef6a13933eb962633a7a0ecd11c1d7a287401d148a23bbd7a2f8", null ],
+      [ "MQTT", "_a_b_b_aurora_enums_8h.html#a3aec629af17c2ef6a13933eb962633a7aab0a7cf5deeda86b66467df64c3b6122", null ],
+      [ "SERIAL", "_a_b_b_aurora_enums_8h.html#a3aec629af17c2ef6a13933eb962633a7a7b804a28d6154ab8007287532037f1d0", null ]
+    ] ],
     [ "SendCommandEnum", "_a_b_b_aurora_enums_8h.html#a9a0b0bf01b3ff120daff64dd09147174", [
       [ "STATE_REQUEST", "_a_b_b_aurora_enums_8h.html#a9a0b0bf01b3ff120daff64dd09147174a46b14978293e3e81eed73b553b772a93", null ],
       [ "PN_READING", "_a_b_b_aurora_enums_8h.html#a9a0b0bf01b3ff120daff64dd09147174a9772d8038e6e987b1eb60929e2cce1b9", null ],

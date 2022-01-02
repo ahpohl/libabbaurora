@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['receivebuffersize',['ReceiveBufferSize',['../class_a_b_b_aurora.html#a27ef59713fcc19bb8d8b234e19b9418b',1,'ABBAurora']]],
-  ['receivedata',['ReceiveData',['../class_a_b_b_aurora.html#a983a9cdf789bc0b9f7894f3cff6ca9c6',1,'ABBAurora']]],
-  ['release',['Release',['../struct_a_b_b_aurora_1_1_firmware_release.html#a8c2b1d0182ac9e94de9bab00b11eb26d',1,'ABBAurora::FirmwareRelease']]]
+  ['par1',['Par1',['../struct_a_b_b_aurora_1_1_version.html#add937e09b5884c76acaa1ccec004cd65',1,'ABBAurora::Version']]],
+  ['par2',['Par2',['../struct_a_b_b_aurora_1_1_version.html#ae5e391273576b110ce3814be5ca4abcd',1,'ABBAurora::Version']]],
+  ['par3',['Par3',['../struct_a_b_b_aurora_1_1_version.html#a52ed09784cc32fa9833b5910c7c841fa',1,'ABBAurora::Version']]],
+  ['par4',['Par4',['../struct_a_b_b_aurora_1_1_version.html#a5820a65ad5ca49272a52bddf72560d4f',1,'ABBAurora::Version']]]
 ];

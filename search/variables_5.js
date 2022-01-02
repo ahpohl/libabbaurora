@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['par1',['Par1',['../struct_a_b_b_aurora_1_1_version.html#add937e09b5884c76acaa1ccec004cd65',1,'ABBAurora::Version']]],
-  ['par2',['Par2',['../struct_a_b_b_aurora_1_1_version.html#ae5e391273576b110ce3814be5ca4abcd',1,'ABBAurora::Version']]],
-  ['par3',['Par3',['../struct_a_b_b_aurora_1_1_version.html#a52ed09784cc32fa9833b5910c7c841fa',1,'ABBAurora::Version']]],
-  ['par4',['Par4',['../struct_a_b_b_aurora_1_1_version.html#a5820a65ad5ca49272a52bddf72560d4f',1,'ABBAurora::Version']]]
+  ['log',['Log',['../class_a_b_b_aurora.html#add2ec2a92a2f22e399c92d906d8276e0',1,'ABBAurora::Log()'],['../class_a_b_b_aurora_serial.html#a3c860c60c6b33942624cf3392ad94b6f',1,'ABBAuroraSerial::Log()']]]
 ];
