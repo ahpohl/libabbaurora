@@ -28,11 +28,11 @@ void ABBAurora::SetLogLevel(const unsigned char &log_level)
   Log = log_level;
 }
 
-bool ABBAurora::Setup(const std::string &device, const speed_t baudrate)
+bool ABBAurora::Setup(const std::string &device, const speed_t baudrate, const int &max_read_iterations, const int &character_delay)
 {
   ReceiveData = new uint8_t[ABBAurora::ReceiveBufferSize] ();
   Serial = new ABBAuroraSerial(Log);
-  if (!Serial->Begin(device, baudrate))
+  if (!Serial->Begin(device, baudrate, max_read_iterations, character_delay))
   {
     ErrorMessage = Serial->GetErrorMessage();
     return false;

@@ -19,14 +19,17 @@ ABBAuroraSerial::~ABBAuroraSerial(void)
   }
 }
 
-bool ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
+bool ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate, const int &max_read_iterations, const int &character_delay)
 {
   if (device.empty()) {
     ErrorMessage = "Serial device argument empty";
     return false;
   }
+  MaxReadIterations = max_read_iterations;
+  CharacterDelay = character_delay;
  
   SerialPort = open(device.c_str(), O_RDWR | O_NOCTTY);
+
   if (SerialPort < 0) {
     ErrorMessage = std::string("Error opening device ") + device + ": "
       + strerror(errno) + " (" + std::to_string(errno) + ")";
@@ -77,10 +80,9 @@ bool ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
 int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
 {
   int bytes_received, retval, iterations = 0;
-  const int max_iterations = 1000;
-  //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now(); 
+  //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
  
-  while (iterations < max_iterations) {
+  while (iterations < MaxReadIterations) {
     int bytes_available;
     retval = ioctl(SerialPort, FIONREAD, &bytes_available);
     if (retval < 0) {
@@ -88,7 +90,7 @@ int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
       return -1;
     }
     // intercharacter delay: 1 / baud rate * 1e6 = 52 µs
-    std::this_thread::sleep_for(std::chrono::microseconds(50));
+    std::this_thread::sleep_for(std::chrono::microseconds(CharacterDelay));
     if (bytes_available >= length)
       break;
     iterations++;
@@ -97,7 +99,7 @@ int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
   //std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
   //std::cout << "Iterations: " << iterations << std::endl;
 
-  if (iterations == max_iterations)
+  if (iterations == MaxReadIterations)
   {
     ErrorMessage = "Timeout, inverter could not be reached";
     return -1;
