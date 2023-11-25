@@ -30,14 +30,17 @@ public:
 
     @param device The serial device, i.e. /dev/ttyUSB0
     @param baudrate The serial baud rate
+    @param max_read_iterations Max read iterations to wait for data arrival
+    @param character_delay Inter character read delay
     */
-  bool Begin(const std::string &device, const speed_t &baudrate);
+  bool Begin(const std::string &device, const speed_t &baudrate, const int &max_read_iterations, const int &character_delay);
 /** @brief Read bytes
 
     Read bytes available in the input buffer
 
     @param buffer Buffer to store the bytes
-    @param length Number of bytes to read 
+    @param length Number of bytes to read
+
     */
   int ReadBytes(uint8_t *buffer, const int &length);
 /** @brief Write bytes
@@ -94,6 +97,8 @@ public:
 
 private:
   int SerialPort; ///< Serial port number
+  int MaxReadIterations = 1000; ///< Max number of read iterations
+  int CharacterDelay = 52; ///< Delay between reading characters
   std::string ErrorMessage; ///< Error message string
   unsigned char Log; ///< Log level
 };

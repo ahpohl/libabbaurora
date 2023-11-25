@@ -1,5 +1,7 @@
 #ifndef ABBAurora_h
 #define ABBAurora_h
+
+#include <stdint.h>
 #include "ABBAuroraEnums.h"
 #include "ABBAuroraSerial.h"
 
@@ -79,9 +81,11 @@ public:
 
       @param device Serial device, i.e. /dev/ttyUSB0
       @param baudrate Optional baud rate
+      @param max_read_iterations Max serial read iterations
+      @param character_delay Max delay between character reads in microseconds
       */
-  bool Setup(const std::string &device, const speed_t baudrate = B19200);
-  /** @brief Set serial device address
+  bool Setup(const std::string &device, const speed_t baudrate, const int &max_read_iterations, const int &character_delay);
+  /** @brief Set zerial device address
 
       Sets a new RS485 serial device address     
 
