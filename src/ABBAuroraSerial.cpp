@@ -1,42 +1,39 @@
-#include <cstring>
-#include <iostream>
-#include <iomanip>
-#include <thread>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
 #include "ABBAuroraSerial.h"
 #include "ABBAuroraEnums.h"
+#include <cstring>
+#include <fcntl.h>
+#include <iomanip>
+#include <iostream>
+#include <sys/ioctl.h>
+#include <thread>
+#include <unistd.h>
 
-ABBAuroraSerial::ABBAuroraSerial(const unsigned char &log) : Log(log)
-{
-}
+ABBAuroraSerial::ABBAuroraSerial(const unsigned char &log) : Log(log) {}
 
-ABBAuroraSerial::~ABBAuroraSerial(void)
-{
+ABBAuroraSerial::~ABBAuroraSerial(void) {
   if (SerialPort) {
     close(SerialPort);
   }
 }
 
-bool ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
-{
+bool ABBAuroraSerial::Begin(const std::string &device,
+                            const speed_t &baudrate) {
   if (device.empty()) {
     ErrorMessage = "Serial device argument empty";
     return false;
   }
- 
+
   SerialPort = open(device.c_str(), O_RDWR | O_NOCTTY);
   if (SerialPort < 0) {
-    ErrorMessage = std::string("Error opening device ") + device + ": "
-      + strerror(errno) + " (" + std::to_string(errno) + ")";
+    ErrorMessage = std::string("Error opening device ") + device + ": " +
+                   strerror(errno) + " (" + std::to_string(errno) + ")";
     return false;
   }
 
   int ret = ioctl(SerialPort, TIOCEXCL);
   if (ret < 0) {
-    ErrorMessage = std::string("Error getting device lock on") 
-      + device + ": " + strerror(errno) + " (" + std::to_string(errno) + ")";
+    ErrorMessage = std::string("Error getting device lock on") + device + ": " +
+                   strerror(errno) + " (" + std::to_string(errno) + ")";
     return false;
   }
 
@@ -45,8 +42,8 @@ bool ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
   memset(&serial_port_settings, 0, sizeof(serial_port_settings));
   ret = tcgetattr(SerialPort, &serial_port_settings);
   if (ret) {
-    ErrorMessage = std::string("Error getting serial port attributes: ")
-      + strerror(errno) + " (" + std::to_string(errno) + ")";
+    ErrorMessage = std::string("Error getting serial port attributes: ") +
+                   strerror(errno) + " (" + std::to_string(errno) + ")";
     return false;
   }
 
@@ -65,8 +62,8 @@ bool ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
 
   ret = tcsetattr(SerialPort, TCSANOW, &serial_port_settings);
   if (ret != 0) {
-    ErrorMessage = std::string("Error setting serial port attributes: ") 
-      + strerror(errno) + " (" + std::to_string(errno) + ")";
+    ErrorMessage = std::string("Error setting serial port attributes: ") +
+                   strerror(errno) + " (" + std::to_string(errno) + ")";
     return false;
   }
   tcflush(SerialPort, TCIOFLUSH);
@@ -74,12 +71,12 @@ bool ABBAuroraSerial::Begin(const std::string &device, const speed_t &baudrate)
   return true;
 }
 
-int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
-{
+int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length) {
   int bytes_received, retval, iterations = 0;
   const int max_iterations = 1000;
-  //std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now(); 
- 
+  // std::chrono::steady_clock::time_point begin =
+  // std::chrono::steady_clock::now();
+
   while (iterations < max_iterations) {
     int bytes_available;
     retval = ioctl(SerialPort, FIONREAD, &bytes_available);
@@ -93,12 +90,13 @@ int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
       break;
     iterations++;
   }
-  //std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-  //std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
-  //std::cout << "Iterations: " << iterations << std::endl;
+  // std::chrono::steady_clock::time_point end =
+  // std::chrono::steady_clock::now(); std::cout << "Time difference = " <<
+  // std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()
+  // << "[µs]" << std::endl; std::cout << "Iterations: " << iterations <<
+  // std::endl;
 
-  if (iterations == max_iterations)
-  {
+  if (iterations == max_iterations) {
     ErrorMessage = "Timeout, inverter could not be reached";
     return -1;
   }
@@ -109,12 +107,11 @@ int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
     return -1;
   }
 
-  if (Log & static_cast<unsigned char>(LogLevelEnum::SERIAL))
-  {
+  if (Log & static_cast<unsigned char>(LogLevelEnum::SERIAL)) {
     std::cout << "Receive: ";
-    for (int i = 0; i < length; ++i)
-    {
-      std::cout << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << (((int)buffer[i]) & 0xFF) << " ";
+    for (int i = 0; i < length; ++i) {
+      std::cout << std::uppercase << std::hex << std::setfill('0')
+                << std::setw(2) << (((int)buffer[i]) & 0xFF) << " ";
     }
     std::cout << std::endl;
   }
@@ -122,8 +119,7 @@ int ABBAuroraSerial::ReadBytes(uint8_t *buffer, const int &length)
   return bytes_received;
 }
 
-int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, const int &length)
-{
+int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, const int &length) {
   int bytes_sent = 0;
 
   bytes_sent = write(SerialPort, buffer, length);
@@ -133,12 +129,11 @@ int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, const int &length)
   }
   tcdrain(SerialPort);
 
-  if (Log & static_cast<unsigned char>(LogLevelEnum::SERIAL))
-  {
+  if (Log & static_cast<unsigned char>(LogLevelEnum::SERIAL)) {
     std::cout << "Send:    ";
-    for (int i = 0; i < length; ++i)
-    {
-      std::cout << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << (((int)buffer[i]) & 0xFF) << " ";
+    for (int i = 0; i < length; ++i) {
+      std::cout << std::uppercase << std::hex << std::setfill('0')
+                << std::setw(2) << (((int)buffer[i]) & 0xFF) << " ";
     }
     std::cout << std::endl;
   }
@@ -146,23 +141,18 @@ int ABBAuroraSerial::WriteBytes(uint8_t const *buffer, const int &length)
   return bytes_sent;
 }
 
-void ABBAuroraSerial::Flush(void) const
-{
-  tcflush(SerialPort, TCIOFLUSH);
-}
+void ABBAuroraSerial::Flush(void) const { tcflush(SerialPort, TCIOFLUSH); }
 
-uint16_t ABBAuroraSerial::Word(const uint8_t &msb, const uint8_t &lsb) const
-{
+uint16_t ABBAuroraSerial::Word(const uint8_t &msb, const uint8_t &lsb) const {
   return ((msb & 0xFF) << 8) | lsb;
 }
 
-uint16_t ABBAuroraSerial::Crc16(uint8_t *data, const int &offset, const int &count) const
-{
+uint16_t ABBAuroraSerial::Crc16(uint8_t *data, const int &offset,
+                                const int &count) const {
   uint8_t BccLo = 0xFF;
   uint8_t BccHi = 0xFF;
 
-  for (int i = offset; i < (offset + count); i++)
-  {
+  for (int i = offset; i < (offset + count); i++) {
     uint8_t New = data[offset + i] ^ BccLo;
     uint8_t Tmp = New << 4;
     New = Tmp ^ New;
@@ -178,17 +168,12 @@ uint16_t ABBAuroraSerial::Crc16(uint8_t *data, const int &offset, const int &cou
   return Word(~BccHi, ~BccLo);
 }
 
-uint8_t ABBAuroraSerial::LowByte(const uint16_t &bytes) const
-{
+uint8_t ABBAuroraSerial::LowByte(const uint16_t &bytes) const {
   return static_cast<uint8_t>(bytes);
 }
 
-uint8_t ABBAuroraSerial::HighByte(const uint16_t &bytes) const
-{
+uint8_t ABBAuroraSerial::HighByte(const uint16_t &bytes) const {
   return static_cast<uint8_t>((bytes >> 8) & 0xFF);
 }
 
-std::string ABBAuroraSerial::GetErrorMessage(void)
-{
-  return ErrorMessage;
-}
+std::string ABBAuroraSerial::GetErrorMessage(void) { return ErrorMessage; }

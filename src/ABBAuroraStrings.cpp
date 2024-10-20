@@ -1,10 +1,8 @@
-#include <string>
 #include "ABBAuroraStrings.h"
+#include <string>
 
-std::string ABBAuroraStrings::TransmissionState(unsigned char id)
-{
-  switch (id)
-  {
+std::string ABBAuroraStrings::TransmissionState(unsigned char id) {
+  switch (id) {
   case 0:
     return "Everything is OK.";
   case 51:
@@ -28,10 +26,8 @@ std::string ABBAuroraStrings::TransmissionState(unsigned char id)
   }
 }
 
-std::string ABBAuroraStrings::GlobalState(unsigned char id)
-{
-  switch (id)
-  {
+std::string ABBAuroraStrings::GlobalState(unsigned char id) {
+  switch (id) {
   case 0:
     return "Sending Parameters";
   case 1:
@@ -119,10 +115,8 @@ std::string ABBAuroraStrings::GlobalState(unsigned char id)
   }
 }
 
-std::string ABBAuroraStrings::DcDcState(unsigned char id)
-{
-  switch (id)
-  {
+std::string ABBAuroraStrings::DcDcState(unsigned char id) {
+  switch (id) {
   case 0:
     return "DcDc OFF";
   case 1:
@@ -168,10 +162,8 @@ std::string ABBAuroraStrings::DcDcState(unsigned char id)
   }
 }
 
-std::string ABBAuroraStrings::InverterState(unsigned char id)
-{
-  switch (id)
-  {
+std::string ABBAuroraStrings::InverterState(unsigned char id) {
+  switch (id) {
   case 0:
     return "Stand By";
   case 1:
@@ -257,10 +249,8 @@ std::string ABBAuroraStrings::InverterState(unsigned char id)
   }
 }
 
-std::string ABBAuroraStrings::AlarmState(unsigned char id)
-{
-  switch (id)
-  {
+std::string ABBAuroraStrings::AlarmState(unsigned char id) {
+  switch (id) {
   case 0:
     return "No Alarm";
   case 1:
@@ -396,10 +386,8 @@ std::string ABBAuroraStrings::AlarmState(unsigned char id)
   }
 }
 
-std::string ABBAuroraStrings::VersionPart1(char id)
-{
-  switch (id)
-  {
+std::string ABBAuroraStrings::VersionPart1(char id) {
+  switch (id) {
   case 'i':
     return "Aurora 2 kW indoor";
   case 'o':
@@ -433,10 +421,8 @@ std::string ABBAuroraStrings::VersionPart1(char id)
   }
 }
 
-std::string ABBAuroraStrings::VersionPart2(char id)
-{
-  switch (id)
-  {
+std::string ABBAuroraStrings::VersionPart2(char id) {
+  switch (id) {
   case 'A':
     return "UL1741";
   case 'E':
@@ -454,10 +440,8 @@ std::string ABBAuroraStrings::VersionPart2(char id)
   }
 }
 
-std::string ABBAuroraStrings::VersionPart3(char id)
-{
-  switch (id)
-  {
+std::string ABBAuroraStrings::VersionPart3(char id) {
+  switch (id) {
   case 'N':
     return "Transformerless Version";
   case 'T':
@@ -467,10 +451,8 @@ std::string ABBAuroraStrings::VersionPart3(char id)
   }
 }
 
-std::string ABBAuroraStrings::VersionPart4(char id)
-{
-  switch (id)
-  {
+std::string ABBAuroraStrings::VersionPart4(char id) {
+  switch (id) {
   case 'W':
     return "Wind version";
   case 'N':

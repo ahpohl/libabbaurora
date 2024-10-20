@@ -11,25 +11,22 @@
     ```
     The output is equivalent to "aurora -a 2 -s /dev/ttyUSB0"
     */
+#include "ABBAurora.h"
 #include <iostream>
 #include <memory>
-#include "ABBAurora.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   const std::string device = "/dev/ttyUSB0";
-  
+
   std::unique_ptr<ABBAurora> inverter(new ABBAurora());
 
-  if (!inverter->Setup(device))
-  {
+  if (!inverter->Setup(device)) {
     std::cout << inverter->GetErrorMessage() << std::endl;
     return EXIT_FAILURE;
   }
 
   ABBAurora::State state;
-  if (!inverter->ReadState(state))
-  {
+  if (!inverter->ReadState(state)) {
     std::cout << inverter->GetErrorMessage() << std::endl;
     return EXIT_FAILURE;
   }

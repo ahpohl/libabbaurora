@@ -1,11 +1,12 @@
 #ifndef ABBAuroraEnums_h
 #define ABBAuroraEnums_h
 
-/** @file */ 
+/** @file */
 
 /** @brief Measure request to the DSP enum
 
-    The * in the enum below list the variable to which apply the global requirement.
+    The * in the enum below list the variable to which apply the global
+   requirement.
 
     The value is expressed in the following measurements units:
     - Voltages [V]
@@ -13,8 +14,7 @@
     - Powers [W]
     - Temperatures [°C]
     */
-enum class DspValueEnum : unsigned char
-{
+enum class DspValueEnum : unsigned char {
   /// Grid voltage*
   GRID_VOLTAGE = 1,
   /// Grid current*
@@ -122,14 +122,13 @@ enum class DspValueEnum : unsigned char
     Global: if 1 requires the global measurements (only for a master)
             if 0 requires the module measurements (master and slave)
     */
-enum class DspGlobalEnum : unsigned char
-{
-  MODULE_MEASUREMENT = 0, GLOBAL_MEASUREMENT = 1
+enum class DspGlobalEnum : unsigned char {
+  MODULE_MEASUREMENT = 0,
+  GLOBAL_MEASUREMENT = 1
 };
 
 /// Cumulated energy enum
-enum class CumulatedEnergyEnum : unsigned char
-{
+enum class CumulatedEnergyEnum : unsigned char {
   /// Daily energy
   CURRENT_DAY = 0,
   /// Weekly energy
@@ -145,15 +144,15 @@ enum class CumulatedEnergyEnum : unsigned char
 };
 
 /// Send command enum
-enum class SendCommandEnum : unsigned char
-{
+enum class SendCommandEnum : unsigned char {
   /// State request: ask the state of the system modules
   STATE_REQUEST = 50,
   /// P/N reading (Aurora inverters)
   PN_READING = 52,
-  /// Version reading (indoor/outdoor, Europe/America, available only in FW version 1.0.9 and following)
+  /// Version reading (indoor/outdoor, Europe/America, available only in FW
+  /// version 1.0.9 and following)
   VERSION_READING = 58,
-  /// Measure request to the DSP (voltage, current, etc.)  
+  /// Measure request to the DSP (voltage, current, etc.)
   MEASURE_REQUEST_DSP = 59,
   /// Serial number reading (Aurora inverters)
   SERIAL_NUMBER_READING = 63,
@@ -172,8 +171,7 @@ enum class SendCommandEnum : unsigned char
 };
 
 /// Log level enum
-enum class LogLevelEnum : unsigned char
-{
+enum class LogLevelEnum : unsigned char {
   CONFIG = 0x01,
   JSON = 0x02,
   MQTT = 0x04,
