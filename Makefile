@@ -20,9 +20,10 @@ MAJOR_VERSION := $(word 1, $(subst ., ,$(FULL_VERSION)))
 MINOR_VERSION := $(word 2, $(subst ., ,$(FULL_VERSION)))
 RELEASE_VERSION := $(word 3, $(subst ., ,$(FULL_VERSION)))
 
-# define the library file names 
-STATIC_LIB := libabbaurora.a
-SHARED_LIB := libabbaurora.so
+# define the library file names
+PROJECT := libabbaurora
+STATIC_LIB := $(PROJECT).a
+SHARED_LIB := $(PROJECT).so
 
 # define examples directory
 EXAMPLE := examples
@@ -32,7 +33,12 @@ EXAMPLE := examples
 #############
 
 # define the C compiler to use
-CPP = g++
+CPP := g++
+
+# define cross compiler for aarch64 target
+ifeq ($(CROSS_COMPILE),aarch64-unknown-linux-gnu)
+CPP := aarch64-unknown-linux-gnu-g++
+endif
 
 # define any compile-time flags
 CPPFLAGS = -Wall -Wextra -g -std=c++11 -pthread -fPIC -shared
@@ -94,10 +100,12 @@ endif
 
 install: all
 	install -d $(DESTDIR)$(PREFIX)/lib
-	install -d $(DESTDIR)$(PREFIX)/include
 	install -m 644 $(OBJ_DIR)/$(STATIC_LIB) $(DESTDIR)$(PREFIX)/lib/$(STATIC_LIB)
 	install -m 755 $(OBJ_DIR)/$(SHARED_LIB) $(DESTDIR)$(PREFIX)/lib/$(SHARED_LIB).$(FULL_VERSION)
-	ln -sr $(DESTDIR)$(PREFIX)/lib/$(SHARED_LIB).$(MAJOR_VERSION) $(DESTDIR)$(PREFIX)/lib/$(SHARED_LIB)
+	ln -sr $(DESTDIR)$(PREFIX)/lib/$(SHARED_LIB).$(FULL_VERSION) $(DESTDIR)$(PREFIX)/lib/$(SHARED_LIB)
+	ln -sr $(DESTDIR)$(PREFIX)/lib/$(SHARED_LIB).$(FULL_VERSION) $(DESTDIR)$(PREFIX)/lib/$(SHARED_LIB).$(MAJOR_VERSION)
+	install -d $(DESTDIR)$(PREFIX)/include/$(PROJECT)
+	install -D -m 644 ./include/*.h $(DESTDIR)$(PREFIX)/include/$(PROJECT)
 
 docs:
 	doxygen Doxyfile

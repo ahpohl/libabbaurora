@@ -6,7 +6,7 @@
 /** @brief Communication protocol between host and supervisor microprocessor
 
     The communication between host and processor works via a serial interface
-   RS485 or RS232.
+    RS485 or RS232.
 
     Configuration parameters in both cases are:
     - 19200 baud (default value)

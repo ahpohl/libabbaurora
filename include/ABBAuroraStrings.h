@@ -1,6 +1,8 @@
 #ifndef ABBAuroraStrings_h
 #define ABBAuroraStrings_h
 
+#include <string>
+
 /** @file */
 
 /// Aurora strings
